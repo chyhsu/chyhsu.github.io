@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: "en" }}">
+
+  {%- include head.html -%}
+
+  <body>
+
+    {%- include header.html -%}
+
+    <!-- Hero Banner Section -->
+    <section class="hero-banner">
+      <div class="hero-background">
+        <div class="hero-content">
+          <div class="avatar-container">
+            <img src="/assets/images/IMG_5033.JPG" alt="{{ site.title }}" class="avatar">
+          </div>
+          <div class="hero-text">
+            <h1 class="hero-title">{{ site.title }}</h1>
+            <p class="hero-subtitle">{{ site.description }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        {{ content }}
+      </div>
+    </main>
+
+    {%- include footer.html -%}
+    
+    <!-- Custom JavaScript -->
+    <script src="{{ "/assets/js/custom.js" | relative_url }}"></script>
+
+  </body>
+
+</html> 

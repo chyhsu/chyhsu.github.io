@@ -11,6 +11,12 @@ source "https://rubygems.org"
 
 gem "jekyll", "~> 4.3.0"
 
+# Ruby 3.4+ compatibility gems
+gem "csv"
+gem "logger"
+gem "base64"
+gem "erb"
+
 # This is the default theme for new Jekyll sites. You may change this to anything you like.
 gem "minima", "~> 2.5"
 
