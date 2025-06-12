@@ -1,0 +1,52 @@
+ 
+_site/
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata
+
+# Bundle files
+vendor/bundle/
+.bundle/
+Gemfile.lock
+
+# Ruby files
+*.gem
+.ruby-version
+.ruby-gemset
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Log files
+*.log
+
+# Node modules (if using Node.js tools)
+node_modules/
+npm-debug.log*
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Temporary files
+tmp/
+temp/
+
+# Cache files
+.cache/

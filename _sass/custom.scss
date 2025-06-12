@@ -1,0 +1,63 @@
+// Custom styles for your Jekyll site
+
+// Color scheme
+$primary-color: #2c3e50;
+$accent-color: #3498db;
+$text-color: #333;
+$bg-color: #fff;
+
+// Custom header styling
+.site-header {
+  background: linear-gradient(135deg, $primary-color, $accent-color);
+  .site-title {
+    color: white !important;
+    font-weight: bold;
+    &:hover {
+      color: #ecf0f1 !important;
+    }
+  }
+  
+  .site-nav .page-link {
+    color: white !important;
+    &:hover {
+      color: #ecf0f1 !important;
+    }
+  }
+}
+
+// Custom styling for posts
+.post-content {
+  h1, h2, h3 {
+    color: $primary-color;
+  }
+  
+  code {
+    background-color: #f8f9fa;
+    padding: 2px 4px;
+    border-radius: 3px;
+  }
+}
+
+// Custom footer
+.site-footer {
+  background-color: $primary-color;
+  color: white;
+  
+  .footer-heading {
+    color: white;
+  }
+  
+  a {
+    color: $accent-color;
+    &:hover {
+      color: white;
+    }
+  }
+}
+
+// Responsive design improvements
+@media (max-width: 768px) {
+  .post-content {
+    font-size: 16px;
+  }
+} 
