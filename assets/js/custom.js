@@ -31,20 +31,20 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Dark mode toggle
+    // Light/Dark mode toggle (Dark is now default)
     const toggleBtn = document.createElement('button');
-    toggleBtn.textContent = '🌙';
+    toggleBtn.textContent = '☀️'; // Start with sun icon since dark is default
     toggleBtn.className = 'dark-mode-toggle';
     toggleBtn.onclick = function() {
-        document.body.classList.toggle('dark-mode');
-        this.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
-        localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+        document.body.classList.toggle('light-mode');
+        this.textContent = document.body.classList.contains('light-mode') ? '🌙' : '☀️';
+        localStorage.setItem('lightMode', document.body.classList.contains('light-mode'));
     };
     document.querySelector('.site-header').appendChild(toggleBtn);
 
-    // Load saved dark mode preference
-    if (localStorage.getItem('darkMode') === 'true') {
-        document.body.classList.add('dark-mode');
-        toggleBtn.textContent = '☀️';
+    // Load saved light mode preference (dark is default now)
+    if (localStorage.getItem('lightMode') === 'true') {
+        document.body.classList.add('light-mode');
+        toggleBtn.textContent = '🌙';
     }
 }); 
