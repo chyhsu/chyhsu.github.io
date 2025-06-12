@@ -24,7 +24,7 @@ email: chyhsu@umich.edu
 description: >- # this means to ignore newlines until "baseurl:"
   An incoming Master of Data Science student at the University of Michigan with an interdisciplinary background in computer science and civil engineering. Currently interning at QNAP, a NAS Solution Provider, in Cloud Development Department.
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://chyhsu.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 github_username: chyhsu
 
 # Build settings

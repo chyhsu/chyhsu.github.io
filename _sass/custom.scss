@@ -417,7 +417,7 @@ $bg-color: #fff;
   // 1. Place an image in your /assets/images/ folder.
   // 2. Uncomment the line below and set the correct path.
   */
-  background-image: url('/assets/images/20200711_190244.jpg');
+  background-image: url('{{ "/assets/images/20200711_190244.jpg" | relative_url }}');
 
   background-color: #EAEAEA; /* Fallback color */
   background-position: center;
