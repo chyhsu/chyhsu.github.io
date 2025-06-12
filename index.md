@@ -78,18 +78,28 @@ layout: main
   <h2><i class="fas fa-cogs"></i> Skills</h2>
   <div class="skills-grid">
     <div class="skill-category">
-      <h4>Systems & Deployment</h4>
+      <h4>Developement & Deployment</h4>
       <span class="skill-tag">Docker</span>
       <span class="skill-tag">Kubernetes</span>
-      <span class="skill-tag">AWS</span>
+      <span class="skill-tag">CI/CD</span>
+      <span class="skill-tag">Git</span>
+      <span class="skill-tag">JIRA</span>
+      <span class="skill-tag">Sprint/Scrum</span>
     </div>
     <div class="skill-category">
       <h4>Languages & Tools</h4>
       <span class="skill-tag">Python</span>
       <span class="skill-tag">Go</span>
       <span class="skill-tag">C++</span>
-      <span class="skill-tag">LLVM</span>
+      <span class="skill-tag">Shell Script</span>
+      <span class="skill-tag">SQL</span>
       <span class="skill-tag">Verilog</span>
+    </div>
+    <div class="skill-category">
+      <h4>System & OS</h4>
+      <span class="skill-tag">Linux-Arch</span>
+      <span class="skill-tag">MacOS</span>
+      <span class="skill-tag">Windows</span>
     </div>
   </div>
 </div>
