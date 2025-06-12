@@ -47,13 +47,16 @@ layout: main
           <li>Learning deployment processes using Docker, Kubernetes, and AWS to support scalable systems.</li>
           <li>Developing API services in Golang for uploading device avatars.</li>
           <li>Developed a JIRA issue-searching service using embedding search and LLM API calls.</li>
+          <li>Constructed benchmark tests for Couchbase and Mongo DB to evaluate the performance of the databases.</li>
+          <li>Found the memory leak issue in product site and fixed it.</li>
+          <li>Update String Translation System from python2 to python3 and deployed it from local machine to k8s cluster.</li>
         </ul>
       </div>
     </div>
     <div class="timeline-item">
       <div class="timeline-dot"></div>
       <div class="timeline-content">
-        <h3>Back-end Developer, US Taiwan Watch</h3>
+        <h3>Volunteer, US Taiwan Watch</h3>
         <p class="timeline-meta">2024</p>
         <ul>
           <li>Developed back-end features for the organization's website.</li>
