@@ -62,7 +62,7 @@ $bg-color: #fff;
   .hero-text {
     color: white;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    
+   
     .hero-title {
       font-size: 3rem;
       font-weight: bold;
@@ -398,4 +398,44 @@ $bg-color: #fff;
 }
 .dark-mode .card h4 {
   color: #fff;
+}
+
+/*-- Main Content Background --*/
+.page-content {
+  position: relative;
+  overflow: hidden; /* Ensures pseudo-element does not overflow */
+}
+
+.page-content::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 0;
+
+  /*
+  // --- USER ACTION: Add your background image --- //
+  // 1. Place an image in your /assets/images/ folder.
+  // 2. Uncomment the line below and set the correct path.
+  */
+  background-image: url('/assets/images/20200711_190244.jpg');
+
+  background-color: #EAEAEA; /* Fallback color */
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed; /* Creates a cool parallax effect */
+  
+  /* Light overlay for readability */
+  box-shadow: inset 0 0 0 100vmax rgba(255,255,255,0.85);
+}
+
+.wrapper {
+  position: relative;
+  z-index: 1;
+}
+
+/*-- Dark Mode Adjustment for Main Background --*/
+.dark-mode .page-content::before {
+  /* Dark overlay for dark mode */
+  box-shadow: inset 0 0 0 100vmax rgba(26, 32, 44, 0.9);
+  background-color: #1A202C; /* Dark fallback color */
 } 
