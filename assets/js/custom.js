@@ -16,20 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Add "read more" functionality for long posts
-    const posts = document.querySelectorAll('.post-content');
-    posts.forEach(post => {
-        if (post.scrollHeight > 500) {
-            const readMoreBtn = document.createElement('button');
-            readMoreBtn.textContent = 'Read More';
-            readMoreBtn.className = 'read-more-btn';
-            readMoreBtn.onclick = function() {
-                post.style.maxHeight = 'none';
-                this.style.display = 'none';
-            };
-            post.parentNode.insertBefore(readMoreBtn, post.nextSibling);
-        }
-    });
+   
 
     // Light/Dark mode toggle (Dark is now default)
     const toggleBtn = document.createElement('button');
