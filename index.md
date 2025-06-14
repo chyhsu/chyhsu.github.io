@@ -144,7 +144,7 @@ layout: main
   <h2><i class="fas fa-flask"></i> Research</h2>
    <div class="card-grid">
     <div class="card research-card">
-      <h4>Quantum Event Identification and Learning Procedures</h4>
+      <h4><a href="/assets/pdf/arXiv_quantum_random_measurement_simulation_result.pdf" target="_blank" rel="noopener noreferrer">Quantum Event Identification and Learning Procedures</a></h4>
       <ul>
         <li>Investigated the effectiveness of quantum random and blended measurements for quantum event identification.</li>
         <li>Evaluated and compared algorithms to assess their effectiveness in the quantum event identification problem.</li>

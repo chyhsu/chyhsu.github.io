@@ -164,6 +164,15 @@ $bg-color: #fff;
       color: white;
     }
   }
+  
+  .social-links a {
+    margin-right: 15px; 
+    display: inline-block; 
+  }
+  
+  .social-links a:last-child {
+    margin-right: 0;
+  }
 }
 
 // Default dark mode styles (now default)
