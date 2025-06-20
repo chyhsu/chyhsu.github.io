@@ -152,3 +152,16 @@ layout: main
     </div>
   </div>
 </div>
+
+<!-- Internship Results Presentation -->
+<div class="content-section">
+  <h2><i class="fas fa-flask"></i> Internship Results Presentation</h2>
+   <div class="card-grid">
+    <div class="card research-card">
+      <h4><a href="/assets/pdf/Internship Results Presentation- QNAP.pdf" target="_blank" rel="noopener noreferrer">Internship Results Presentation- QNAP</a></h4>
+      <ul>
+        <li>Presented the results of my internship at QNAP, a NAS Solution Provider, in Cloud Development Department.</li>
+      </ul>
+    </div>
+  </div>
+</div>

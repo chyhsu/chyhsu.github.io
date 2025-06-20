@@ -50,3 +50,5 @@ temp/
 
 # Cache files
 .cache/
+
+.history/*
