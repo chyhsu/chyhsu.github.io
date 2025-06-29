@@ -22,7 +22,7 @@ title: Chun-Yuan Hsu | Portfolio
 author: 許峻源 (Hsu, Chun-Yuan)
 email: chyhsu@umich.edu
 description: >- # this means to ignore newlines until "baseurl:"
-  An incoming Master of Data Science student at the University of Michigan with an interdisciplinary background in computer science and civil engineering. Currently interning at QNAP, a NAS Solution Provider, in Cloud Development Department.
+  As a Master of Data Science student at the University of Michigan, I leverage a diverse academic background with a Master's in Computer Science and a Bachelor's in Civil Engineering. My internship at QNAP solidified my practical skills in software development, database applications, distributed systems, and AI applications. Passionate about staying current with tech trends, I actively build side projects to enhance my abilities for complex problem-solving and practical project implementation.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://chyhsu.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 github_username: chyhsu

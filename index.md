@@ -5,21 +5,6 @@
 layout: main
 ---
 
-<!-- About Me Section -->
-<div class="content-section">
-  <h2><i class="fas fa-user"></i> About Me</h2>
-  <p>As a Master of Data Science student at the University of Michigan, I leverage a diverse academic background with a Master's in Computer Science and a Bachelor's in Civil Engineering. My internship at QNAP solidified my practical skills in software development, database applications, distributed systems, and AI applications. Passionate about staying current with tech trends, I actively build side projects to enhance my abilities for complex problem-solving and practical project implementation.</p>
-</div>
-
-<!-- CV Section -->
-<div class="content-section">
-  <h2><i class="fas fa-file-pdf"></i> Curriculum Vitae</h2>
-  <div class="cv-download">
-    <a href="/assets/pdf/CV.pdf" class="cv-link" target="_blank" rel="noopener noreferrer">
-      <i class="fas fa-download"></i> Download CV (PDF)
-    </a>
-  </div>
-</div>
 
 <!-- Education Section -->
 <div class="content-section">
