@@ -121,27 +121,27 @@ layout: main
     <div class="card">
       <h4>File Translator</h4>
       <p>Developed a tool using LLM API to translate English PDF documents into Traditional Chinese, preserving the original format.</p>
-      <a href="https://github.com/jason890317/file-translator" class="card-link" target="_blank">View on GitHub <i class="fab fa-github"></i></a>
+      <a href="https://github.com/chyhsu/file-translator" class="card-link" target="_blank">View on GitHub <i class="fab fa-github"></i></a>
     </div>
     <div class="card">
       <h4>AZtec Image Comparison</h4>
       <p>Developed a tool to compare pole figure images from AZtec software, analyzing overlapping patterns in crystallographic orientations.</p>
-      <a href="https://github.com/jason890317/AZtec-image-comparison" class="card-link" target="_blank">View on GitHub <i class="fab fa-github"></i></a>
+      <a href="https://github.com/chyhsu/AZtec-image-comparison" class="card-link" target="_blank">View on GitHub <i class="fab fa-github"></i></a>
     </div>
     <div class="card">
       <h4>MIPS CPU Architecture [Course Work]</h4>
       <p>Constructed a MIPS CPU architecture from the ground up using Verilog.</p>
-      <a href="https://github.com/jason890317/MIPS-CPU-Architecture" class="card-link" target="_blank">View on GitHub <i class="fab fa-github"></i></a>
+      <a href="https://github.com/chyhsu/MIPS-CPU-Architecture" class="card-link" target="_blank">View on GitHub <i class="fab fa-github"></i></a>
     </div>
     <div class="card">
       <h4>OS Nachos [Course Work]</h4>
       <p>Implemented and documented core OS concepts including system calls, multiprogramming, virtual memory, and file systems using the Nachos instructional OS.</p>
-      <a href="https://github.com/jason890317/OS-Nachos" class="card-link" target="_blank">View on GitHub <i class="fab fa-github"></i></a>
+      <a href="https://github.com/chyhsu/OS-Nachos" class="card-link" target="_blank">View on GitHub <i class="fab fa-github"></i></a>
     </div>
     <div class="card">
       <h4>Advanced Compiler [Course Work]</h4>
       <p>Developed a series of compiler projects for an advanced compilers course, implementing features such as data-flow analysis and optimizations using the LLVM framework.</p>
-      <a href="https://github.com/jason890317/Advanced-Compiler" class="card-link" target="_blank">View on GitHub <i class="fab fa-github"></i></a>
+      <a href="https://github.com/chyhsu/Advanced-Compiler" class="card-link" target="_blank">View on GitHub <i class="fab fa-github"></i></a>
     </div>
   </div>
 </div>
