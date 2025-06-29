@@ -5,6 +5,22 @@
 layout: main
 ---
 
+<!-- About Me Section -->
+<div class="content-section">
+  <h2><i class="fas fa-user"></i> About Me</h2>
+  <p>As a Master of Data Science student at the University of Michigan, I leverage a diverse academic background with a Master's in Computer Science and a Bachelor's in Civil Engineering. My internship at QNAP solidified my practical skills in software development, database applications, distributed systems, and AI applications. Passionate about staying current with tech trends, I actively build side projects to enhance my abilities for complex problem-solving and practical project implementation.</p>
+</div>
+
+<!-- CV Section -->
+<div class="content-section">
+  <h2><i class="fas fa-file-pdf"></i> Curriculum Vitae</h2>
+  <div class="cv-download">
+    <a href="/assets/pdf/CV.pdf" class="cv-link" target="_blank" rel="noopener noreferrer">
+      <i class="fas fa-download"></i> Download CV (PDF)
+    </a>
+  </div>
+</div>
+
 <!-- Education Section -->
 <div class="content-section">
   <h2><i class="fas fa-graduation-cap"></i> Education</h2>
@@ -13,14 +29,14 @@ layout: main
       <div class="timeline-dot"></div>
       <div class="timeline-content">
         <h3>Master of Data Science</h3>
-        <p class="timeline-meta">University of Michigan, Ann Arbor, MI | Expected Start: Fall 2025</p>
+        <p class="timeline-meta">University of Michigan, Ann Arbor, MI | Sep 2025–Present</p>
       </div>
     </div>
     <div class="timeline-item">
       <div class="timeline-dot"></div>
       <div class="timeline-content">
         <h3>Master of Science in Computer Science</h3>
-        <p class="timeline-meta">National Tsing Hua University, Hsinchu, Taiwan | 2022 – 2025</p>
+        <p class="timeline-meta">National Tsing Hua University, Hsinchu, Taiwan | Sep 2022–Jan 2025</p>
         <p><strong>Thesis:</strong> Quantum Event Identification and Learning Procedures</p>
       </div>
     </div>
@@ -28,7 +44,7 @@ layout: main
       <div class="timeline-dot"></div>
       <div class="timeline-content">
         <h3>Bachelor of Science in Civil Engineering</h3>
-        <p class="timeline-meta">National Cheng Kung University, Tainan, Taiwan | 2018 – 2022</p>
+        <p class="timeline-meta">National Cheng Kung University, Tainan, Taiwan | Sep 2018–Jun 2022</p>
       </div>
     </div>
   </div>
@@ -42,14 +58,16 @@ layout: main
       <div class="timeline-dot"></div>
       <div class="timeline-content">
         <h3>Internship, QNAP</h3>
-        <p class="timeline-meta">2025 – Present</p>
+        <p class="timeline-meta">Jan 2025 – Jul 2025</p>
         <ul>
-          <li>Learning deployment processes using Docker, Kubernetes, and AWS to support scalable systems.</li>
-          <li>Developing API services in Golang for uploading device avatars.</li>
-          <li>Developed a JIRA issue-searching service using embedding search and LLM API calls.</li>
-          <li>Constructed benchmark tests for Couchbase and Mongo DB to evaluate the performance of the databases.</li>
-          <li>Found the memory leak issue in product site and fixed it.</li>
-          <li>Update String Translation System from python2 to python3 and deployed it from local machine to k8s cluster.</li>
+          <li>Developed a semantic search service for Jira issues using text embeddings (ChromaDB) and integrated AWS Bedrock LLM to generate resolution suggestions.</li>
+          <li>Engineered an MCP server for the Jira search service, enabling developers to query issues information via coding IDE.</li>
+          <li>Migrated the Konnyaku translation management website from Python 2 to Python 3 and deployed it on Kubernetes.</li>
+          <li>Migrated the Device Avatar APIs service from Python to Go for improved performance and deployed it on Kubernetes; implemented token-based authentication and unit tests.</li>
+          <li>Contributed to database benchmark tests comparing MongoDB and Couchbase to inform technology selection for data-intensive applications.</li>
+          <li>Diagnosed and resolved a DDNS worker failure issue during RabbitMQ scaling period.</li>
+          <li>Pointed out and resolved a memory leak issue in cloud product by first inspecting Grafana metric and then tracing code.</li>
+          <li>Resolved NATS message production failures during AWS spot instance scaling by reconfiguring NATS server replicas.</li>
         </ul>
       </div>
     </div>
@@ -81,28 +99,22 @@ layout: main
   <h2><i class="fas fa-cogs"></i> Skills</h2>
   <div class="skills-grid">
     <div class="skill-category">
-      <h4>Developement & Deployment</h4>
+      <h4>Languages</h4>
+      <span class="skill-tag">Python</span>
+      <span class="skill-tag">C++</span>
+      <span class="skill-tag">Go</span>
+      <span class="skill-tag">SQL</span>
+      <span class="skill-tag">Bash</span>
+    </div>
+    <div class="skill-category">
+      <h4>Developer Tools</h4>
       <span class="skill-tag">Docker</span>
       <span class="skill-tag">Kubernetes</span>
-      <span class="skill-tag">CI/CD</span>
-      <span class="skill-tag">Git</span>
-      <span class="skill-tag">JIRA</span>
-      <span class="skill-tag">Sprint/Scrum</span>
-    </div>
-    <div class="skill-category">
-      <h4>Languages & Tools</h4>
-      <span class="skill-tag">Python</span>
-      <span class="skill-tag">Go</span>
-      <span class="skill-tag">C++</span>
-      <span class="skill-tag">Shell Script</span>
-      <span class="skill-tag">SQL</span>
-      <span class="skill-tag">Verilog</span>
-    </div>
-    <div class="skill-category">
-      <h4>System & OS</h4>
-      <span class="skill-tag">Linux-Arch</span>
-      <span class="skill-tag">MacOS</span>
-      <span class="skill-tag">Windows</span>
+      <span class="skill-tag">GitLab CI</span>
+      <span class="skill-tag">NATS</span>
+      <span class="skill-tag">Non-Relational Databases</span>
+      <span class="skill-tag">Relational Databases</span>
+      <span class="skill-tag">Message Queue</span>
     </div>
   </div>
 </div>
@@ -112,29 +124,39 @@ layout: main
   <h2><i class="fas fa-project-diagram"></i> Projects & Coursework</h2>
   <div class="card-grid">
     <div class="card">
-      <h4>OS Nachos</h4>
-      <p>Learned operating systems concepts using the Nachos instructional OS.</p>
-      <a href="https://github.com/jason890317/OS_Nachos" class="card-link" target="_blank">View on GitHub <i class="fab fa-github"></i></a>
+      <h4>Jira-Issue-Search</h4>
+      <p>Developed a semantic search service for Jira issues using text embeddings and LLM integration.</p>
+      <a href="https://github.com/chyhsu/Jira-Issue-Search" class="card-link" target="_blank">View on GitHub <i class="fab fa-github"></i></a>
     </div>
     <div class="card">
-      <h4>MIPS CPU Architecture</h4>
-      <p>Constructed a MIPS CPU architecture from the ground up using Verilog.</p>
-      <a href="https://github.com/jason890317/computer-architecture" class="card-link" target="_blank">View on GitHub <i class="fab fa-github"></i></a>
+      <h4>Issue-Search-MCP</h4>
+      <p>Engineered an MCP server for the Jira search service, enabling developers to query issues via coding IDE.</p>
+      <a href="https://github.com/chyhsu/Issue-Search-MCP" class="card-link" target="_blank">View on GitHub <i class="fab fa-github"></i></a>
     </div>
     <div class="card">
-      <h4>Advanced Compiler (LLVM)</h4>
-      <p>Analyzed data dependencies with the LLVM compiler infrastructure.</p>
-      <a href="https://github.com/jason890317/advanced_compiler" class="card-link" target="_blank">View on GitHub <i class="fab fa-github"></i></a>
+      <h4>File Translator</h4>
+      <p>Developed a tool using LLM API to translate English PDF documents into Traditional Chinese, preserving the original format.</p>
+      <a href="https://github.com/jason890317/file-translator" class="card-link" target="_blank">View on GitHub <i class="fab fa-github"></i></a>
     </div>
     <div class="card">
       <h4>AZtec Image Comparison</h4>
-      <p>A tool to compare pole figure images, analyzing crystallographic orientations.</p>
-      <a href="https://github.com/jason890317/AZtec--image-comparison" class="card-link" target="_blank">View on GitHub <i class="fab fa-github"></i></a>
+      <p>Developed a tool to compare pole figure images from AZtec software, analyzing overlapping patterns in crystallographic orientations.</p>
+      <a href="https://github.com/jason890317/AZtec-image-comparison" class="card-link" target="_blank">View on GitHub <i class="fab fa-github"></i></a>
     </div>
-     <div class="card">
-      <h4>File Translator</h4>
-      <p>A tool using LLM API to translate English PDFs to Traditional Chinese, preserving format.</p>
-      <a href="https://github.com/jason890317/file_translator" class="card-link" target="_blank">View on GitHub <i class="fab fa-github"></i></a>
+    <div class="card">
+      <h4>MIPS CPU Architecture [Course Work]</h4>
+      <p>Constructed a MIPS CPU architecture from the ground up using Verilog.</p>
+      <a href="https://github.com/jason890317/MIPS-CPU-Architecture" class="card-link" target="_blank">View on GitHub <i class="fab fa-github"></i></a>
+    </div>
+    <div class="card">
+      <h4>OS Nachos [Course Work]</h4>
+      <p>Implemented and documented core OS concepts including system calls, multiprogramming, virtual memory, and file systems using the Nachos instructional OS.</p>
+      <a href="https://github.com/jason890317/OS-Nachos" class="card-link" target="_blank">View on GitHub <i class="fab fa-github"></i></a>
+    </div>
+    <div class="card">
+      <h4>Advanced Compiler [Course Work]</h4>
+      <p>Developed a series of compiler projects for an advanced compilers course, implementing features such as data-flow analysis and optimizations using the LLVM framework.</p>
+      <a href="https://github.com/jason890317/Advanced-Compiler" class="card-link" target="_blank">View on GitHub <i class="fab fa-github"></i></a>
     </div>
   </div>
 </div>
