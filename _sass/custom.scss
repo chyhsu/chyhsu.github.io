@@ -447,6 +447,10 @@ body {
   margin-bottom: 0.75rem;
 }
 
+.card a{
+  color: $accent-color;
+}
+
 .card p {
   flex-grow: 1;
 }
@@ -526,7 +530,7 @@ body {
 
 /*-- Default Dark Mode Background Overlay --*/
 .background-overlay {
-  background-color: rgba(26, 32, 44, 0.9);
+  background-color: rgba(36, 44, 60, 0.9);
 }
 
 /*-- Light Mode Background Overlay --*/
