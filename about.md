@@ -18,7 +18,9 @@ That experience ignited a new mission. Now, as I pack my bags for Ann Arbor to b
 - Play Darts
 - Ricing
 
-
+## Academic Records
+- [Transcript – National Tsing Hua University](/assets/pdf/NTHU_transcript.pdf)
+- [Transcript – National Cheng Kung University](/assets/pdf/NCKU_transcript.pdf)
 
 
 
