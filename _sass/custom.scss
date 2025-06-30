@@ -447,7 +447,11 @@ body {
   margin-bottom: 0.75rem;
 }
 
-.card a{
+.research-card a{
+  color: $accent-color;
+}
+
+.research-card a:hover{
   color: $accent-color;
 }
 
