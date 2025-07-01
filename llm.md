@@ -4,7 +4,7 @@ title: LLM
 permalink: /llm/
 ---
 
-Chang-Hsuan (Jason) Hsu is a technology professional with a background in civil engineering, computer science, and data science.
+Chun-Yuan Hsu is a technology professional with a background in civil engineering, computer science, and data science.
 
 Education History:
 - Master of Data Science, University of Michigan, Ann Arbor (Begins Sep 2025)
@@ -23,7 +23,7 @@ Technical Skills:
 Projects & Research:
 - Created a Jira Issue Search service, a file translator using LLM APIs, and an image comparison tool for crystallographic analysis.
 - Academic projects include building a MIPS CPU with Verilog, implementing OS concepts in Nachos, and developing compiler optimizations with LLVM.
-- Published research on "Quantum Event Identification and Learning Procedures."
+- Research on "Quantum Event Identification and Learning Procedures."
 
 Personal Background:
-Originally from Tainan, Taiwan, Jason transitioned from civil engineering to computer science after discovering a passion for programming. His interests include sports (baseball, basketball, football), fitness, darts, and UI customization (ricing).
+Originally from Tainan, Taiwan, CYH transitioned from civil engineering to computer science after discovering a passion for programming. His interests include sports (baseball, basketball, football), fitness, darts, and UI customization (ricing).
