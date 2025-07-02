@@ -22,7 +22,7 @@ layout: main
       <div class="timeline-content">
         <h3>Master of Science in Computer Science</h3>
         <p class="timeline-meta">National Tsing Hua University, Hsinchu, Taiwan | Sep 2022–Jan 2025</p>
-        <p><strong>Thesis:</strong> Quantum Event Identification and Learning Procedures</p>
+        <p><strong>Thesis:</strong> Quantum Event Identification and Simulation of Quantum Event-Learning Procedures</p>
       </div>
     </div>
     <div class="timeline-item">
@@ -89,17 +89,30 @@ layout: main
       <span class="skill-tag">C++</span>
       <span class="skill-tag">Go</span>
       <span class="skill-tag">SQL</span>
-      <span class="skill-tag">Bash</span>
+      <span class="skill-tag">Bash Script</span>
+      <span class="skill-tag">Verilog</span>
     </div>
     <div class="skill-category">
       <h4>Developer Tools</h4>
       <span class="skill-tag">Docker</span>
       <span class="skill-tag">Kubernetes</span>
-      <span class="skill-tag">GitLab CI</span>
+      <span class="skill-tag">GitLab CI/CD</span>
       <span class="skill-tag">NATS</span>
-      <span class="skill-tag">Non-Relational Databases</span>
-      <span class="skill-tag">Relational Databases</span>
-      <span class="skill-tag">Message Queue</span>
+      <span class="skill-tag">AWS</span>
+      <span class="skill-tag">Jira</span>
+      <span class="skill-tag">Sprint/Scrum</span>
+    </div>
+    <div class="skill-category">
+      <h4>System</h4>
+      <span class="skill-tag">Linux(Debian, Arch)</span>
+      <span class="skill-tag">Mac</span>
+      <span class="skill-tag">Windows</span>
+    </div>
+    <div class="skill-category">
+      <h4>Database</h4>
+      <span class="skill-tag">MongoDB</span>
+      <span class="skill-tag">Couchbase</span>
+      <span class="skill-tag">ChromaDB</span>
     </div>
   </div>
 </div>

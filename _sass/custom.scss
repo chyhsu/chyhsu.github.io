@@ -3,13 +3,13 @@
 // Color scheme
 $primary-color: #2c3e50;
 $accent-color: #338dca;
-$text-color: #333;
+$text-color: #333333c3;
 $bg-color: #fff;
-
+$card-color: #6e7b9550;
 // Hero Banner Styles
 .hero-banner {
   position: relative;
-  min-height: 400px;
+  min-height: 300px;
   padding: 4rem 0;
   background: linear-gradient(135deg, rgba($primary-color, 0.8), rgba($accent-color, 0.6));
   // Add your background image: url('/assets/images/banner-bg.jpg') center/cover no-repeat;
@@ -66,7 +66,10 @@ $bg-color: #fff;
       max-width: 800px;
       opacity: 0.95;
     }
-    
+    .hero-catagory {
+      display: flex;
+      gap: 1rem;
+    }
     .hero-link {
       display: inline-block;
       margin-top: 1rem;
@@ -191,14 +194,14 @@ body {
 // Light mode styles (when toggled)
 .light-mode {
   background-color: #fff;
-  color: #333;
+  color: $text-color;
   
   .site-header {
     background: linear-gradient(135deg, $primary-color, $accent-color);
   }
   
   .post-content {
-    color: #333;
+    color: $text-color;
     
     h1, h2, h3 {
       color: $primary-color;
@@ -207,7 +210,7 @@ body {
   
   code {
     background-color: #f8f9fa !important;
-    color: #333 !important;
+    color: $text-color !important;
   }
   
   .content-section h2 {
@@ -216,7 +219,7 @@ body {
   
   .timeline-content {
     background-color: #f9f9f9cf;
-    color: #333;
+    color: $text-color;
   }
   
   .timeline-content h3 {
@@ -233,7 +236,7 @@ body {
   
   .card {
     background-color: #f9f9f9cf;
-    color: #333;
+    color: $text-color;
   }
   
   .card h4 {
@@ -260,7 +263,7 @@ body {
 
 // Read more button
 .read-more-btn {
-  background: $accent-color;
+
   color: white;
   border: none;
   padding: 0.5rem 1rem;
@@ -270,7 +273,7 @@ body {
   transition: background-color 0.3s ease;
   
   &:hover {
-    background: darken($accent-color, 10%);
+    background: darken($card-color, 10%);
   }
 }
 
@@ -322,7 +325,7 @@ body {
 .content-section {
   padding: 2rem 0;
   margin: 0 auto;
-  max-width: 900px;
+  max-width: 1200px;
 }
 
 .content-section h2 {
@@ -399,6 +402,101 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
+}
+
+/*-- Post Page Styles --*/
+.post-header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.post-title {
+  font-size: 3rem;
+  color: $accent-color;
+  margin-bottom: 0.5rem;
+}
+
+.post-content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  line-height: 1.7;
+
+  a {
+    color: #d4e3ed;
+    text-decoration: underline;
+
+    &:hover {
+      color: darken(#d4e3ed, 20%);
+    }
+  }
+
+}
+
+.light-mode {
+  .post-title {
+    color: $primary-color;
+  }
+  .post-content a {
+    color: $accent-color;
+  }
+}
+
+/*-- Blog Page Styles --*/
+.posts-container {
+  display: grid;
+  grid-template-columns: 1fr; /* Display one post per row */
+  gap: 2rem;
+  max-width: 900px; /* Adjust max-width for a better single-column layout */
+  margin: 0 auto;
+  padding: 2rem 0;
+}
+
+.post-card {
+  background-color: $card-color;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  }
+
+  h3 {
+    margin-top: 0;
+    a {
+      color: $accent-color;
+      text-decoration: none;
+    }
+  }
+
+  p {
+    flex-grow: 1;
+  }
+}
+
+.post-meta {
+  font-size: 0.9rem;
+  color: #bab8b8;
+  font-style: italic;
+  margin-bottom: 1rem;
+}
+
+.light-mode {
+  .post-card {
+    background-color: #f9f9f9cf;
+    color: $text-color;
+    h3 a {
+      color: $primary-color;
+    }
+  }
+  .post-meta {
+    color: #777;
+  }
 }
 
 .skill-category h4 {
@@ -481,7 +579,7 @@ body {
   color: #fff;
 }
 .timeline-content {
-  background-color: #6e7b9550;
+  background-color: $card-color;
   color: #e0e0e0;
 }
 .timeline-content h3 {
@@ -494,7 +592,7 @@ body {
   color: #fff;
 }
 .card {
-  background-color: #6e7b9550;
+  background-color: $card-color;
   color: #e0e0e0;
 }
 .card h4 {
@@ -530,6 +628,14 @@ body {
 .wrapper {
   position: relative;
   z-index: 1;
+
+  max-width: -webkit-calc(1500px - (30px * 2));
+  max-width: calc(1500px - (30px * 2));
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 30px;
+  padding-left: 30px;
+  
 }
 
 /*-- Default Dark Mode Background Overlay --*/
