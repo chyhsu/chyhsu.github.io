@@ -22,10 +22,10 @@ title: Chun-Yuan Hsu | Portfolio
 author: 許峻源 (Hsu, Chun-Yuan)
 email: chyhsu@umich.edu
 description: >- # this means to ignore newlines until "baseurl:"
-  Hi, I'm Chun-Yuan Hsu, a Master of Data Science student at the University of Michigan. As a recent arrival, I'm here not only to acquire cutting-edge knowledge and skills but also to share my journey at the University of Michigan.
+  Hi, I'm Chun-Yuan Hsu, also known as Chyhsu, a Master of Data Science student at the University of Michigan. As a recent arrival, I'm here not only to acquire cutting-edge knowledge and skills but also to share my journey at the University of Michigan. This is my personal portfolio website.
 baseurl: "" # the subpath of your site, e.g. /blog
 
-url: "https://chyhsu.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://chyhsu.com" # the base hostname & protocol for your site, e.g. http://example.com
 github_username: chyhsu
 
 
@@ -33,8 +33,6 @@ github_username: chyhsu
 theme: minima
 plugins:
   - jekyll-feed
-  - jekyll-sitemap
-  - jekyll-seo-tag
 
 # Exclude from processing.
 # The following items will not be processed, by default.
