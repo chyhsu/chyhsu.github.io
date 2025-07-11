@@ -173,7 +173,24 @@ layout: main
     </div>
   </div>
 </div>
-
+<div class="certification-section">
+  <h2><i class="fas fa-certificate"></i> Certifications</h2>
+  <div class="card-grid">
+    <div class="card">
+      <h4>Professional Certifications</h4>
+      <div class="badges-container">
+        <a href="https://www.credly.com/badges/5e55ce18-2865-4918-b71a-5acad5de0a0c/public_url" target="_blank">
+          <img src="/assets/images/mongodb-schema-design-patterns-and-antipatterns-ski.png" alt="AWS Certified Cloud Practitioner" class="certification-badge">
+        </a>
+        <a href="https://www.credly.com/badges/11e30c84-8bc9-4378-bfaf-e28690606fae/public_url" target="_blank">
+          <img src="/assets/images/building-rag-apps-using-mongodb.png" alt="MongoDB Certified Developer" class="certification-badge">
+        </a>
+        <a href="https://www.credly.com/badges/ab704694-5e2e-4dfd-bcdd-caa4f5c2c192/public_url" target="_blank">
+          <img src="/assets/images/from-relational-model-sql-to-mongodb-s-document-mod.png" alt="Certified Kubernetes Administrator" class="certification-badge">
+        </a>
+      </div>
+    </div>
+  </div>
 <!-- Internship Results Presentation -->
 <div class="content-section">
   <h2><i class="fas fa-flask"></i> Internship Results Presentation</h2>

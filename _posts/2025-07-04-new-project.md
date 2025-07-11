@@ -1,13 +1,13 @@
 ---
 layout: post
-title:  "A new project, VizThinker, is on going"
+title:  "VizThinker"
 date:   2025-07-04 14:00:00 +0800
 
 ---
 
 # Introducing VizThinker: A New Way for Visual Thinkers to Interact with AI
 
-==============================================================================
+======================================
 # Traditional Chat Box flow and Visual Thinking Person
 
 When I use LLM chat boxes like ChatGPT, Gemini, and Grok, I find them extremely helpful for enhancing my work efficiency and productivity. Specifically, they excel at data collection. I do not need to search through web pages to teach myself about a new topic. For example, if I have a confusion about CI/CD tags and ask an LLM to explain them to me, it can give me a response that lists a comprehensive explanation, including the concept behind CI/CD, the most used tags, and some examples. It is definitely a great response but also lengthy. When you want to explore several branches from this response, such as asking about the general use cases of CI/CD, it will give you another long response. At that point, if you want to look back at the initial response, you will need to scroll back, which takes your time and energy.
