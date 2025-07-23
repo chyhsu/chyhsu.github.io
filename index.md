@@ -89,6 +89,8 @@ layout: main
       <span class="skill-tag">C++</span>
       <span class="skill-tag">Go</span>
       <span class="skill-tag">SQL</span>
+      <span class="skill-tag">TypeScript</span>
+      <span class="skill-tag">React</span>
       <span class="skill-tag">Bash Script</span>
       <span class="skill-tag">Verilog</span>
     </div>
@@ -100,6 +102,7 @@ layout: main
       <span class="skill-tag">NATS</span>
       <span class="skill-tag">AWS</span>
       <span class="skill-tag">Jira</span>
+      <span class="skill-tag">Git</span>
       <span class="skill-tag">Sprint/Scrum</span>
     </div>
     <div class="skill-category">
@@ -113,6 +116,7 @@ layout: main
       <span class="skill-tag">MongoDB</span>
       <span class="skill-tag">Couchbase</span>
       <span class="skill-tag">ChromaDB</span>
+      <span class="skill-tag">SQLite</span>
     </div>
   </div>
 </div>
@@ -121,6 +125,11 @@ layout: main
 <div class="content-section">
   <h2><i class="fas fa-project-diagram"></i> Projects & Coursework</h2>
   <div class="card-grid">
+    <div class="card">
+      <h4>VizThinker</h4>
+      <p>Integrated LLMs API to visualize LLM interactions as dynamic, node-linked structures for idea exploration.</p>
+      <a href="https://github.com/chyhsu/VizThinker" class="card-link" target="_blank">View on GitHub <i class="fab fa-github"></i></a>
+    </div>
     <div class="card">
       <h4>Jira-Issue-Search</h4>
       <p>Developed a semantic search service for Jira issues using text embeddings and LLM integration.</p>
