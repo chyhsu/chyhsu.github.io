@@ -90,17 +90,26 @@ layout: main
       <span class="skill-tag">Go</span>
       <span class="skill-tag">SQL</span>
       <span class="skill-tag">TypeScript</span>
-      <span class="skill-tag">React</span>
       <span class="skill-tag">Bash Script</span>
       <span class="skill-tag">Verilog</span>
+    </div>
+    <div class="framework-category">
+      <h4>Frameworks</h4>
+      <span class="skill-tag">Node.js</span>
+      <span class="skill-tag">React</span>
+    </div>
+    <div class="cloudplatform-category">
+      <h4>Cloud Platform</h4>
+      <span class="skill-tag">Google Cloud Platform</span>
+      <span class="skill-tag">AWS</span>
     </div>
     <div class="skill-category">
       <h4>Developer Tools</h4>
       <span class="skill-tag">Docker</span>
+      <span class="skill-tag">Docker Compose</span>
       <span class="skill-tag">Kubernetes</span>
       <span class="skill-tag">GitLab CI/CD</span>
       <span class="skill-tag">NATS</span>
-      <span class="skill-tag">AWS</span>
       <span class="skill-tag">Jira</span>
       <span class="skill-tag">Git</span>
       <span class="skill-tag">Sprint/Scrum</span>
@@ -117,6 +126,7 @@ layout: main
       <span class="skill-tag">Couchbase</span>
       <span class="skill-tag">ChromaDB</span>
       <span class="skill-tag">SQLite</span>
+      <span class="skill-tag">PostgreSQL</span>
     </div>
   </div>
 </div>

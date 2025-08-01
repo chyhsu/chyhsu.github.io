@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Vizthinker"
+title:  "Vizthinker Update"
 date:   2025-07-23 16:35:55 +0800
 
 ---
