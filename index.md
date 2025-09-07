@@ -136,6 +136,10 @@ layout: main
   <h2><i class="fas fa-project-diagram"></i> Projects & Coursework</h2>
   <div class="card-grid">
     <div class="card">
+      <h4>Lilac</h4>
+      <p> Contributing to a research project that uses LLMs and symbolic methods to automate Infrastructure-as-Code lifting across cloud platforms.</p>
+    </div>
+    <div class="card">
       <h4>VizThinker</h4>
       <p>Integrated LLMs API to visualize LLM interactions as dynamic, node-linked structures for idea exploration.</p>
       <a href="https://github.com/chyhsu/VizThinker" class="card-link" target="_blank">View on GitHub <i class="fab fa-github"></i></a>
