@@ -138,10 +138,12 @@ layout: main
     <div class="card">
       <h4>Lilac</h4>
       <p> Contributing to a research project that uses LLMs and symbolic methods to automate Infrastructure-as-Code lifting across cloud platforms.</p>
+      <a href="/assets/pdf/cse599_report.pdf" target="_blank" rel="noopener noreferrer">
+      Lilac ProjectReport</a>
     </div>
     <div class="card">
       <h4>VizThinker</h4>
-      <p>Integrated LLMs API to visualize LLM interactions as dynamic, node-linked structures for idea exploration.</p>
+      <p>A next-generation AI chat interface that transforms linear conversations into dynamic, explorable graphs—enabling branching discussions, visual navigation between ideas, and a more intuitive way to interact with LLMs.</p>
       <a href="https://github.com/chyhsu/VizThinker" class="card-link" target="_blank">View on GitHub <i class="fab fa-github"></i></a>
     </div>
     <div class="card">
@@ -194,6 +196,12 @@ layout: main
         <li>Evaluated and compared algorithms to assess their effectiveness in the quantum event identification problem.</li>
       </ul>
     </div>
+    <div class="card research-card">
+      <h4><a href="/assets/pdf/cse599_report.pdf" target="_blank" rel="noopener noreferrer">Lilac Project Report</a></h4>
+      <ul>
+        <li> Focused on Infrastructure-as-Code (IaC) lifting, a process that converts existing cloud deployments (brownfield infrastructure) into declarative IaC programs such as Terraform.</li>
+      </ul>
+    </div>  
   </div>
 </div>
 <div class="certification-section">
