@@ -5,6 +5,8 @@ ruby File.read(File.expand_path(".ruby-version", __dir__)).strip
 gem "jekyll", "4.3.4"
 gem "jekyll-sass-converter", "3.1.0"
 gem "sass-embedded", "~> 1.89"
+gem "csv", "3.3.6"
+gem "base64", "0.2.0"
 
 group :jekyll_plugins do
   gem "jekyll-feed", "0.17.0"

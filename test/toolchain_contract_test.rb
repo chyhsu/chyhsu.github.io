@@ -15,6 +15,9 @@ class ToolchainContractTest < Test::Unit::TestCase
     assert_not_match(/^Gemfile\.lock$/i, ignore)
     assert_not_match(/^\.ruby-version$/i, ignore)
     lock = ROOT.join("Gemfile.lock").read
+    gemfile = ROOT.join("Gemfile").read
+    assert_include(gemfile, 'gem "csv", "3.3.6"')
+    assert_include(gemfile, 'gem "base64", "0.2.0"')
     assert_include(lock, "jekyll (4.3.4)")
     assert_include(lock, "jekyll-sass-converter (3.1.0)")
     assert_match(/BUNDLED WITH\s+2\.7\.1\s*\z/m, lock)
@@ -42,7 +45,8 @@ class ToolchainContractTest < Test::Unit::TestCase
     assert_operator(upload, :<, deploy)
     assert_match(/actions\/upload-pages-artifact@v3[\s\S]*?path: _site/, workflow)
     assert_match(/pull_request:\s*\n\s*branches: \[main\]/, workflow)
-    assert_operator(workflow.scan("github.event_name != 'pull_request'").length, :>=, 2)
+    deployment_guard = "github.ref == 'refs/heads/main' && github.event_name != 'pull_request'"
+    assert_equal(3, workflow.scan(deployment_guard).length)
   end
 
   def test_production_stylesheet_is_compiled_css
