@@ -69,7 +69,7 @@ Use the following precedence and attribution rules:
 Each featured project uses these explicit fields:
 
 - `context`: what the project is.
-- `my_contribution`: what Chun-Yuan can personally claim.
+- `my_contribution`: what ChunYuan can personally claim.
 - `project_results`: team or project outcomes, clearly labeled.
 - `technologies`: only supported tools.
 - `links`: report, repository, or live product, each with `label`, `url`, and
@@ -128,7 +128,7 @@ It remains text-based, wraps cleanly, and provides at least 44-pixel touch targe
 The homepage is intentionally shorter than the current version:
 
 1. **Hero**
-   - `Chun-Yuan Hsu` is visible, not hidden behind an abstract slogan.
+   - `ChunYuan Hsu` is visible, not hidden behind an abstract slogan.
    - Concrete positioning: AI/backend engineer working across agents, infrastructure, and applied ML.
    - Small integrated portrait.
    - First action: About Me.

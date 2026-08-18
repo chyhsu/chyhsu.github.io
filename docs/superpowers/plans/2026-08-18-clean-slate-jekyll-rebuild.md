@@ -18,7 +18,7 @@
 - Homepage order is Hero → Experience → Selected Work → More Work → Profile → Latest Writing → Contact.
 - Experience order is TSMC → QNAP; featured-project order is Lilac → Brain Age/AD → VizThinker; archive-project order remains Jira Issue Search → Issue Search MCP → File Translator → AZtec Image Comparison → MIPS CPU Architecture → OS Nachos → Advanced Compiler → Quantum Event Identification.
 - Label collaborative outcomes `Project result`; label personally supported work `My contribution`.
-- Do not imply that Chun-Yuan implemented AWS identification or personally established Lilac's comparative superiority. Brain Age model design/training is not a personal contribution; its four exact metrics are team-project results.
+- Do not imply that ChunYuan implemented AWS identification or personally established Lilac's comparative superiority. Brain Age model design/training is not a personal contribution; its four exact metrics are team-project results.
 - The homepage shows at most two evidence bullets per role and exactly two recent posts. All eight archive project titles remain visible there as a compact index and fully described at `/projects/`.
 - Store structured facts only under `_data/portfolio/{profile,experience,projects,education,skills}.yml`; `_config.yml` is limited to build, domain, plugin, and SEO metadata.
 - Use no site JavaScript, remote font, CMS, database, analytics, contact form, theme toggle, background layer, Minima theme, or card-wall layout.
@@ -343,11 +343,11 @@ Expected: `Gemfile.lock` ends with `BUNDLED WITH` / `2.7.1`, contains Jekyll 4.3
 Replace `_config.yml` with:
 
 ```yaml
-title: Chun-Yuan Hsu | Portfolio
-author: Chun-Yuan Hsu
+title: ChunYuan Hsu | Portfolio
+author: ChunYuan Hsu
 email: chyhsu@umich.edu
 description: >-
-  Chun-Yuan Hsu is an AI and backend engineer working across agents,
+  ChunYuan Hsu is an AI and backend engineer working across agents,
   infrastructure, and applied machine learning.
 lang: en
 url: https://chyhsu.com
@@ -816,7 +816,7 @@ Create `_data/portfolio/profile.yml`:
 
 ```yaml
 identity:
-  name: Chun-Yuan Hsu
+  name: ChunYuan Hsu
   native_name: 許峻源
   positioning: AI/backend engineer working across agents, infrastructure, and applied ML.
   summary: >-
@@ -824,11 +824,11 @@ identity:
     building AI agents, backend infrastructure, and applied machine learning
     systems across production and research environments.
   seo_description: >-
-    Chun-Yuan Hsu is an AI and backend engineer working across agents,
+    ChunYuan Hsu is an AI and backend engineer working across agents,
     infrastructure, and applied machine learning.
   portrait:
     src: /assets/images/2473.jpg
-    alt: Portrait of Chun-Yuan Hsu
+    alt: Portrait of ChunYuan Hsu
 background:
   origin: Tainan, Taiwan
   transition: Civil engineering to computer science
@@ -1351,7 +1351,7 @@ Replace `_includes/site-header.html` with this migration-safe consumer:
 ```liquid
 <header class="site-header">
   <div class="site-shell site-header__inner">
-    <a class="site-brand" href="{{ '/' | relative_url }}" aria-label="Chun-Yuan Hsu, home">
+    <a class="site-brand" href="{{ '/' | relative_url }}" aria-label="ChunYuan Hsu, home">
       <span aria-hidden="true">CHY</span><span class="site-brand__divider" aria-hidden="true">/</span>Portfolio
     </a>
     <nav class="site-nav" aria-label="Primary navigation">
@@ -1620,7 +1620,7 @@ Create `_includes/chrome/header.html`:
 ```liquid
 <header class="site-header">
   <div class="site-shell site-header__inner">
-    <a class="site-brand" href="{{ '/' | relative_url }}" aria-label="Chun-Yuan Hsu, home">
+    <a class="site-brand" href="{{ '/' | relative_url }}" aria-label="ChunYuan Hsu, home">
       <span aria-hidden="true">CHY</span><span class="site-brand__divider" aria-hidden="true">/</span>Portfolio
     </a>
     <nav class="site-nav" aria-label="Primary navigation">
@@ -1812,7 +1812,7 @@ Insert these methods before the class's final `end`:
 ```ruby
   def test_homepage_has_one_h1_and_approved_section_order
     doc = document("index.html")
-    assert_equal(["Chun-Yuan Hsu"], doc.css("h1").map { |node| node.text.strip })
+    assert_equal(["ChunYuan Hsu"], doc.css("h1").map { |node| node.text.strip })
     ids = %w[intro experience selected-work more-work profile writing contact]
     source = rendered("index.html")
     positions = ids.map do |id|
@@ -2029,7 +2029,7 @@ Create `_includes/home/latest-writing.html`:
 <section class="contact-strip" id="contact" aria-labelledby="contact-title">
   <div class="site-shell contact-strip__inner">
     <div><p class="eyebrow">06 / Contact</p><h2 id="contact-title">Let's compare notes.</h2></div>
-    <a class="button button--primary" href="mailto:{{ site.data.portfolio.profile.contact.email }}">Email Chun-Yuan</a>
+    <a class="button button--primary" href="mailto:{{ site.data.portfolio.profile.contact.email }}">Email ChunYuan</a>
   </div>
 </section>
 ```
@@ -3031,7 +3031,7 @@ curl --location --silent --show-error --fail --max-time 25 \
 curl --location --silent --show-error --fail --max-time 25 \
   "$base_url/assets/main.css" --output "$tmp_dir/main.css"
 
-grep -Fq 'Chun-Yuan Hsu' "$tmp_dir/index.html"
+grep -Fq 'ChunYuan Hsu' "$tmp_dir/index.html"
 grep -Fq 'id="experience"' "$tmp_dir/index.html"
 grep -Fq 'href="/projects/"' "$tmp_dir/index.html"
 grep -Fq '<link rel="canonical" href="https://chyhsu.com/"' "$tmp_dir/index.html"
@@ -3217,7 +3217,7 @@ Create `README.md`:
 ````markdown
 # chyhsu.com
 
-Chun-Yuan Hsu's Jekyll portfolio. The repository builds and tests the same static `_site` artifact that GitHub Pages deploys.
+ChunYuan Hsu's Jekyll portfolio. The repository builds and tests the same static `_site` artifact that GitHub Pages deploys.
 
 ## Setup and commands
 

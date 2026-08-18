@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Rebuild Chun-Yuan Hsu's Jekyll portfolio as a warm, recruiter-first, data-driven site that foregrounds TSMC and QNAP, features three CV projects, preserves all existing work, and remains easy to maintain.
+**Goal:** Rebuild ChunYuan Hsu's Jekyll portfolio as a warm, recruiter-first, data-driven site that foregrounds TSMC and QNAP, features three CV projects, preserves all existing work, and remains easy to maintain.
 
 **Architecture:** Keep Jekyll and the existing public URLs. Store resume-like content in `_data/portfolio.yml`, render it through small Liquid section includes, keep personal narrative in Markdown, and split presentation into focused Sass modules. Test the data contract, rendered structure, content ordering, and internal links with Ruby's bundled `test-unit`, then verify responsive output with headless Chrome screenshots.
 
@@ -218,7 +218,7 @@ Create `_data/portfolio.yml`:
 
 ```yaml
 identity:
-  name: Chun-Yuan Hsu
+  name: ChunYuan Hsu
   native_name: 許峻源
   label: Engineer + Researcher
   headline: Building reliable intelligence from complex systems.
@@ -228,7 +228,7 @@ identity:
     systems across production and research environments.
   portrait:
     src: /assets/images/2473.jpg
-    alt: Portrait of Chun-Yuan Hsu
+    alt: Portrait of ChunYuan Hsu
 
 contact:
   email: chyhsu@umich.edu
@@ -589,11 +589,11 @@ Expected: failures for the missing skip link, primary-navigation label, and `#ma
 Replace `_config.yml` with:
 
 ```yaml
-title: Chun-Yuan Hsu | Portfolio
-author: Chun-Yuan Hsu
+title: ChunYuan Hsu | Portfolio
+author: ChunYuan Hsu
 email: chyhsu@umich.edu
 description: >-
-  Chun-Yuan Hsu builds AI agents, backend infrastructure, and applied machine
+  ChunYuan Hsu builds AI agents, backend infrastructure, and applied machine
   learning systems across production and research environments.
 lang: en
 baseurl: ""
@@ -632,7 +632,7 @@ Create `_includes/site-header.html`:
 ```html
 <header class="site-header">
   <div class="site-shell site-header__inner">
-    <a class="site-brand" href="{{ '/' | relative_url }}" aria-label="Chun-Yuan Hsu, home">
+    <a class="site-brand" href="{{ '/' | relative_url }}" aria-label="ChunYuan Hsu, home">
       <span aria-hidden="true">CHY</span><span class="site-brand__divider" aria-hidden="true">/</span>Portfolio
     </a>
     <nav class="site-nav" aria-label="Primary navigation">
@@ -993,7 +993,7 @@ Replace `index.md` with:
 ```liquid
 ---
 layout: default
-title: Chun-Yuan Hsu
+title: ChunYuan Hsu
 body_class: home-page
 ---
 {% include sections/hero.html %}
@@ -1674,7 +1674,7 @@ permalink: /llm/
 
 ## Personal background
 
-Originally from Tainan, Taiwan, Chun-Yuan moved from civil engineering into computer science after discovering a stronger interest in programming. Outside technical work, his interests include sports, fitness, darts, and Linux ricing.
+Originally from Tainan, Taiwan, ChunYuan moved from civil engineering into computer science after discovering a stronger interest in programming. Outside technical work, his interests include sports, fitness, darts, and Linux ricing.
 ```
 
 - [ ] **Step 4: Write the internal-link test**

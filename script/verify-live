@@ -54,7 +54,7 @@ done
 curl --location --silent --show-error --fail --max-time 25 \
   "$base_url/assets/main.css" --output "$tmp_dir/main.css"
 
-grep -Fq 'Chun-Yuan Hsu' "$homepage_file"
+grep -Fq 'ChunYuan Hsu' "$homepage_file"
 grep -Fq 'id="experience"' "$homepage_file"
 grep -Fq 'href="/projects/"' "$homepage_file"
 grep -Fq -- '--color-paper:' "$tmp_dir/main.css"

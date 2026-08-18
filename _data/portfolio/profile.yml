@@ -1,5 +1,5 @@
 identity:
-  name: Chun-Yuan Hsu
+  name: ChunYuan Hsu
   native_name: 許峻源
   positioning: AI/backend engineer working across agents, infrastructure, and applied ML.
   summary: >-
@@ -7,11 +7,11 @@ identity:
     building AI agents, backend infrastructure, and applied machine learning
     systems across production and research environments.
   seo_description: >-
-    Chun-Yuan Hsu is an AI and backend engineer working across agents,
+    ChunYuan Hsu is an AI and backend engineer working across agents,
     infrastructure, and applied machine learning.
   portrait:
     src: /assets/images/2473.jpg
-    alt: Portrait of Chun-Yuan Hsu
+    alt: Portrait of ChunYuan Hsu
 background:
   origin: Tainan, Taiwan
   transition: Civil engineering to computer science
@@ -30,7 +30,7 @@ earlier_roles:
     period: 2023–2024
     detail: Supported international students in mastering Linear Algebra concepts.
 interests:
-  - sports, especially baseball, basketball, and football
+  - watching sports, especially baseball, basketball, and football
   - going to the gym
   - playing darts
   - Linux ricing and interface customization

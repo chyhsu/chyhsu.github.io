@@ -2,7 +2,7 @@
 
 ## Goal
 
-Create a concise, repository-accurate guide that explains how this Jekyll frontend is assembled and shows Chun-Yuan exactly where to edit the content displayed in each section.
+Create a concise, repository-accurate guide that explains how this Jekyll frontend is assembled and shows ChunYuan exactly where to edit the content displayed in each section.
 
 ## Artifacts
 

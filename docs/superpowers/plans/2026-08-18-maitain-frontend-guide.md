@@ -166,7 +166,7 @@ identity:
     A concise verified summary written as one folded YAML paragraph.
   portrait:
     src: /assets/images/example-portrait.jpg
-    alt: Portrait of Chun-Yuan Hsu
+    alt: Portrait of ChunYuan Hsu
 background:
   origin: Tainan, Taiwan
   transition: Civil engineering to computer science
@@ -342,7 +342,7 @@ Create posts under `_posts/` with the exact `YYYY-MM-DD-title.md` naming pattern
 layout: post
 title: Example Post Title
 date: 2027-01-15
-author: Chun-Yuan Hsu
+author: ChunYuan Hsu
 ---
 
 Opening paragraph used by the post excerpt.

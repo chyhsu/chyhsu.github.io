@@ -69,7 +69,7 @@ class SiteRenderTest < Test::Unit::TestCase
 
   def test_homepage_has_one_h1_and_approved_section_order
     doc = document("index.html")
-    assert_equal(["Chun-Yuan Hsu"], doc.css("h1").map { |node| node.text.strip })
+    assert_equal(["ChunYuan Hsu"], doc.css("h1").map { |node| node.text.strip })
     ids = %w[intro experience selected-work more-work profile writing contact]
     source = rendered("index.html")
     positions = ids.map do |id|

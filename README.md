@@ -1,6 +1,6 @@
 # chyhsu.com
 
-Chun-Yuan Hsu's Jekyll portfolio. The repository builds and tests the same static `_site` artifact that GitHub Pages deploys.
+ChunYuan Hsu's Jekyll portfolio. The repository builds and tests the same static `_site` artifact that GitHub Pages deploys.
 
 ## Setup and commands
 
