@@ -1,0 +1,36 @@
+<section class="section site-shell" id="selected-work" aria-labelledby="selected-work-title">
+  <header class="section-heading">
+    <p class="eyebrow">02 / Selected work</p>
+    <h2 id="selected-work-title">Systems that connect research to implementation.</h2>
+  </header>
+  <div class="featured-grid">
+    {% for project in site.data.portfolio.featured_projects %}
+      <article class="featured-card featured-card--{{ project.id }}">
+        <p class="featured-card__index">0{{ forloop.index }}</p>
+        <p class="featured-card__kicker">{{ project.kicker }}</p>
+        <h3>{{ project.title }}</h3>
+        <p>{{ project.summary }}</p>
+        <ul class="evidence-list">
+          {% for highlight in project.highlights %}<li>{{ highlight }}</li>{% endfor %}
+        </ul>
+        {% if project.metrics and project.metrics != empty %}
+          <ul class="metric-list" aria-label="Reported results">
+            {% for metric in project.metrics %}<li>{{ metric }}</li>{% endfor %}
+          </ul>
+        {% endif %}
+        <ul class="tag-list" aria-label="Technologies used for {{ project.title }}">
+          {% for technology in project.technologies %}<li>{{ technology }}</li>{% endfor %}
+        </ul>
+        {% if project.links and project.links != empty %}
+          <div class="card-links">
+            {% for link in project.links %}
+              {% assign href = link.url %}
+              {% unless link.url contains '://' %}{% assign href = link.url | relative_url %}{% endunless %}
+              <a href="{{ href }}">{{ link.label }}</a>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </article>
+    {% endfor %}
+  </div>
+</section>

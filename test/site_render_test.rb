@@ -25,4 +25,42 @@ class SiteRenderTest < Test::Unit::TestCase
     assert_not_include(html, "background-image")
     assert_not_include(html, "dark-mode-toggle")
   end
+
+  def test_homepage_section_order
+    html = rendered("index.html")
+    ids = %w[intro work selected-work toolkit more-projects education writing]
+    positions = ids.map do |id|
+      position = html.index("id=\"#{id}\"")
+      assert_not_nil(position, "Missing homepage section ##{id}")
+      position
+    end
+    assert_equal(positions.sort, positions)
+  end
+
+  def test_homepage_leads_with_approved_experience_and_projects
+    html = rendered("index.html")
+    assert_operator(html.index("TSMC"), :<, html.index("QNAP"))
+    assert_operator(html.index(">Lilac<"), :<, html.index("Brain Age Prediction"))
+    assert_operator(html.index("Brain Age Prediction"), :<, html.index(">VizThinker<"))
+    assert_include(html, "May 2026 – Present")
+    assert_include(html, "50%")
+    assert_include(html, "30%")
+    assert_include(html, "0.873 diagnostic accuracy")
+  end
+
+  def test_homepage_preserves_the_project_archive
+    html = rendered("index.html")
+    portfolio_data.fetch("project_archive").each do |project|
+      assert_include(html, project.fetch("title"))
+    end
+  end
+
+  def test_about_is_the_first_hero_action
+    html = rendered("index.html")
+    about = html.index(">About me<")
+    cv = html.index(">Download CV<")
+    assert_not_nil(about)
+    assert_not_nil(cv)
+    assert_operator(about, :<, cv)
+  end
 end

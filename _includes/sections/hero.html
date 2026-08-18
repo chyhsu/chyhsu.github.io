@@ -1,0 +1,22 @@
+{% assign profile = site.data.portfolio %}
+<section class="hero site-shell" id="intro" aria-labelledby="hero-title">
+  <div class="hero__copy">
+    <p class="eyebrow">{{ profile.identity.label }}</p>
+    <h1 id="hero-title">{{ profile.identity.headline }}</h1>
+    <p class="hero__name">{{ profile.identity.name }}</p>
+    <p class="hero__summary">{{ profile.identity.summary }}</p>
+    <div class="hero__actions" aria-label="Primary actions">
+      <a class="button button--primary" href="{{ '/about/' | relative_url }}">About me</a>
+      <a class="button button--secondary" href="{{ profile.contact.cv | relative_url }}">Download CV</a>
+    </div>
+    <div class="hero__links" aria-label="Profile links">
+      <a href="mailto:{{ profile.contact.email }}">Email</a>
+      <a href="{{ profile.contact.github }}" rel="me noopener">GitHub</a>
+      <a href="{{ profile.contact.linkedin }}" rel="me noopener">LinkedIn</a>
+    </div>
+  </div>
+  <img class="hero__portrait"
+       src="{{ profile.identity.portrait.src | relative_url }}"
+       alt="{{ profile.identity.portrait.alt }}"
+       width="120" height="120">
+</section>
