@@ -50,6 +50,30 @@ class ToolchainContractTest < Test::Unit::TestCase
     assert_equal(3, workflow.scan(deployment_guard).length)
   end
 
+  def test_workflow_runs_network_and_browser_release_gates_before_upload
+    workflow = ROOT.join(".github/workflows/jekyll-gh-pages.yml").read
+    setup_node = workflow.index("uses: actions/setup-node@v4")
+    ci = workflow.index("run: ./script/ci")
+    npm_ci = workflow.index("run: npm ci")
+    playwright = workflow.index("run: npx playwright install --with-deps chromium")
+    external_links = workflow.index("./script/check-external-links")
+    browser = workflow.index("npm run release:browser -- http://127.0.0.1:4173 /tmp/chyhsu-release")
+    upload = workflow.index("uses: actions/upload-pages-artifact@v3")
+
+    [setup_node, ci, npm_ci, playwright, external_links, browser, upload].each do |position|
+      assert_not_nil(position)
+    end
+    assert_operator(setup_node, :<, ci)
+    assert_operator(ci, :<, npm_ci)
+    assert_operator(npm_ci, :<, playwright)
+    assert_operator(playwright, :<, external_links)
+    assert_operator(external_links, :<, browser)
+    assert_operator(browser, :<, upload)
+    assert_include(workflow, "node-version-file: .node-version")
+    assert_include(workflow, 'test "$(npm --version)" = "10.9.2"')
+    assert_include(workflow, "bundle exec ruby -run -e httpd _site -p 4173")
+  end
+
   def test_production_stylesheet_is_compiled_css
     css_path = SITE_DIR.join("assets/main.css")
     assert_path_exist(css_path)

@@ -89,6 +89,19 @@ class SiteRenderTest < Test::Unit::TestCase
     )
   end
 
+  def test_homepage_intro_includes_verified_non_cv_personal_context
+    doc = document("index.html")
+    personal = doc.at_css("#intro .hero__personal")
+    assert_not_nil(personal)
+    text = personal.text.gsub(/\s+/, " ").strip
+    assert_include(text, "Tainan, Taiwan")
+    assert_include(text, "civil engineering to computer science")
+    assert_include(text, "sports")
+    assert_include(text, "gym")
+    assert_include(text, "darts")
+    assert_include(text, "Linux")
+  end
+
   def test_homepage_is_compact_without_archive_card_wall
     doc = document("index.html")
     assert_equal(8, doc.css("#more-work .more-work__link").length)

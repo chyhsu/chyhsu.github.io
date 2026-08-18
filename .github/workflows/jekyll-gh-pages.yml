@@ -29,12 +29,45 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
 
+      - name: Set up locked Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+
       - name: Configure GitHub Pages
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         uses: actions/configure-pages@v5
 
       - name: Build and test production artifact
         run: ./script/ci
+
+      - name: Check locked npm version
+        run: test "$(npm --version)" = "10.9.2"
+
+      - name: Install locked browser audit dependencies
+        run: npm ci
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Check rendered external links
+        run: ./script/check-external-links
+
+      - name: Run browser and accessibility release audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          server_log="$(mktemp)"
+          bundle exec ruby -run -e httpd _site -p 4173 >"$server_log" 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true; rm -f "$server_log"' EXIT
+          for attempt in {1..20}; do
+            curl --silent --fail http://127.0.0.1:4173/ >/dev/null && break
+            sleep 0.25
+          done
+          curl --silent --fail http://127.0.0.1:4173/ >/dev/null
+          npm run release:browser -- http://127.0.0.1:4173 /tmp/chyhsu-release
 
       - name: Upload tested artifact
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'

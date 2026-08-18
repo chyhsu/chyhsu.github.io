@@ -5,6 +5,7 @@
     <h1 id="hero-title">{{ profile.identity.name }}</h1>
     <p class="hero__positioning">{{ profile.identity.positioning }}</p>
     <p class="hero__summary">{{ profile.identity.summary }}</p>
+    <p class="hero__personal">Originally from {{ profile.background.origin }}, I took an unconventional route into software: {{ profile.background.transition | downcase }}. Away from work, I enjoy {{ profile.interests | join: "; " }}.</p>
     <div class="hero__actions" aria-label="Primary actions">
       <a class="button button--primary" href="{{ '/about/' | relative_url }}">About Me</a>
       <a class="button button--secondary" href="{{ profile.contact.cv | relative_url }}">Download CV</a>
