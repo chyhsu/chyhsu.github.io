@@ -63,4 +63,18 @@ class SiteRenderTest < Test::Unit::TestCase
     assert_not_nil(cv)
     assert_operator(about, :<, cv)
   end
+
+  def test_about_photo_is_baseurl_safe_and_performance_annotated
+    html = rendered("about/index.html")
+    assert_match(
+      /<img src="\/assets\/images\/20200711_190244-web\.jpg" alt="Sunset over a seawall and rocky shoreline" class="about-photo" width="1600" height="1200" loading="lazy" decoding="async"\s*\/?>/,
+      html
+    )
+  end
+
+  def test_homepage_has_a_nonredundant_recruiter_facing_title
+    html = rendered("index.html")
+    assert_include(html, "<title>AI &amp; Backend Engineer | Chun-Yuan Hsu Portfolio</title>")
+    assert_not_include(html, "Chun-Yuan Hsu | Chun-Yuan Hsu")
+  end
 end

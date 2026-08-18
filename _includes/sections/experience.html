@@ -13,12 +13,16 @@
         <h3>{{ role.title }}</h3>
         <p class="experience-card__location">{{ role.location }}</p>
         <p class="experience-card__summary">{{ role.summary }}</p>
-        <ul class="evidence-list">
-          {% for highlight in role.highlights %}<li>{{ highlight }}</li>{% endfor %}
-        </ul>
-        <ul class="tag-list" aria-label="Technologies used at {{ role.organization }}">
-          {% for technology in role.technologies %}<li>{{ technology }}</li>{% endfor %}
-        </ul>
+        {% if role.highlights and role.highlights != empty %}
+          <ul class="evidence-list">
+            {% for highlight in role.highlights %}<li>{{ highlight }}</li>{% endfor %}
+          </ul>
+        {% endif %}
+        {% if role.technologies and role.technologies != empty %}
+          <ul class="tag-list" aria-label="Technologies used at {{ role.organization }}">
+            {% for technology in role.technologies %}<li>{{ technology }}</li>{% endfor %}
+          </ul>
+        {% endif %}
       </article>
     {% endfor %}
   </div>

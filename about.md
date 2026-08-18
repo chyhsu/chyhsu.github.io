@@ -14,7 +14,7 @@ Today, I am studying Data Science at the University of Michigan. My work sits wh
 
 I still think like someone who changed fields. I enjoy learning a system from first principles, tracing how its pieces interact, and turning that understanding into something practical and dependable.
 
-![Sunset over a rocky coastline](/assets/images/20200711_190244.jpg){:.about-photo}
+<img src="{{ '/assets/images/20200711_190244-web.jpg' | relative_url }}" alt="Sunset over a seawall and rocky shoreline" class="about-photo" width="1600" height="1200" loading="lazy" decoding="async">
 
 ## Earlier roles
 
@@ -38,7 +38,7 @@ Supported international students in mastering Linear Algebra concepts.
 - [MongoDB Schema Design Patterns and Antipatterns skill badge](https://www.credly.com/badges/5e55ce18-2865-4918-b71a-5acad5de0a0c/public_url)
 - [Building RAG Apps Using MongoDB skill badge](https://www.credly.com/badges/11e30c84-8bc9-4378-bfaf-e28690606fae/public_url)
 - [From Relational Model to MongoDB Document Model skill badge](https://www.credly.com/badges/ab704694-5e2e-4dfd-bcdd-caa4f5c2c192/public_url)
-- [QNAP Internship Certificate](/assets/pdf/QNAP_certificate.pdf)
-- [QNAP Internship Results Presentation](/assets/pdf/Internship%20Results%20Presentation-%20QNAP.pdf)
-- [Transcript — National Tsing Hua University](/assets/pdf/NTHU_transcript.pdf)
-- [Transcript — National Cheng Kung University](/assets/pdf/NCKU_transcript.pdf)
+- [QNAP Internship Certificate]({{ '/assets/pdf/QNAP_certificate.pdf' | relative_url }})
+- [QNAP Internship Results Presentation]({{ '/assets/pdf/Internship%20Results%20Presentation-%20QNAP.pdf' | relative_url }})
+- [Transcript — National Tsing Hua University]({{ '/assets/pdf/NTHU_transcript.pdf' | relative_url }})
+- [Transcript — National Cheng Kung University]({{ '/assets/pdf/NCKU_transcript.pdf' | relative_url }})

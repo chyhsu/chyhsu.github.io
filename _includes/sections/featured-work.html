@@ -10,17 +10,21 @@
         <p class="featured-card__kicker">{{ project.kicker }}</p>
         <h3>{{ project.title }}</h3>
         <p>{{ project.summary }}</p>
-        <ul class="evidence-list">
-          {% for highlight in project.highlights %}<li>{{ highlight }}</li>{% endfor %}
-        </ul>
+        {% if project.highlights and project.highlights != empty %}
+          <ul class="evidence-list">
+            {% for highlight in project.highlights %}<li>{{ highlight }}</li>{% endfor %}
+          </ul>
+        {% endif %}
         {% if project.metrics and project.metrics != empty %}
           <ul class="metric-list" aria-label="Reported results">
             {% for metric in project.metrics %}<li>{{ metric }}</li>{% endfor %}
           </ul>
         {% endif %}
-        <ul class="tag-list" aria-label="Technologies used for {{ project.title }}">
-          {% for technology in project.technologies %}<li>{{ technology }}</li>{% endfor %}
-        </ul>
+        {% if project.technologies and project.technologies != empty %}
+          <ul class="tag-list" aria-label="Technologies used for {{ project.title }}">
+            {% for technology in project.technologies %}<li>{{ technology }}</li>{% endfor %}
+          </ul>
+        {% endif %}
         {% if project.links and project.links != empty %}
           <div class="card-links">
             {% for link in project.links %}

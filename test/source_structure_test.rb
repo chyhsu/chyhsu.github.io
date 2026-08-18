@@ -46,4 +46,23 @@ class SourceStructureTest < Test::Unit::TestCase
       components
     )
   end
+
+  def test_about_internal_assets_use_relative_url
+    about = ROOT.join("about.md").read
+
+    assert_include(about, "{{ '/assets/images/20200711_190244-web.jpg' | relative_url }}")
+    assert_equal(5, about.scan("| relative_url").length)
+  end
+
+  def test_optional_portfolio_collections_are_guarded_before_emitting_lists
+    experience = ROOT.join("_includes/sections/experience.html").read
+    featured = ROOT.join("_includes/sections/featured-work.html").read
+    archive = ROOT.join("_includes/sections/project-archive.html").read
+
+    [experience, featured].each do |template|
+      assert_match(/\{% if (?:role|project)\.highlights and (?:role|project)\.highlights != empty %\}/, template)
+      assert_match(/\{% if (?:role|project)\.technologies and (?:role|project)\.technologies != empty %\}/, template)
+    end
+    assert_match(/\{% if project\.technologies and project\.technologies != empty %\}/, archive)
+  end
 end
