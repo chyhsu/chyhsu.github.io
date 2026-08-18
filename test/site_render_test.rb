@@ -6,75 +6,59 @@ class SiteRenderTest < Test::Unit::TestCase
   include PortfolioTestSupport
 
   def setup
-    build_site!
+    assert_built_site!
   end
 
-  def test_standard_page_has_semantic_shell
-    html = rendered("about/index.html")
-    assert_include(html, '<a class="skip-link" href="#main-content">Skip to content</a>')
-    assert_include(html, '<nav class="site-nav" aria-label="Primary navigation">')
-    assert_include(html, '<main id="main-content"')
-    assert_include(html, 'href="/about/"')
-    assert_include(html, 'href="/blog/"')
-    assert_include(html, 'href="/assets/pdf/CV.pdf"')
+  def test_every_page_uses_the_semantic_shell
+    doc = document("about/index.html")
+    assert_equal(1, doc.css("a.skip-link[href='#main-content']").length)
+    assert_equal(1, doc.css("header.site-header").length)
+    assert_equal(1, doc.css("nav[aria-label='Primary navigation']").length)
+    assert_equal(1, doc.css("main#main-content").length)
+    assert_equal(1, doc.css("footer.site-footer").length)
   end
 
-  def test_standard_page_has_no_theme_script_or_background_layer
-    html = rendered("about/index.html")
-    assert_not_include(html, "custom.js")
-    assert_not_include(html, "background-image")
-    assert_not_include(html, "dark-mode-toggle")
+  def test_navigation_exposes_the_approved_routes
+    doc = document("about/index.html")
+    links = doc.css(".site-nav a").to_h { |link| [link.text.strip, link["href"]] }
+    assert_equal("/#experience", links.fetch("Experience"))
+    assert_equal("/projects/", links.fetch("Projects"))
+    assert_equal("/about/", links.fetch("About"))
+    assert_equal("/blog/", links.fetch("Blog"))
+    assert_equal("/assets/pdf/CV.pdf", links.fetch("CV"))
+    assert_equal("page", doc.at_css(".site-nav a[href='/about/']")["aria-current"])
+    assert_equal("/llm/", doc.at_css(".site-footer a[href='/llm/']")["href"])
   end
 
-  def test_homepage_section_order
-    html = rendered("index.html")
-    ids = %w[intro work selected-work toolkit more-projects education writing]
-    positions = ids.map do |id|
-      position = html.index("id=\"#{id}\"")
-      assert_not_nil(position, "Missing homepage section ##{id}")
-      position
-    end
-    assert_equal(positions.sort, positions)
-  end
-
-  def test_homepage_leads_with_approved_experience_and_projects
-    html = rendered("index.html")
-    assert_operator(html.index("TSMC"), :<, html.index("QNAP"))
-    assert_operator(html.index(">Lilac<"), :<, html.index("Brain Age Prediction"))
-    assert_operator(html.index("Brain Age Prediction"), :<, html.index(">VizThinker<"))
-    assert_include(html, "May 2026 – Present")
-    assert_include(html, "50%")
-    assert_include(html, "30%")
-    assert_include(html, "0.873 diagnostic accuracy")
-  end
-
-  def test_homepage_preserves_the_project_archive
-    html = rendered("index.html")
-    portfolio_data.fetch("project_archive").each do |project|
-      assert_include(html, project.fetch("title"))
+  def test_projects_page_has_ordered_featured_evidence
+    doc = document("projects/index.html")
+    rows = doc.css(".evidence-row")
+    assert_equal(%w[lilac brain_age_ad vizthinker], rows.map { |row| row["data-project-id"] })
+    rows.each do |row|
+      labels = row.css("dt").map { |node| node.text.strip }
+      assert_include(labels, "Context")
+      assert_include(labels, "My contribution")
+      assert_include(labels, "Project result")
     end
   end
 
-  def test_about_is_the_first_hero_action
-    html = rendered("index.html")
-    about = html.index(">About me<")
-    cv = html.index(">Download CV<")
-    assert_not_nil(about)
-    assert_not_nil(cv)
-    assert_operator(about, :<, cv)
-  end
-
-  def test_about_photo_is_baseurl_safe_and_performance_annotated
-    html = rendered("about/index.html")
-    assert_match(
-      /<img src="\/assets\/images\/20200711_190244-web\.jpg" alt="Sunset over a seawall and rocky shoreline" class="about-photo" width="1600" height="1200" loading="lazy" decoding="async"\s*\/?>/,
-      html
+  def test_projects_page_groups_every_archive_item_once
+    doc = document("projects/index.html")
+    assert_equal(
+      ["Production / Developer Tools", "Systems / Coursework", "Research"],
+      doc.css(".project-group > h2").map { |heading| heading.text.strip }
     )
+    rows = doc.css(".project-index-row")
+    assert_equal(8, rows.length)
+    assert_equal(8, rows.map { |row| row["id"] }.uniq.length)
+    assert_include(doc.at_css("#jira_issue_search").text, "QNAP internship work")
+    assert_include(doc.at_css("#issue_search_mcp").text, "QNAP internship work")
+    assert_include(doc.at_css("#quantum_event").text, "NTHU thesis and research project")
   end
 
-  def test_homepage_has_a_nonredundant_recruiter_facing_title
-    html = rendered("index.html")
-    assert_include(html, "<title>AI &amp; Backend Engineer | Chun-Yuan Hsu Portfolio</title>")
-    assert_not_include(html, "Chun-Yuan Hsu | Chun-Yuan Hsu")
+  def test_shell_requires_no_site_javascript
+    Dir[SITE_DIR.join("**/*.html")].each do |path|
+      assert_empty(Nokogiri::HTML5(File.read(path)).css("script[src]"), path)
+    end
   end
 end

@@ -4,9 +4,10 @@
       <span aria-hidden="true">CHY</span><span class="site-brand__divider" aria-hidden="true">/</span>Portfolio
     </a>
     <nav class="site-nav" aria-label="Primary navigation">
-      <a href="{{ '/#work' | relative_url }}">Work</a>
-      <a href="{{ '/about/' | relative_url }}">About</a>
-      <a href="{{ '/blog/' | relative_url }}">Blog</a>
+      <a href="{{ '/#experience' | relative_url }}">Experience</a>
+      <a href="{{ '/projects/' | relative_url }}"{% if page.url == '/projects/' %} aria-current="page"{% endif %}>Projects</a>
+      <a href="{{ '/about/' | relative_url }}"{% if page.url == '/about/' %} aria-current="page"{% endif %}>About</a>
+      <a href="{{ '/blog/' | relative_url }}"{% if page.url == '/blog/' %} aria-current="page"{% endif %}>Blog</a>
       <a href="{{ site.data.portfolio.profile.contact.cv | relative_url }}">CV</a>
     </nav>
   </div>

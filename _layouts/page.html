@@ -1,13 +1,14 @@
 ---
 layout: default
 ---
-<article class="site-shell prose-page">
+<article class="site-shell page-frame{% if page.wide %} page-frame--wide{% endif %}">
   <header class="page-header">
     <p class="eyebrow">{{ page.eyebrow | default: site.title }}</p>
     <h1>{{ page.title | escape }}</h1>
-    {% if page.intro %}<p class="page-intro">{{ page.intro }}</p>{% endif %}
+    {% assign page_description = page.description | default: page.intro %}
+    {% if page_description %}<p class="page-intro">{{ page_description }}</p>{% endif %}
   </header>
-  <div class="prose">
+  <div class="page-content">
     {{ content }}
   </div>
 </article>

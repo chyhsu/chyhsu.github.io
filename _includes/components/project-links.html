@@ -1,0 +1,15 @@
+{% assign verified_links = include.links | where: "verified", true %}
+{% if verified_links != empty %}
+  <div class="project-links" aria-label="Links for {{ include.title }}">
+    {% for link in verified_links %}
+      {% assign href = link.url %}
+      {% assign external = false %}
+      {% if href contains '://' %}
+        {% assign external = true %}
+      {% else %}
+        {% assign href = href | relative_url %}
+      {% endif %}
+      <a href="{{ href }}"{% if external %} rel="noopener"{% endif %}>{{ link.label }}</a>
+    {% endfor %}
+  </div>
+{% endif %}

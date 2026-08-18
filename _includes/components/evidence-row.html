@@ -1,0 +1,28 @@
+{% assign project = include.project %}
+<article class="evidence-row evidence-row--{{ project.accent }}"
+         id="{{ project.id }}" data-project-id="{{ project.id }}">
+  <header class="evidence-row__header">
+    <p class="eyebrow">{% if project.accent == 'research' %}Research{% else %}Product{% endif %}</p>
+    <h3>{{ project.title }}</h3>
+  </header>
+  <dl class="evidence-row__facts">
+    <div>
+      <dt>Context</dt>
+      <dd>{{ project.context }}</dd>
+    </div>
+    <div>
+      <dt>My contribution</dt>
+      <dd><ul>{% for item in project.my_contribution %}<li>{{ item }}</li>{% endfor %}</ul></dd>
+    </div>
+    <div>
+      <dt>Project result</dt>
+      <dd>
+        <ul class="result-list">{% for item in project.project_results %}<li>{{ item }}</li>{% endfor %}</ul>
+      </dd>
+    </div>
+  </dl>
+  {% if include.show_technologies %}
+    <p class="technology-line"><span>Technologies</span> {{ project.technologies | join: " · " }}</p>
+  {% endif %}
+  {% include components/project-links.html links=project.links title=project.title %}
+</article>
