@@ -16,6 +16,7 @@
 .page-intro { color: var(--color-muted); font-size: 1.15rem; }
 .page-content { max-width: var(--prose); }
 .page-frame--wide .page-content { max-width: none; }
+.records-list a, .llm-page .page-content a { min-height: 2.75rem; min-width: 2.75rem; display: inline-flex; align-items: center; }
 .prose { max-width: var(--prose); }
 .prose h2 { margin-top: var(--space-6); }
 .prose h3 { margin-top: var(--space-5); }

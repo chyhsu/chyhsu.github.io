@@ -4,6 +4,7 @@ title: LLM-readable profile
 eyebrow: Structured profile
 description: A plain-language rendering of the verified data used by the human-facing portfolio.
 permalink: /llm/
+body_class: llm-page
 ---
 {% assign profile = site.data.portfolio.profile %}
 {% assign experience = site.data.portfolio.experience %}

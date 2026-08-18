@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+repo_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+url_file="$(mktemp)"
+trap 'rm -f "$url_file"' EXIT
+cd "$repo_dir"
+
+if [[ ! -f _site/index.html ]]; then
+  echo "Missing _site/index.html; run ./script/build before checking external links" >&2
+  exit 1
+fi
+
+bundle exec ruby -rnokogiri -ruri -e '
+  urls = Dir["_site/**/*.html"].flat_map do |path|
+    Nokogiri::HTML5(File.read(path)).css("a[href]").filter_map do |link|
+      href = link["href"]
+      uri = URI.parse(href)
+      href if %w[http https].include?(uri.scheme)
+    rescue URI::InvalidURIError
+      nil
+    end
+  end
+  puts urls.uniq.sort
+' > "$url_file"
+
+if [[ ! -s "$url_file" ]]; then
+  echo "No rendered HTTP(S) links found; refusing to pass an empty external-link check" >&2
+  exit 1
+fi
+
+failures=0
+while IFS= read -r url; do
+  response_code="$(curl --location --silent --show-error --retry 2 --max-time 25 \
+    --user-agent "chyhsu.com release verifier" --output /dev/null \
+    --write-out '%{http_code}' "$url" || true)"
+  if [[ "$response_code" =~ ^[23][0-9]{2}$ ]]; then
+    echo "OK $url (HTTP $response_code)"
+  elif [[ "$response_code" == "999" && "$url" == https://www.linkedin.com/* ]]; then
+    echo "OK $url (HTTP 999, LinkedIn anti-bot response)"
+  else
+    echo "FAIL $url (HTTP $response_code)" >&2
+    failures=$((failures + 1))
+  fi
+done < "$url_file"
+
+if (( failures > 0 )); then
+  echo "$failures external link(s) require a fix; optional project links may instead use verified: false" >&2
+  exit 1
+fi

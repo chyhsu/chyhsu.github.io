@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "json"
 require_relative "helper"
 
 class ToolchainContractTest < Test::Unit::TestCase
@@ -76,5 +77,30 @@ class ToolchainContractTest < Test::Unit::TestCase
       1,
       document("projects/index.html").css(".project-index-row--research .project-provenance").length
     )
+  end
+
+  def test_documented_release_commands_exist_and_are_executable
+    %w[bootstrap build test ci check-external-links verify-live].each do |name|
+      path = ROOT.join("script", name)
+      assert_path_exist(path)
+      assert_predicate(path, :executable?)
+    end
+    assert_path_exist(ROOT.join("script/release-browser-check.mjs"))
+    assert_equal("22.17.1\n", ROOT.join(".node-version").read)
+    assert_include(ROOT.join(".npmrc").read, "engine-strict=true")
+    package_json = ROOT.join("package.json").read
+    assert_include(package_json, '"node": "22.17.1"')
+    assert_include(package_json, '"npm": "10.9.2"')
+    lock_path = ROOT.join("package-lock.json")
+    assert_path_exist(lock_path)
+    packages = JSON.parse(lock_path.read).fetch("packages")
+    assert_equal("4.10.2", packages.fetch("node_modules/@axe-core/playwright").fetch("version"))
+    assert_equal("4.10.3", packages.fetch("node_modules/axe-core").fetch("version"))
+    assert_equal("1.55.0", packages.fetch("node_modules/playwright").fetch("version"))
+    assert_equal("1.55.0", packages.fetch("node_modules/playwright-core").fetch("version"))
+    readme = ROOT.join("README.md").read
+    %w[./script/bootstrap ./script/build ./script/test ./script/ci ./script/verify-live].each do |command|
+      assert_include(readme, command)
+    end
   end
 end

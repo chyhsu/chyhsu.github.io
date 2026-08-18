@@ -1,0 +1,33 @@
+posts:
+  _posts/2025-07-02-welcome-to-myblog.md: 7fe89b1a5779dca49f9d4456adc45b7d116a314358c6cdcac238394c456bfd22
+  _posts/2025-07-04-new-project.md: 455664c51bb657dab3bb06aa3fa7b3423cbc08b7fcf3af4644ace848437fb5f5
+  _posts/2025-07-11-mongodb-devday.md: 3ba29b0517807cae1caa0ecdca30ff6784074ad017658b472121f87c254729a4
+  _posts/2025-07-15-the-last-day.md: 39abdee8d133b2eb55591a5a506bee9ddc6f7f40e8844b513b81fbef61cbffe4
+  _posts/2025-07-23-Vizthinker.md: 07111580df09b6bf4158dfd165e1c99a75f2fc3adcc6566009cf5e835d611d39
+  _posts/2025-08-01-Launch.md: 128ad742319f7fa66f71985b701912c0a06dc982eaa46bffdc9883d1ad85c65b
+  _posts/2025-09-07-Umich.md: 9fc7a9e1cab1cee97b084cac38f882ade9a0401e63427c5f1e87a41e613f49b2
+  _posts/2025-11-26-Fall-end.md: 12f59972911760aa941566aff4e7384dceca383007474fe5a53ed20262764266
+  _posts/2025-12-31-cse599-report.md: 10473e3bdf0b5c9a28dddb25965a3c5b73238fc3f5f4cd12b2f999afcadb116e
+  _posts/2026-05-25-Machine Learning Project.md: cfd2b6d723bcb9679243d704b460b3911d361eda44c816d07aeeadcef5b92f69
+artifacts:
+  assets/pdf/CV.pdf: bb42d80f8ed52197d50b57a227af902194adb1de98aae07f7ed107698b853032
+  "assets/pdf/Internship Results Presentation- QNAP.pdf": f704322053d8728c1a5b65f29a895868f55954e70cd35d25a70fa47ac4dfb879
+  assets/pdf/NCKU_transcript.pdf: 21ed4c87a3800f16af6eafef8d2c8862f84e81f3dce338fb414f180349d2dc6d
+  assets/pdf/NTHU_transcript.pdf: a6e363ed900d9dc00878b344f9c1d480c392afa1a771112a68afdd81b22892c6
+  assets/pdf/QNAP_certificate.pdf: 8f517d0533ba27a46a8d8f9739f5df7efc985dc4b2cbf31ee1ea1b08ee893821
+  assets/pdf/arXiv_quantum_random_measurement_simulation_result.pdf: 5bf27a6b1491e2768d3018d8f2f113f5224b7c52d078aff322fda3211bbd007a
+  assets/pdf/cse599_report.pdf: 5ca133fd8133fdbc54a841bf740a787d16def834d93e89ce07c7f5333215ab20
+  assets/pdf/final_report.pdf: 7bd377204db332023d23a55976b2610b2b2b6931bc7b6f4cd87cc9b742b0b5bb
+  assets/images/2473.jpg: 10af359167c78c47f6a63937a6180c790f4ef300083bdf5d460105e9780646db
+  assets/images/20200711_190244-web.jpg: e1d61b5d064071b43b34624f96a6f87ac54703c4fe5b523e152d1ee10734e0c5
+  assets/images/8cFGSnjk.jpg: c9737574f446f8b2df15a6ab3d1f45870bee06bb4417306b0090ce3202ca78a4
+  assets/images/IMG_5033.JPG: 16f4e2347a9924fcc6d324ec09b96e6107c0df788b25cb02f5f5a6ea89d2b735
+  assets/images/IMG_5239.png: 7811e3f0e28b5f9825868d5f7a32d4f02b2ff86388d32aefd472956091b03cb9
+  assets/images/IMG_5240.png: 5d1f80c79aaf00c2a113cd8f50d8e1c3d7f08cda5c09860a383f754c4081d532
+  assets/images/Icon.jpg: 1ed8b4580e0aa7b6761c0105b192a37f9b851653c4158c464eda2ffb8b071183
+  assets/images/building-rag-apps-using-mongodb.png: e365254ff9066e453e94af14bc91ae734d89d86dc073975a20ddef7d4990075b
+  assets/images/from-relational-model-sql-to-mongodb-s-document-mod.png: ffb9806bb26238b47d02b75c9d9f619d37f8598556e8fec04586f000eb78af7e
+  assets/images/kHz6cSRG.jpg: 090011da8296bd533de609084f532b1892eccdd8eb152ec0f0b4736f6617bbb7
+  assets/images/mongodb-schema-design-patterns-and-antipatterns-ski.png: 224bedc6c92aa2e05857f7857ba2aab9ceb045d562e29bcfe99821a8193f2a7a
+  assets/images/y1gu5HBT.jpg: 18534980d71a922ede287a08a48cba8b48312461fd9a40b25af05bc6e6fbc013
+  CNAME: 803eaa65d5f89c4981f2850c95bd19c831ce70c62550abba5ab5d3d3e82a2e31

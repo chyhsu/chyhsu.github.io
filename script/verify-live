@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [[ $# -ne 1 || "$1" != https://* ]]; then
+  echo "Usage: script/verify-live https://chyhsu.com" >&2
+  exit 2
+fi
+
+base_url="${1%/}"
+tmp_dir="$(mktemp -d)"
+trap 'rm -rf "$tmp_dir"' EXIT
+
+html_routes=(
+  / /projects/ /about/ /blog/ /llm/
+  /2025/07/02/welcome-to-myblog.html /2025/07/04/new-project.html
+  /2025/07/11/mongodb-devday.html /2025/07/15/the-last-day.html
+  /2025/07/23/Vizthinker.html /2025/08/01/Launch.html
+  /2025/09/07/Umich.html /2025/11/26/Fall-end.html
+  /2025/12/31/cse599-report.html /2026/05/25/Machine-Learning-Project.html
+)
+
+public_artifact_routes=(
+  /feed.xml /sitemap.xml
+  /assets/images/2473.jpg /assets/images/20200711_190244-web.jpg
+  /assets/pdf/CV.pdf /assets/pdf/QNAP_certificate.pdf
+  /assets/pdf/NCKU_transcript.pdf /assets/pdf/NTHU_transcript.pdf
+  /assets/pdf/arXiv_quantum_random_measurement_simulation_result.pdf
+  /assets/pdf/cse599_report.pdf /assets/pdf/final_report.pdf
+  /assets/pdf/Internship%20Results%20Presentation-%20QNAP.pdf
+)
+
+homepage_file=""
+route_index=0
+for route in "${html_routes[@]}"; do
+  html_file="$tmp_dir/route-$route_index.html"
+  curl --location --silent --show-error --fail --max-time 25 \
+    --output "$html_file" "$base_url$route"
+  expected_canonical="$base_url$route"
+  grep -Fq "<link rel=\"canonical\" href=\"$expected_canonical\"" "$html_file"
+  grep -Fq 'href="/assets/main.css"' "$html_file"
+  if [[ "$route" == "/" ]]; then
+    homepage_file="$html_file"
+  fi
+  echo "OK $route"
+  route_index=$((route_index + 1))
+done
+
+for route in "${public_artifact_routes[@]}"; do
+  curl --location --silent --show-error --fail --max-time 25 \
+    --output /dev/null "$base_url$route"
+  echo "OK $route"
+done
+
+curl --location --silent --show-error --fail --max-time 25 \
+  "$base_url/assets/main.css" --output "$tmp_dir/main.css"
+
+grep -Fq 'Chun-Yuan Hsu' "$homepage_file"
+grep -Fq 'id="experience"' "$homepage_file"
+grep -Fq 'href="/projects/"' "$homepage_file"
+grep -Fq -- '--color-paper:' "$tmp_dir/main.css"
+
+css_bytes="$(wc -c < "$tmp_dir/main.css")"
+if (( css_bytes <= 8000 )); then
+  echo "Live CSS is only $css_bytes bytes" >&2
+  exit 1
+fi
+if grep -Eq '@(use|forward|import)\b' "$tmp_dir/main.css"; then
+  echo "Live CSS contains a raw Sass directive" >&2
+  exit 1
+fi
+
+echo "Live artifact verified at $base_url ($css_bytes CSS bytes)"
