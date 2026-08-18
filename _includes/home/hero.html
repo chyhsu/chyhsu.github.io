@@ -1,20 +1,22 @@
 {% assign profile = site.data.portfolio.profile %}
 <section class="hero site-shell" id="intro" aria-labelledby="hero-title">
   <div class="hero__copy">
-    <p class="eyebrow">Engineer + Researcher</p>
+    <p class="eyebrow">AI · Backend · Cloud · Systems</p>
     <h1 id="hero-title">{{ profile.identity.name }}</h1>
-    <p class="hero__name">{{ profile.identity.positioning }}</p>
+    <p class="hero__positioning">{{ profile.identity.positioning }}</p>
     <p class="hero__summary">{{ profile.identity.summary }}</p>
     <div class="hero__actions" aria-label="Primary actions">
-      <a class="button button--primary" href="{{ '/about/' | relative_url }}">About me</a>
+      <a class="button button--primary" href="{{ '/about/' | relative_url }}">About Me</a>
       <a class="button button--secondary" href="{{ profile.contact.cv | relative_url }}">Download CV</a>
     </div>
-    <div class="hero__links" aria-label="Profile links">
-      <a href="mailto:{{ profile.contact.email }}">Email</a>
+    <nav class="hero__links" aria-label="Profile links">
       <a href="{{ profile.contact.github }}" rel="me noopener">GitHub</a>
       <a href="{{ profile.contact.linkedin }}" rel="me noopener">LinkedIn</a>
-    </div>
+      <a href="mailto:{{ profile.contact.email }}">Email</a>
+    </nav>
   </div>
-  <img class="hero__portrait" src="{{ profile.identity.portrait.src | relative_url }}"
-       alt="{{ profile.identity.portrait.alt }}" width="120" height="120">
+  <figure class="hero__portrait-frame">
+    <img class="hero__portrait" src="{{ profile.identity.portrait.src | relative_url }}"
+         alt="{{ profile.identity.portrait.alt }}" width="240" height="240">
+  </figure>
 </section>

@@ -1,0 +1,34 @@
+<section class="section site-shell" id="experience" aria-labelledby="experience-title">
+  <header class="section-heading">
+    <p class="eyebrow">01 / Experience</p>
+    <h2 id="experience-title">Production evidence, in context.</h2>
+  </header>
+  <div class="experience-rail">
+    {% for role in site.data.portfolio.experience %}
+      <article class="experience-row" data-role-id="{{ role.id }}">
+        <div class="experience-row__meta">
+          <p class="experience-row__period">{{ role.period }}</p>
+          <p>{{ role.location }}</p>
+        </div>
+        <div class="experience-row__body">
+          <p class="experience-row__organization">{{ role.organization }}</p>
+          <h3>{{ role.title }}</h3>
+          <p>{{ role.summary }}</p>
+          <ul class="experience-row__primary">
+            {% for item in role.evidence %}{% if item.homepage %}<li>{{ item.text }}</li>{% endif %}{% endfor %}
+          </ul>
+          {% assign hidden_evidence = role.evidence | where: "homepage", false %}
+          {% if hidden_evidence != empty or role.secondary_evidence != empty %}
+            <details>
+              <summary>Additional verified detail</summary>
+              <ul>
+                {% for item in hidden_evidence %}<li>{{ item.text }}</li>{% endfor %}
+                {% for item in role.secondary_evidence %}<li>{{ item }}</li>{% endfor %}
+              </ul>
+            </details>
+          {% endif %}
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+</section>

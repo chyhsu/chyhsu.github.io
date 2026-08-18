@@ -61,4 +61,47 @@ class SiteRenderTest < Test::Unit::TestCase
       assert_empty(Nokogiri::HTML5(File.read(path)).css("script[src]"), path)
     end
   end
+
+  def test_homepage_has_one_h1_and_approved_section_order
+    doc = document("index.html")
+    assert_equal(["Chun-Yuan Hsu"], doc.css("h1").map { |node| node.text.strip })
+    ids = %w[intro experience selected-work more-work profile writing contact]
+    source = rendered("index.html")
+    positions = ids.map do |id|
+      position = source.index(%(id="#{id}"))
+      assert_not_nil(position, "Missing homepage section ##{id}")
+      position
+    end
+    assert_equal(positions.sort, positions)
+  end
+
+  def test_homepage_cta_role_and_project_order
+    doc = document("index.html")
+    actions = doc.css(".hero__actions a").map { |link| link.text.strip }
+    assert_equal(["About Me", "Download CV"], actions)
+    assert_equal(%w[tsmc qnap], doc.css(".experience-row").map { |row| row["data-role-id"] })
+    doc.css(".experience-row").each do |row|
+      assert_operator(row.css(".experience-row__primary li").length, :<=, 2)
+    end
+    assert_equal(
+      %w[lilac brain_age_ad vizthinker],
+      doc.css("#selected-work .evidence-row").map { |row| row["data-project-id"] }
+    )
+  end
+
+  def test_homepage_is_compact_without_archive_card_wall
+    doc = document("index.html")
+    assert_equal(8, doc.css("#more-work .more-work__link").length)
+    assert_equal(2, doc.css("#writing .post-row").length)
+    assert_empty(doc.css(".experience-card, .featured-card, .archive-card, .post-card"))
+    assert_equal("mailto:chyhsu@umich.edu", doc.at_css("#contact a")["href"])
+  end
+
+  def test_homepage_exposes_attribution_and_secondary_experience
+    doc = document("index.html")
+    assert_operator(doc.css("#selected-work dt").count { |node| node.text.strip == "My contribution" }, :==, 3)
+    assert_operator(doc.css("#selected-work dt").count { |node| node.text.strip == "Project result" }, :==, 3)
+    assert_include(doc.at_css(".experience-row[data-role-id='qnap'] details").text, "MCP-based Jira search server")
+    assert_include(doc.at_css(".experience-row[data-role-id='qnap'] details").text, "Konnyaku")
+  end
 end

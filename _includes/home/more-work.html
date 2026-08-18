@@ -1,0 +1,18 @@
+<section class="section site-shell more-work" id="more-work" aria-labelledby="more-work-title">
+  <header class="section-heading section-heading--split">
+    <div>
+      <p class="eyebrow">03 / More work</p>
+      <h2 id="more-work-title">The complete engineering archive.</h2>
+    </div>
+    <a href="{{ '/projects/' | relative_url }}">Open Projects</a>
+  </header>
+  <ol class="more-work__list">
+    {% for project in site.data.portfolio.projects.archive %}
+      <li>
+        <a class="more-work__link" href="{{ '/projects/#' | append: project.id | relative_url }}">
+          <span>{{ project.title }}</span><span aria-hidden="true">↗</span>
+        </a>
+      </li>
+    {% endfor %}
+  </ol>
+</section>

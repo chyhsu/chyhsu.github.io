@@ -1,0 +1,10 @@
+{% assign post = include.post %}
+<article class="post-row">
+  <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%b %-d, %Y" }}</time>
+  {% if include.heading_level == 3 %}
+    <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+  {% else %}
+    <h2><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
+  {% endif %}
+  <p>{{ post.excerpt | strip_html | truncatewords: 22 }}</p>
+</article>
