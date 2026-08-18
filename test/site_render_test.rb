@@ -56,8 +56,13 @@ class SiteRenderTest < Test::Unit::TestCase
     assert_include(doc.at_css("#quantum_event").text, "NTHU thesis and research project")
   end
 
-  def test_shell_requires_no_site_javascript
+  def test_only_homepage_loads_the_approved_site_javascript
+    homepage_scripts = document("index.html").css("script[src]").map { |script| script["src"] }
+    assert_equal(["/assets/js/tabs.js"], homepage_scripts)
+
     Dir[SITE_DIR.join("**/*.html")].each do |path|
+      next if path == SITE_DIR.join("index.html").to_s
+
       assert_empty(Nokogiri::HTML5(File.read(path)).css("script[src]"), path)
     end
   end
@@ -87,6 +92,31 @@ class SiteRenderTest < Test::Unit::TestCase
       %w[lilac brain_age_ad vizthinker],
       doc.css("#selected-work .evidence-row").map { |row| row["data-project-id"] }
     )
+  end
+
+  def test_homepage_tab_groups_preserve_canonical_order_and_fallback_content
+    doc = document("index.html")
+    groups = doc.css("[data-tabs]")
+    assert_equal(%w[experience-tabs selected-work-tabs skills-tabs], groups.map { |group| group["id"] })
+
+    expected = {
+      "experience-tabs" => ["TSMC", "QNAP"],
+      "selected-work-tabs" => ["Lilac", "Toward Interpretable Brain Age Prediction and AD Classification", "VizThinker"],
+      "skills-tabs" => ["Languages", "AI & ML", "Cloud & DevOps", "Frameworks & Systems"]
+    }
+
+    groups.each do |group|
+      buttons = group.css("[data-tab-button]")
+      panels = group.css("[data-tab-panel]")
+      assert_equal(expected.fetch(group["id"]), buttons.map { |button| button.text.strip })
+      assert_equal(buttons.map { |button| button["data-tab-target"] }, panels.map { |panel| panel["id"] })
+      assert_equal(buttons.length, buttons.map { |button| button["id"] }.uniq.length)
+      assert_empty(panels.select { |panel| panel.key?("hidden") })
+    end
+
+    assert_include(doc.at_css("#experience-panel-qnap").text, "MCP-based Jira search server")
+    assert_include(doc.at_css("#selected-work-panel-brain_age_ad").text, "0.873 diagnostic accuracy")
+    assert_include(doc.at_css("#skills-panel-ai-ml").text, "Claude Agent SDK")
   end
 
   def test_homepage_intro_includes_verified_non_cv_personal_context

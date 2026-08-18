@@ -3,9 +3,21 @@
     <p class="eyebrow">02 / Selected work</p>
     <h2 id="selected-work-title">What I contributed, and what the project demonstrated.</h2>
   </header>
-  <div class="selected-work">
-    {% for project in site.data.portfolio.projects.featured %}
-      {% include components/evidence-row.html project=project show_technologies=false %}
-    {% endfor %}
+  <div class="tab-group" id="selected-work-tabs" data-tabs data-tabs-label="Selected projects">
+    <div class="tab-list" data-tab-list>
+      {% for project in site.data.portfolio.projects.featured %}
+        <button class="tab-button" type="button" id="selected-work-tab-{{ project.id }}"
+                data-tab-button data-tab-target="selected-work-panel-{{ project.id }}">
+          {{ project.title }}
+        </button>
+      {% endfor %}
+    </div>
+    <div class="selected-work">
+      {% for project in site.data.portfolio.projects.featured %}
+        <div class="tab-panel" id="selected-work-panel-{{ project.id }}" data-tab-panel>
+          {% include components/evidence-row.html project=project show_technologies=false %}
+        </div>
+      {% endfor %}
+    </div>
   </div>
 </section>

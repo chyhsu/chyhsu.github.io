@@ -3,6 +3,8 @@ layout: default
 title: AI & Backend Engineer
 description: AI/backend engineer working across agents, infrastructure, and applied machine learning.
 body_class: home-page
+scripts:
+  - /assets/js/tabs.js
 ---
 {% include home/hero.html %}
 {% include home/experience.html %}

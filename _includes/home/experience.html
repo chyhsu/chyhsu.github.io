@@ -3,32 +3,44 @@
     <p class="eyebrow">01 / Experience</p>
     <h2 id="experience-title">Production evidence, in context.</h2>
   </header>
-  <div class="experience-rail">
-    {% for role in site.data.portfolio.experience %}
-      <article class="experience-row" data-role-id="{{ role.id }}">
-        <div class="experience-row__meta">
-          <p class="experience-row__period">{{ role.period }}</p>
-          <p>{{ role.location }}</p>
-        </div>
-        <div class="experience-row__body">
-          <p class="experience-row__organization">{{ role.organization }}</p>
-          <h3>{{ role.title }}</h3>
-          <p>{{ role.summary }}</p>
-          <ul class="experience-row__primary">
-            {% for item in role.evidence %}{% if item.homepage %}<li>{{ item.text }}</li>{% endif %}{% endfor %}
-          </ul>
-          {% assign hidden_evidence = role.evidence | where: "homepage", false %}
-          {% if hidden_evidence != empty or role.secondary_evidence != empty %}
-            <details>
-              <summary>Additional verified detail</summary>
-              <ul>
-                {% for item in hidden_evidence %}<li>{{ item.text }}</li>{% endfor %}
-                {% for item in role.secondary_evidence %}<li>{{ item }}</li>{% endfor %}
+  <div class="tab-group" id="experience-tabs" data-tabs data-tabs-label="Internship experience">
+    <div class="tab-list" data-tab-list>
+      {% for role in site.data.portfolio.experience %}
+        <button class="tab-button" type="button" id="experience-tab-{{ role.id }}"
+                data-tab-button data-tab-target="experience-panel-{{ role.id }}">
+          {{ role.organization }}
+        </button>
+      {% endfor %}
+    </div>
+    <div class="experience-rail">
+      {% for role in site.data.portfolio.experience %}
+        <div class="tab-panel" id="experience-panel-{{ role.id }}" data-tab-panel>
+          <article class="experience-row" data-role-id="{{ role.id }}">
+            <div class="experience-row__meta">
+              <p class="experience-row__period">{{ role.period }}</p>
+              <p>{{ role.location }}</p>
+            </div>
+            <div class="experience-row__body">
+              <p class="experience-row__organization">{{ role.organization }}</p>
+              <h3>{{ role.title }}</h3>
+              <p>{{ role.summary }}</p>
+              <ul class="experience-row__primary">
+                {% for item in role.evidence %}{% if item.homepage %}<li>{{ item.text }}</li>{% endif %}{% endfor %}
               </ul>
-            </details>
-          {% endif %}
+              {% assign hidden_evidence = role.evidence | where: "homepage", false %}
+              {% if hidden_evidence != empty or role.secondary_evidence != empty %}
+                <details>
+                  <summary>Additional verified detail</summary>
+                  <ul>
+                    {% for item in hidden_evidence %}<li>{{ item.text }}</li>{% endfor %}
+                    {% for item in role.secondary_evidence %}<li>{{ item }}</li>{% endfor %}
+                  </ul>
+                </details>
+              {% endif %}
+            </div>
+          </article>
         </div>
-      </article>
-    {% endfor %}
+      {% endfor %}
+    </div>
   </div>
 </section>

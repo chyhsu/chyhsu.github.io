@@ -8,5 +8,8 @@
       {{ content }}
     </main>
     {% include chrome/footer.html %}
+    {% for script in page.scripts %}
+      <script src="{{ script | relative_url }}" defer></script>
+    {% endfor %}
   </body>
 </html>

@@ -8,9 +8,21 @@
       <p><a href="{{ '/about/' | relative_url }}">Background and records</a> ·
         <a href="{{ site.data.portfolio.profile.contact.cv | relative_url }}">Full CV</a></p>
     </div>
-    <div class="profile-strip__skills" aria-label="Current toolkit">
+    <div class="tab-group profile-strip__skills" id="skills-tabs" data-tabs data-tabs-label="Current toolkit">
+      <div class="tab-list" data-tab-list>
+        {% for group in site.data.portfolio.skills %}
+          {% assign skill_id = group.name | slugify %}
+          <button class="tab-button" type="button" id="skills-tab-{{ skill_id }}"
+                  data-tab-button data-tab-target="skills-panel-{{ skill_id }}">
+            {{ group.name }}
+          </button>
+        {% endfor %}
+      </div>
       {% for group in site.data.portfolio.skills %}
-        <p><strong>{{ group.name }}</strong><br>{{ group.items | join: " · " }}</p>
+        {% assign skill_id = group.name | slugify %}
+        <div class="tab-panel" id="skills-panel-{{ skill_id }}" data-tab-panel>
+          <p><strong>{{ group.name }}</strong><br>{{ group.items | join: " · " }}</p>
+        </div>
       {% endfor %}
     </div>
   </div>
