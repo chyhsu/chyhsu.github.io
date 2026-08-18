@@ -1,53 +1,59 @@
-# Local Portfolio Maintenance Guide Design
+# Local Frontend Structure and Content Guide Design
 
 ## Goal
 
-Create a repository-accurate handbook that teaches Chun-Yuan how to update and operate the portfolio without duplicating facts, breaking attribution boundaries, or publishing an unverified build.
+Create a concise, repository-accurate guide that explains how this Jekyll frontend is assembled and shows Chun-Yuan exactly where to edit the content displayed in each section.
 
 ## Artifacts
 
-- Create `PORTFOLIO_MAINTENANCE.md` at the repository root.
-- Add `/PORTFOLIO_MAINTENANCE.md` to `.gitignore` so the handbook remains local and is never included in the generated site or pushed as repository content.
-- Keep `.gitignore` as the only runtime-repository change from the handbook implementation.
+- Create `maitain.md` at the repository root, using the filename requested by the user.
+- Add `/maitain.md` to `.gitignore` so the guide remains local and is not published with the portfolio.
+- Do not change portfolio content, templates, styling, JavaScript, data schemas, or deployment behavior.
 
-## Handbook Structure
+## Guide Structure
 
-The handbook will use progressive detail so routine edits are easy to find while uncommon maintenance remains documented:
+The guide will follow the rendered page from the outer shell into each visible section:
 
-1. A map from content type to its canonical file.
-2. A safe five-step workflow: edit, build, preview, verify, publish.
-3. Exact recipes for profile/contact details, experience, featured projects, archive projects, skills, education, records, posts, images, PDFs, and the CV.
-4. An explanation of homepage tab order, stable IDs, `homepage` evidence flags, and `verified` project links.
-5. Content-integrity rules for CV precedence, personal contribution versus team results, historical checksum protection, and site-only projects.
-6. Exact local commands for the pinned Ruby, Node, Jekyll, browser, link, and live-site checks.
-7. Troubleshooting for YAML/build failures, missing assets, broken links, browser-audit failures, and deployment status.
-8. Short checklists for ordinary content updates and releases.
+1. **Frontend architecture:** explain `_layouts`, `_includes/chrome`, `_includes/home`, `_includes/components`, `_data/portfolio`, `_sass`, `assets/js`, pages, and posts.
+2. **Homepage composition:** show that `index.md` controls section order and currently includes Hero, Experience, Selected Work, More Work, Profile, Latest Writing, and Contact.
+3. **Section-by-section content map:** for every homepage section, name its include, canonical data file, fields it reads, ordering behavior, and safe edit examples.
+4. **Shared chrome and reusable components:** explain header, footer, project links, evidence rows, and post rows, including which text is structural and which content comes from data.
+5. **Secondary pages:** map About, Projects, Blog, and LLM-readable profile to their source pages and shared canonical data.
+6. **Presentation layer:** map each Sass partial and the homepage-only tab controller, while warning that ordinary content edits should not require template, Sass, or JavaScript changes.
+7. **Preview and validation:** provide the shortest accurate commands to build, serve, test, and verify content changes.
 
-Examples will match the current schemas under `_data/portfolio/`; they will use placeholders rather than invent new accomplishments or claims.
+## Section Content Rules
 
-## Safety and Maintenance Rules
+- Hero identity, summary, portrait, personal background, interests, contacts, and CV come from `_data/portfolio/profile.yml`.
+- Experience tabs follow list order in `_data/portfolio/experience.yml`; `homepage: true` evidence is immediately visible and `homepage: false` evidence appears under additional detail.
+- Selected Work tabs follow `featured` order in `_data/portfolio/projects.yml`; `my_contribution` must remain distinct from `project_results`.
+- More Work lists every `archive` project in order and links to its stable `id` on `/projects/`.
+- Profile uses the first education item from `_data/portfolio/education.yml` and ordered groups from `_data/portfolio/skills.yml`.
+- Latest Writing automatically uses the newest two files from `_posts`; Contact uses the profile email.
+- Only project links with `verified: true` render.
+- Stable IDs should not be changed casually because tabs and fragment links depend on them.
 
-- Structured facts remain single-sourced in `_data/portfolio/`.
-- Existing public posts and protected assets are not edited casually.
-- Project links render only when their `verified` state permits it.
-- Featured-project language keeps `my_contribution` distinct from `project_results`.
-- Homepage tabs remain data-driven; maintainers edit data rather than copying cards into templates.
-- `_site`, generated screenshots, dependencies, and the local handbook are not committed.
-- Publication uses ordinary commits and pushes; force-pushing is excluded.
+## Guide Style
+
+- Start with a one-screen quick map.
+- Use tables for section-to-file mappings.
+- Use small YAML examples that match the current schema but contain neutral placeholders rather than invented claims.
+- Distinguish “edit content here” from “edit structure only when redesigning.”
+- Include warnings beside risky operations rather than in a separate generic policy chapter.
 
 ## Verification
 
 Implementation is accepted when:
 
-- `.gitignore` contains one exact root-anchored handbook path.
-- Git reports `PORTFOLIO_MAINTENANCE.md` as ignored.
+- `.gitignore` contains exactly one root-anchored `/maitain.md` entry.
+- Git reports `maitain.md` as ignored.
 - Every referenced source file and executable command exists.
-- YAML examples parse and match the current field names.
-- The handbook distinguishes local preview, full release validation, GitHub Actions, and live-site verification.
+- Every homepage section and secondary page is mapped to its real source.
+- YAML examples use the current field names and parse successfully.
 - `git diff --check` passes and the current site test suite remains green after the `.gitignore` change.
 
 ## Non-goals
 
-- Changing portfolio content, styling, templates, data schemas, or deployment behavior.
-- Publishing the handbook on the website.
-- Replacing the existing concise public `README.md`.
+- A general Git, GitHub Pages, or Jekyll tutorial.
+- A release-operations handbook unrelated to editing frontend content.
+- Publishing the guide on the website.
