@@ -35,8 +35,15 @@ module PortfolioTestSupport
     assert_built_site!
   end
 
-  # Retained through Task 2 so the old render tests keep passing during the data migration.
   def portfolio_data
-    @portfolio_data ||= yaml_file("_data/portfolio.yml")
+    @portfolio_data ||= {
+      "identity" => portfolio_file("profile").fetch("identity"),
+      "contact" => portfolio_file("profile").fetch("contact"),
+      "experience" => portfolio_file("experience"),
+      "featured_projects" => portfolio_file("projects").fetch("featured"),
+      "project_archive" => portfolio_file("projects").fetch("archive"),
+      "skill_groups" => portfolio_file("skills"),
+      "education" => portfolio_file("education")
+    }
   end
 end

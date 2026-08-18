@@ -4,36 +4,22 @@
     <h2 id="selected-work-title">Systems that connect research to implementation.</h2>
   </header>
   <div class="featured-grid">
-    {% for project in site.data.portfolio.featured_projects %}
+    {% for project in site.data.portfolio.projects.featured %}
       <article class="featured-card featured-card--{{ project.id }}">
-        <p class="featured-card__index">0{{ forloop.index }}</p>
-        <p class="featured-card__kicker">{{ project.kicker }}</p>
         <h3>{{ project.title }}</h3>
-        <p>{{ project.summary }}</p>
-        {% if project.highlights and project.highlights != empty %}
-          <ul class="evidence-list">
-            {% for highlight in project.highlights %}<li>{{ highlight }}</li>{% endfor %}
-          </ul>
-        {% endif %}
-        {% if project.metrics and project.metrics != empty %}
-          <ul class="metric-list" aria-label="Reported results">
-            {% for metric in project.metrics %}<li>{{ metric }}</li>{% endfor %}
-          </ul>
-        {% endif %}
-        {% if project.technologies and project.technologies != empty %}
-          <ul class="tag-list" aria-label="Technologies used for {{ project.title }}">
-            {% for technology in project.technologies %}<li>{{ technology }}</li>{% endfor %}
-          </ul>
-        {% endif %}
-        {% if project.links and project.links != empty %}
-          <div class="card-links">
-            {% for link in project.links %}
-              {% assign href = link.url %}
-              {% unless link.url contains '://' %}{% assign href = link.url | relative_url %}{% endunless %}
-              <a href="{{ href }}">{{ link.label }}</a>
-            {% endfor %}
-          </div>
-        {% endif %}
+        <p>{{ project.context }}</p>
+        <p><strong>My contribution</strong></p>
+        <ul class="evidence-list">{% for item in project.my_contribution %}<li>{{ item }}</li>{% endfor %}</ul>
+        <p><strong>Project result</strong></p>
+        <ul class="metric-list">{% for item in project.project_results %}<li>{{ item }}</li>{% endfor %}</ul>
+        <div class="card-links">
+          {% assign verified_links = project.links | where: "verified", true %}
+          {% for link in verified_links %}
+            {% assign href = link.url %}
+            {% unless href contains '://' %}{% assign href = href | relative_url %}{% endunless %}
+            <a href="{{ href }}">{{ link.label }}</a>
+          {% endfor %}
+        </div>
       </article>
     {% endfor %}
   </div>

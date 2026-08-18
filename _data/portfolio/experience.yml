@@ -1,0 +1,70 @@
+- id: tsmc
+  organization: TSMC
+  title: Digital Workflow Development Department Intern
+  location: Hsinchu, Taiwan
+  period: May 2026 – Present
+  summary: >-
+    Building an AI-agent workflow for structured backend incident investigation
+    across alerts, logs, and metrics.
+  evidence:
+    - homepage: true
+      text: >-
+        Developed an AI-agent workflow with the Claude Agent SDK to automatically
+        triage backend alerts and generate structured incident-analysis reports.
+    - homepage: true
+      text: >-
+        Built integrations to ingest alerts from Alertmanager and retrieve logs
+        and metrics from Kubernetes workloads via ELK and Prometheus.
+    - homepage: false
+      text: >-
+        Designed a hypothesis-driven investigation loop that correlates alerts,
+        logs, and metrics to identify likely root causes and summarize actionable
+        findings for engineering teams.
+  secondary_evidence: []
+  technologies:
+    - Claude Agent SDK
+    - Alertmanager
+    - Kubernetes
+    - Elastic Stack (ELK)
+    - Prometheus
+
+- id: qnap
+  organization: QNAP
+  title: Backend R&D Internship
+  location: Taiwan
+  period: Jan 2025 – Jul 2025
+  summary: >-
+    Built retrieval and developer-tooling systems, improved a Go service, and
+    diagnosed production reliability problems.
+  evidence:
+    - homepage: true
+      text: >-
+        Built a retrieval-augmented Jira issue search system using AWS Bedrock
+        and ChromaDB embeddings, increasing developer issue-resolution efficiency
+        by 50%.
+    - homepage: false
+      text: >-
+        Developed an MCP-based Jira search server that integrates with IDEs,
+        enabling developers to query and explore issues directly from their
+        coding workflow.
+    - homepage: true
+      text: >-
+        Refactored Device Avatar microservices from Python to Go, achieving a 30%
+        performance gain and optimizing deployment on Kubernetes.
+    - homepage: false
+      text: >-
+        Diagnosed and patched a critical memory leak in cloud production by
+        correlating Grafana metrics with execution traces.
+  secondary_evidence:
+    - Migrated the Konnyaku service from Python 2 to Python 3 and deployed it on Kubernetes.
+    - Added token authentication and unit tests to Device Avatar.
+    - Benchmarked MongoDB and Couchbase for service storage.
+    - Investigated DDNS worker failures during RabbitMQ scaling.
+    - Investigated NATS connection failures under production scaling.
+  technologies:
+    - AWS Bedrock
+    - ChromaDB
+    - MCP
+    - Go
+    - Kubernetes
+    - Grafana

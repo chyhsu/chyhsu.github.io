@@ -1,0 +1,199 @@
+groups:
+  - id: production_developer_tools
+    label: Production / Developer Tools
+  - id: systems_coursework
+    label: Systems / Coursework
+  - id: research
+    label: Research
+
+featured:
+  - id: lilac
+    title: Lilac
+    accent: research
+    context: >-
+      A broader cross-cloud Infrastructure-as-Code lifting research system that
+      learns reusable mappings from deployed cloud state to Terraform and uses
+      LLM assistance with symbolic and Terraform-native verification.
+    my_contribution:
+      - >-
+        Built a focused graph-based lifting workflow for concrete Terraform
+        mappings, primarily on Azure, including JSON-schema and dependency cases.
+      - >-
+        Implemented Azure cloud-state collection and a GCP resolver that uses an
+        LLM to infer service-specific CLI commands, then parses and caches them by
+        asset type.
+    project_results:
+      - >-
+        The work established an implementation-oriented foundation for Lilac's
+        broader cloud-agnostic, correctness-aware lifting pipeline.
+    technologies:
+      - Terraform
+      - Python
+      - Large Language Models
+      - Symbolic Verification
+      - Azure
+      - Google Cloud
+    links:
+      - label: Read project report
+        url: /assets/pdf/cse599_report.pdf
+        verified: true
+
+  - id: brain_age_ad
+    title: Toward Interpretable Brain Age Prediction and AD Classification
+    accent: research
+    context: >-
+      A University of Michigan EECS 545 team project for brain-age regression
+      and Alzheimer's Disease classification using structural MRI from OpenBHB
+      and ADNI.
+    my_contribution:
+      - >-
+        Focused on infrastructure and data processing, including generation of
+        patch-level 3D embeddings and coordinates used by the downstream models.
+    project_results:
+      - 0.873 diagnostic accuracy
+      - 0.775 macro F1
+      - 3.54-year MAE
+      - 0.966 R²
+    technologies:
+      - PyTorch
+      - NeuroVFM
+      - 3D MRI
+      - Multiple Instance Learning
+    links:
+      - label: Read project report
+        url: /assets/pdf/final_report.pdf
+        verified: true
+
+  - id: vizthinker
+    title: VizThinker
+    accent: production
+    context: >-
+      A graph-based interface for interacting with LLMs that replaces a single
+      linear transcript with a visual conversation graph.
+    my_contribution:
+      - >-
+        Implemented branching and node-based history navigation for complex idea
+        exploration using Node.js, React, and Python.
+      - Deployed the application on Google Cloud Platform.
+    project_results:
+      - The project produced a graph interface for branching through conversation history.
+    technologies:
+      - Node.js
+      - React
+      - Python
+      - Google Cloud
+    links:
+      - label: View live project
+        url: https://viz-thinker.com
+        verified: true
+      - label: View source
+        url: https://github.com/chyhsu/vizthinker
+        verified: true
+
+archive:
+  - id: jira_issue_search
+    title: Jira Issue Search
+    group: production_developer_tools
+    provenance: QNAP internship work
+    summary: >-
+      A repository for the retrieval-augmented Jira search work, using AWS Bedrock
+      and ChromaDB; the internship outcome and metric are stated in Experience.
+    technologies: [Python, AWS Bedrock, ChromaDB]
+    links:
+      - label: View source
+        url: https://github.com/chyhsu/jira-issue-search
+        verified: true
+
+  - id: issue_search_mcp
+    title: Issue Search MCP
+    group: production_developer_tools
+    provenance: QNAP internship work
+    summary: >-
+      An MCP server that exposes natural-language Jira query, suggestion, and
+      issue-retrieval tools to coding workflows.
+    technologies: [Python, MCP]
+    links:
+      - label: View source
+        url: https://github.com/chyhsu/issue-search-mcp
+        verified: true
+
+  - id: file_translator
+    title: File Translator
+    group: production_developer_tools
+    provenance: Independent project
+    summary: >-
+      A Gemini-powered tool that translates English PDF documents into
+      Traditional Chinese while preserving layout through generated LaTeX.
+    technologies: [Python, Gemini, LaTeX]
+    links:
+      - label: View source
+        url: https://github.com/chyhsu/file_translator
+        verified: true
+
+  - id: aztec_image_comparison
+    title: AZtec Image Comparison
+    group: systems_coursework
+    provenance: Computer vision project
+    summary: >-
+      A computer-vision tool for detecting and comparing overlapping patterns
+      in crystallographic pole-figure images.
+    technologies: [Python, OpenCV, NumPy]
+    links:
+      - label: View source
+        url: https://github.com/chyhsu/AZtec-image-comparison
+        verified: true
+
+  - id: mips_cpu
+    title: MIPS CPU Architecture
+    group: systems_coursework
+    provenance: Computer architecture coursework
+    summary: >-
+      Verilog coursework covering MIPS assembly, an ALU, a single-cycle CPU,
+      and a pipelined CPU with forwarding and stalling.
+    technologies: [Verilog, MIPS]
+    links:
+      - label: View source
+        url: https://github.com/chyhsu/computer-architecture
+        verified: true
+
+  - id: os_nachos
+    title: OS Nachos
+    group: systems_coursework
+    provenance: Operating systems coursework
+    summary: >-
+      Operating-systems coursework implementing system calls,
+      multiprogramming, virtual memory, and file systems in Nachos.
+    technologies: [C++, Nachos]
+    links:
+      - label: View source
+        url: https://github.com/chyhsu/OS_Nachos
+        verified: true
+
+  - id: advanced_compiler
+    title: Advanced Compiler
+    group: systems_coursework
+    provenance: Compiler coursework
+    summary: >-
+      LLVM coursework implementing data-dependency and pointer-analysis passes
+      and studying array languages.
+    technologies: [C++, LLVM]
+    links:
+      - label: View source
+        url: https://github.com/chyhsu/advanced_compiler
+        verified: true
+
+  - id: quantum_event
+    title: Quantum Event Identification and Simulation of Quantum Event-Learning Procedures
+    group: research
+    provenance: NTHU thesis and research project
+    summary: >-
+      Python simulations comparing quantum random and blended measurements for
+      quantum event identification.
+    technologies: [Python, Quantum Simulation]
+    links:
+      - label: Read report
+        url: /assets/pdf/arXiv_quantum_random_measurement_simulation_result.pdf
+        verified: true
+      - label: View source
+        url: https://github.com/chyhsu/random_measurement
+        verified: true

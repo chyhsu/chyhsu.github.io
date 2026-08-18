@@ -1,0 +1,51 @@
+identity:
+  name: Chun-Yuan Hsu
+  native_name: 許峻源
+  positioning: AI/backend engineer working across agents, infrastructure, and applied ML.
+  summary: >-
+    Master of Science in Data Science student at the University of Michigan
+    building AI agents, backend infrastructure, and applied machine learning
+    systems across production and research environments.
+  seo_description: >-
+    Chun-Yuan Hsu is an AI and backend engineer working across agents,
+    infrastructure, and applied machine learning.
+  portrait:
+    src: /assets/images/2473.jpg
+    alt: Portrait of Chun-Yuan Hsu
+background:
+  origin: Tainan, Taiwan
+  transition: Civil engineering to computer science
+contact:
+  email: chyhsu@umich.edu
+  github: https://github.com/chyhsu
+  linkedin: https://www.linkedin.com/in/chyhsu
+  cv: /assets/pdf/CV.pdf
+earlier_roles:
+  - title: Volunteer
+    organization: US Taiwan Watch
+    period: "2024"
+    detail: Developed backend features for the organization's website.
+  - title: Teaching Assistant
+    organization: Linear Algebra
+    period: 2023–2024
+    detail: Supported international students in mastering Linear Algebra concepts.
+interests:
+  - Watching baseball, basketball, football, and other sports
+  - Going to the gym
+  - Playing darts
+  - Linux ricing and interface customization
+records:
+  - label: MongoDB Schema Design Patterns and Antipatterns skill badge
+    url: https://www.credly.com/badges/5e55ce18-2865-4918-b71a-5acad5de0a0c/public_url
+  - label: Building RAG Apps Using MongoDB skill badge
+    url: https://www.credly.com/badges/11e30c84-8bc9-4378-bfaf-e28690606fae/public_url
+  - label: From Relational Model to MongoDB Document Model skill badge
+    url: https://www.credly.com/badges/ab704694-5e2e-4dfd-bcdd-caa4f5c2c192/public_url
+  - label: QNAP Internship Certificate
+    url: /assets/pdf/QNAP_certificate.pdf
+  - label: QNAP Internship Results Presentation
+    url: /assets/pdf/Internship%20Results%20Presentation-%20QNAP.pdf
+  - label: Transcript — National Tsing Hua University
+    url: /assets/pdf/NTHU_transcript.pdf
+  - label: Transcript — National Cheng Kung University
+    url: /assets/pdf/NCKU_transcript.pdf

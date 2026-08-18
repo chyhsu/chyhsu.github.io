@@ -1,0 +1,30 @@
+- name: Languages
+  items: [Python, C++, Go]
+- name: AI & ML
+  items:
+    - PyTorch
+    - AI Agents
+    - Claude Agent SDK
+    - LLM Integration (AWS Bedrock)
+    - RAG (ChromaDB)
+    - Embeddings
+    - Semantic Search
+- name: Cloud & DevOps
+  items:
+    - Docker
+    - Kubernetes
+    - AWS
+    - GCP
+    - GitLab CI/CD
+    - Prometheus
+    - Elastic Stack (ELK)
+    - Alertmanager
+    - Grafana
+    - NATS
+- name: Frameworks & Systems
+  items:
+    - Node.js
+    - React
+    - Linux (Debian, Arch)
+    - Git
+    - Scrum

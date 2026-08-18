@@ -5,51 +5,49 @@ eyebrow: Structured profile
 intro: A plain-language rendering of the same verified data used on the homepage.
 permalink: /llm/
 ---
-{% assign profile = site.data.portfolio %}
+{% assign profile = site.data.portfolio.profile %}
+{% assign experience = site.data.portfolio.experience %}
+{% assign projects = site.data.portfolio.projects %}
 
 ## Summary
 
-{{ profile.identity.name }} is an engineer and researcher with a background in civil engineering, computer science, and data science. {{ profile.identity.summary }}
+{{ profile.identity.name }} is an engineer and researcher. {{ profile.identity.summary }}
 
 ## Experience
 
-{% for role in profile.experience %}
+{% for role in experience %}
 ### {{ role.organization }} — {{ role.title }}
 
 {{ role.location }} · {{ role.period }}
 
-{% for highlight in role.highlights %}- {{ highlight }}
+{% for item in role.evidence %}- {{ item.text }}
 {% endfor %}
 {% endfor %}
 
 ## Featured projects
 
-{% for project in profile.featured_projects %}
+{% for project in projects.featured %}
 ### {{ project.title }}
 
-{{ project.summary }}
+{{ project.context }}
 
-{% for highlight in project.highlights %}- {{ highlight }}
+{% for item in project.my_contribution %}- My contribution: {{ item }}
 {% endfor %}
-{% if project.metrics %}{% for metric in project.metrics %}- Reported result: {{ metric }}
-{% endfor %}{% endif %}
+{% for item in project.project_results %}- Project result: {{ item }}
+{% endfor %}
 {% endfor %}
 
 ## Additional projects
 
-{% for project in profile.project_archive %}- **{{ project.title }}:** {{ project.description }}
+{% for project in projects.archive %}- **{{ project.title }}:** {{ project.summary }}
 {% endfor %}
 
 ## Skills
 
-{% for group in profile.skill_groups %}- **{{ group.name }}:** {{ group.items | join: ", " }}
+{% for group in site.data.portfolio.skills %}- **{{ group.name }}:** {{ group.items | join: ", " }}
 {% endfor %}
 
 ## Education
 
-{% for item in profile.education %}- **{{ item.degree }}**, {{ item.institution }}, {{ item.location }} — {{ item.period }}
+{% for item in site.data.portfolio.education %}- **{{ item.degree }}**, {{ item.institution }}, {{ item.location }} — {{ item.period }}
 {% endfor %}
-
-## Personal background
-
-Originally from Tainan, Taiwan, Chun-Yuan moved from civil engineering into computer science after discovering a stronger interest in programming. Outside technical work, his interests include sports, fitness, darts, and Linux ricing.
