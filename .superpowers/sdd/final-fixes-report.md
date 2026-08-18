@@ -71,5 +71,6 @@ ffprobe: width=1600; height=1200; size=177603
 
 ## Commit and risks
 
-- Commit: pending final amend.
+- Implementation commit: `0f9772272980549ec96319bf62e59d23574eb558`.
+- This report is committed separately so it can record that exact implementation hash; the final branch HEAD is supplied in the handoff.
 - No implementation deviations. The current branch no longer deploys the original file, but deleting it from this commit cannot remove its existing content or EXIF data from pre-existing Git history or already-published copies. Repository/history rewriting was intentionally not performed.
