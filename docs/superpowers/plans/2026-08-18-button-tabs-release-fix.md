@@ -436,6 +436,7 @@ def test_compiled_css_owns_tabs_and_text_resize_reflow
   assert_match(/\.experience-row__meta,\.experience-row__body\{[^}]*min-width:0/, css)
   assert_match(/\.evidence-row__header,\.evidence-row__facts\{[^}]*min-width:0/, css)
   assert_match(/\.profile-strip__inner>\*\{[^}]*min-width:0/, css)
+  assert_match(/\.profile-strip__skills\{[^}]*columns:auto/, css)
 end
 ```
 
@@ -511,6 +512,7 @@ In `_sass/components/_content.scss`, add:
 
 ```scss
 .profile-strip__inner > * { min-width: 0; }
+.profile-strip__skills { columns: auto; }
 .profile-strip a { max-width: 100%; overflow-wrap: anywhere; white-space: normal; }
 ```
 
@@ -542,7 +544,7 @@ git commit -m "style: add compact tabbed evidence layout"
 
 **Interfaces:**
 - Consumes: enhanced `[data-tabs]`, `[role="tab"]`, and `[role="tabpanel"]` on the homepage.
-- Produces: exact browser failures for selection state, controlled-panel visibility, ArrowRight, End, Home, height, overflow, axe, and screenshots.
+- Produces: exact browser failures for exclusive selection state, controlled-panel visibility, ArrowLeft, ArrowRight, End, Home, initial/hashchange fragment activation, height, overflow, axe, and screenshots.
 
 - [ ] **Step 1: Add a failing release-source contract**
 
@@ -552,11 +554,16 @@ Add to `ReleaseToolingTest`:
 def test_browser_gate_exercises_button_tabs
   browser_check = ROOT.join("script/release-browser-check.mjs").read
   assert_include(browser_check, 'page.locator("[data-tabs]")')
+  assert_include(browser_check, 'press("ArrowLeft")')
   assert_include(browser_check, 'press("ArrowRight")')
   assert_include(browser_check, 'press("End")')
   assert_include(browser_check, 'press("Home")')
   assert_include(browser_check, 'getAttribute("aria-controls")')
   assert_include(browser_check, 'getAttribute("aria-selected")')
+  assert_include(browser_check, 'locator(\'[role="tab"][aria-selected="true"]\')')
+  assert_include(browser_check, 'locator(\'[role="tabpanel"][hidden]\')')
+  assert_include(browser_check, "window.location.hash = panelId")
+  assert_include(browser_check, "auditInitialTabFragment")
 end
 ```
 
@@ -594,9 +601,17 @@ async function auditTabs(page) {
       const panelId = await button.getAttribute("aria-controls");
       const selected = await button.getAttribute("aria-selected");
       const visible = panelId && await group.locator(`#${panelId}`).isVisible();
-      if (selected !== "true" || !visible) errors.push(`${groupId}: tab ${index + 1} did not activate its panel`);
+      const selectedCount = await group.locator('[role="tab"][aria-selected="true"]').count();
+      const visibleCount = await group.locator('[role="tabpanel"]:visible').count();
+      const hiddenCount = await group.locator('[role="tabpanel"][hidden]').count();
+      if (selected !== "true" || !visible || selectedCount !== 1 || visibleCount !== 1 || hiddenCount !== count - 1) {
+        errors.push(`${groupId}: tab ${index + 1} did not exclusively activate its panel`);
+      }
     }
 
+    await buttons.first().focus();
+    await buttons.first().press("ArrowLeft");
+    if (await buttons.last().getAttribute("aria-selected") !== "true") errors.push(`${groupId}: ArrowLeft failed`);
     await buttons.first().focus();
     await buttons.first().press("ArrowRight");
     if (await buttons.nth(1).getAttribute("aria-selected") !== "true") errors.push(`${groupId}: ArrowRight failed`);
@@ -604,9 +619,41 @@ async function auditTabs(page) {
     if (await buttons.last().getAttribute("aria-selected") !== "true") errors.push(`${groupId}: End failed`);
     await buttons.last().press("Home");
     if (await buttons.first().getAttribute("aria-selected") !== "true") errors.push(`${groupId}: Home failed`);
+
+    const fragmentButton = buttons.last();
+    const fragmentButtonId = await fragmentButton.getAttribute("id");
+    const fragmentPanelId = await fragmentButton.getAttribute("aria-controls");
+    await page.evaluate((panelId) => { window.location.hash = panelId; }, fragmentPanelId);
+    await page.waitForFunction((buttonId) => document.getElementById(buttonId)?.getAttribute("aria-selected") === "true", fragmentButtonId);
+    const fragmentVisible = fragmentPanelId && await group.locator(`#${fragmentPanelId}`).isVisible();
+    const fragmentSelectedCount = await group.locator('[role="tab"][aria-selected="true"]').count();
+    const fragmentVisibleCount = await group.locator('[role="tabpanel"]:visible').count();
+    const fragmentHiddenCount = await group.locator('[role="tabpanel"][hidden]').count();
+    if (await fragmentButton.getAttribute("aria-selected") !== "true" || !fragmentVisible ||
+        fragmentSelectedCount !== 1 || fragmentVisibleCount !== 1 || fragmentHiddenCount !== count - 1) {
+      errors.push(`${groupId}: hashchange activation failed`);
+    }
+    await page.evaluate(() => history.replaceState(null, "", `${location.pathname}${location.search}`));
     await buttons.first().click();
   }
   return errors;
+}
+
+async function auditInitialTabFragment(page, url) {
+  const panelId = "selected-work-panel-vizthinker";
+  await page.goto(`${url}#${panelId}`, { waitUntil: "networkidle" });
+  const panel = page.locator(`#${panelId}`);
+  const group = page.locator("#selected-work-tabs");
+  const buttonId = await panel.getAttribute("aria-labelledby");
+  const selected = buttonId && await page.locator(`#${buttonId}`).getAttribute("aria-selected");
+  const count = await group.locator('[role="tab"]').count();
+  const selectedCount = await group.locator('[role="tab"][aria-selected="true"]').count();
+  const visibleCount = await group.locator('[role="tabpanel"]:visible').count();
+  const hiddenCount = await group.locator('[role="tabpanel"][hidden]').count();
+  return selected === "true" && await panel.isVisible() &&
+      selectedCount === 1 && visibleCount === 1 && hiddenCount === count - 1
+    ? []
+    : ["initial fragment did not activate its selected-work panel"];
 }
 ```
 
@@ -615,6 +662,8 @@ After navigation and before geometry measurement, add:
 ```javascript
 if (routeName === "home" && viewportName === "mobile") {
   failures.push(...(await auditTabs(page)).map((error) => `home/mobile: ${error}`));
+  failures.push(...(await auditInitialTabFragment(page, `${baseUrl}${route}`)).map((error) => `home/mobile: ${error}`));
+  await page.goto(`${baseUrl}${route}`, { waitUntil: "networkidle" });
 }
 ```
 
