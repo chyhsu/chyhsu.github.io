@@ -21,11 +21,13 @@ const viewports = [
 
 await fs.mkdir(outputDir, { recursive: true });
 const browser = await chromium.launch({ headless: true });
+const context = await browser.newContext();
 const failures = [];
 
 for (const [routeName, route] of routes) {
   for (const [viewportName, width, height] of viewports) {
-    const page = await browser.newPage({ viewport: { width, height } });
+    const page = await context.newPage();
+    await page.setViewportSize({ width, height });
     await page.goto(`${baseUrl}${route}`, { waitUntil: "networkidle" });
 
     const geometry = await page.evaluate(() => ({
@@ -77,7 +79,8 @@ for (const [routeName, route] of routes) {
 }
 
 for (const [routeName, route] of routes) {
-  const resizePage = await browser.newPage({ viewport: { width: 320, height: 900 } });
+  const resizePage = await context.newPage();
+  await resizePage.setViewportSize({ width: 320, height: 900 });
   await resizePage.goto(`${baseUrl}${route}`, { waitUntil: "networkidle" });
   await resizePage.addStyleTag({ content: "html { font-size: 200% !important; }" });
   const resizeGeometry = await resizePage.evaluate(() => {
@@ -99,6 +102,7 @@ for (const [routeName, route] of routes) {
   await resizePage.screenshot({ path: `${outputDir}/${routeName}-200-percent.png`, fullPage: true });
   await resizePage.close();
 }
+await context.close();
 await browser.close();
 
 if (failures.length) {

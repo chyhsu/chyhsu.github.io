@@ -23,6 +23,25 @@ class ReleaseToolingTest < Test::Unit::TestCase
     assert_operator(document("llm/index.html").css(".page-content a").length, :>, 0)
   end
 
+  def test_browser_gate_uses_an_explicit_context_for_axe
+    browser_check = ROOT.join("script/release-browser-check.mjs").read
+
+    context = browser_check.index("const context = await browser.newContext();")
+    first_page = browser_check.index("context.newPage(")
+    axe = browser_check.index("new AxeBuilder({ page })")
+    last_page = browser_check.rindex("context.newPage(")
+    context_close = browser_check.index("await context.close();")
+    browser_close = browser_check.index("await browser.close();")
+
+    [context, first_page, axe, last_page, context_close, browser_close].each { |position| assert_not_nil(position) }
+    assert_not_include(browser_check, "browser.newPage(")
+    assert_operator(context, :<, first_page)
+    assert_operator(first_page, :<, axe)
+    assert_operator(axe, :<=, last_page)
+    assert_operator(last_page, :<, context_close)
+    assert_operator(context_close, :<, browser_close)
+  end
+
   def test_live_gate_checks_each_html_routes_canonical_and_stylesheet
     live_check = ROOT.join("script/verify-live").read
     assert_include(live_check, "html_routes=(")
