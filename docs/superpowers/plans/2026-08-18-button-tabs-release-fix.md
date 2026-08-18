@@ -564,6 +564,7 @@ def test_browser_gate_exercises_button_tabs
   assert_include(browser_check, 'locator(\'[role="tabpanel"][hidden]\')')
   assert_include(browser_check, "window.location.hash = panelId")
   assert_include(browser_check, "auditInitialTabFragment")
+  assert_include(browser_check, "if (!link.getClientRects().length) return [];")
 end
 ```
 
@@ -668,6 +669,14 @@ if (routeName === "home" && viewportName === "mobile") {
 ```
 
 Add `".tab-button"` to `targetSelector`.
+
+Because inactive tab panels are intentionally hidden, make the target-size callback skip controls that have no rendered client rectangle before reading their dimensions:
+
+```javascript
+if (!link.getClientRects().length) return [];
+```
+
+This keeps the 44-by-44 gate strict for every rendered control without treating inaccessible hidden-panel descendants as zero-sized targets.
 
 - [ ] **Step 4: Verify focused GREEN**
 
