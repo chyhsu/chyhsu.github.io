@@ -24,11 +24,96 @@ const browser = await chromium.launch({ headless: true });
 const context = await browser.newContext();
 const failures = [];
 
+async function hasExclusiveTabState(group, button, panelId, expectedCount) {
+  if (!panelId) return false;
+  const selected = await button.getAttribute("aria-selected");
+  const visible = await group.locator(`#${panelId}`).isVisible();
+  const selectedCount = await group.locator('[role="tab"][aria-selected="true"]').count();
+  const visibleCount = await group.locator('[role="tabpanel"]:visible').count();
+  const hiddenCount = await group.locator('[role="tabpanel"][hidden]').count();
+  return selected === "true" && visible && selectedCount === 1 &&
+    visibleCount === 1 && hiddenCount === expectedCount - 1;
+}
+
+async function auditTabs(page) {
+  const errors = [];
+  const groups = page.locator("[data-tabs]");
+  for (let groupIndex = 0; groupIndex < await groups.count(); groupIndex += 1) {
+    const group = groups.nth(groupIndex);
+    const buttons = group.locator('[role="tab"]');
+    const groupId = await group.getAttribute("id");
+    const count = await buttons.count();
+    if (count < 2) {
+      errors.push(`${groupId}: fewer than two enhanced tabs`);
+      continue;
+    }
+
+    for (let index = 0; index < count; index += 1) {
+      const button = buttons.nth(index);
+      await button.click();
+      const panelId = await button.getAttribute("aria-controls");
+      if (!await hasExclusiveTabState(group, button, panelId, count)) {
+        errors.push(`${groupId}: tab ${index + 1} did not exclusively activate its panel`);
+      }
+    }
+
+    await buttons.first().focus();
+    await buttons.first().press("ArrowLeft");
+    if (await buttons.last().getAttribute("aria-selected") !== "true") errors.push(`${groupId}: ArrowLeft failed`);
+    await buttons.first().focus();
+    await buttons.first().press("ArrowRight");
+    if (await buttons.nth(1).getAttribute("aria-selected") !== "true") errors.push(`${groupId}: ArrowRight failed`);
+    await buttons.nth(1).press("End");
+    if (await buttons.last().getAttribute("aria-selected") !== "true") errors.push(`${groupId}: End failed`);
+    await buttons.last().press("Home");
+    if (await buttons.first().getAttribute("aria-selected") !== "true") errors.push(`${groupId}: Home failed`);
+
+    const fragmentButton = buttons.last();
+    const fragmentButtonId = await fragmentButton.getAttribute("id");
+    const fragmentPanelId = await fragmentButton.getAttribute("aria-controls");
+    if (!fragmentButtonId || !fragmentPanelId) {
+      errors.push(`${groupId}: fragment target is incomplete`);
+    } else {
+      await page.evaluate((panelId) => { window.location.hash = panelId; }, fragmentPanelId);
+      await page.waitForFunction(
+        (buttonId) => document.getElementById(buttonId)?.getAttribute("aria-selected") === "true",
+        fragmentButtonId
+      );
+      if (!await hasExclusiveTabState(group, fragmentButton, fragmentPanelId, count)) {
+        errors.push(`${groupId}: hashchange activation failed`);
+      }
+    }
+    await page.evaluate(() => history.replaceState(null, "", `${location.pathname}${location.search}`));
+    await buttons.first().click();
+  }
+  return errors;
+}
+
+async function auditInitialTabFragment(page, url) {
+  const panelId = "selected-work-panel-vizthinker";
+  await page.goto(`${url}#${panelId}`, { waitUntil: "networkidle" });
+  const group = page.locator("#selected-work-tabs");
+  const panel = group.locator(`#${panelId}`);
+  const buttonId = await panel.getAttribute("aria-labelledby");
+  if (!buttonId) return ["initial fragment panel has no labelled tab"];
+  const button = group.locator(`#${buttonId}`);
+  const count = await group.locator('[role="tab"]').count();
+  return await hasExclusiveTabState(group, button, panelId, count)
+    ? []
+    : ["initial fragment did not exclusively activate its selected-work panel"];
+}
+
 for (const [routeName, route] of routes) {
   for (const [viewportName, width, height] of viewports) {
     const page = await context.newPage();
     await page.setViewportSize({ width, height });
     await page.goto(`${baseUrl}${route}`, { waitUntil: "networkidle" });
+
+    if (routeName === "home" && viewportName === "mobile") {
+      failures.push(...(await auditTabs(page)).map((error) => `home/mobile: ${error}`));
+      failures.push(...(await auditInitialTabFragment(page, `${baseUrl}${route}`)).map((error) => `home/mobile: ${error}`));
+      await page.goto(`${baseUrl}${route}`, { waitUntil: "networkidle" });
+    }
 
     const geometry = await page.evaluate(() => ({
       h1: document.querySelectorAll("h1").length,
@@ -58,9 +143,11 @@ for (const [routeName, route] of routes) {
         ".experience-row summary",
         ".contact-strip .button",
         ".records-list a",
-        ".llm-page .page-content a"
+        ".llm-page .page-content a",
+        ".tab-button"
       ].join(", ");
       const shortTargets = await page.locator(targetSelector).evaluateAll((links) => links.flatMap((link) => {
+        if (!link.getClientRects().length) return [];
         const box = link.getBoundingClientRect();
         return box.width < 44 || box.height < 44
           ? [`${link.textContent.trim()} (${box.width.toFixed(1)}×${box.height.toFixed(1)})`]

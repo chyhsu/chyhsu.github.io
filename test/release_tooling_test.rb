@@ -42,6 +42,31 @@ class ReleaseToolingTest < Test::Unit::TestCase
     assert_operator(context_close, :<, browser_close)
   end
 
+  def test_browser_gate_exercises_button_tabs
+    browser_check = ROOT.join("script/release-browser-check.mjs").read
+    assert_include(browser_check, 'page.locator("[data-tabs]")')
+    assert_include(browser_check, 'press("ArrowLeft")')
+    assert_include(browser_check, 'press("ArrowRight")')
+    assert_include(browser_check, 'press("End")')
+    assert_include(browser_check, 'press("Home")')
+    assert_include(browser_check, 'getAttribute("aria-controls")')
+    assert_include(browser_check, 'getAttribute("aria-selected")')
+    assert_include(browser_check, 'locator(\'[role="tab"][aria-selected="true"]\')')
+    assert_include(browser_check, 'locator(\'[role="tabpanel"][hidden]\')')
+    assert_include(browser_check, "window.location.hash = panelId")
+    assert_include(browser_check, "auditInitialTabFragment")
+    assert_include(browser_check, "if (!link.getClientRects().length) return [];")
+  end
+
+  def test_tab_controller_ignores_malformed_fragments
+    controller = ROOT.join("assets/js/tabs.js").read
+    decode = controller.index("decodeURIComponent")
+    rescue_invalid_fragment = controller.index("catch {")
+    assert_not_nil(decode)
+    assert_not_nil(rescue_invalid_fragment)
+    assert_operator(decode, :<, rescue_invalid_fragment)
+  end
+
   def test_live_gate_checks_each_html_routes_canonical_and_stylesheet
     live_check = ROOT.join("script/verify-live").read
     assert_include(live_check, "html_routes=(")

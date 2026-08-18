@@ -21,7 +21,13 @@ function activate(group, index, focus = false) {
 
 function indexForFragment(group) {
   if (!window.location.hash) return -1;
-  const target = document.getElementById(decodeURIComponent(window.location.hash.slice(1)));
+  let fragment;
+  try {
+    fragment = decodeURIComponent(window.location.hash.slice(1));
+  } catch {
+    return -1;
+  }
+  const target = document.getElementById(fragment);
   if (!target) return -1;
   const panels = [...group.querySelectorAll("[data-tab-panel]")];
   return panels.findIndex((panel) => panel === target || panel.contains(target));
