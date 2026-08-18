@@ -29,6 +29,21 @@ class SourceStructureTest < Test::Unit::TestCase
 
   def test_lilac_feature_has_a_scoped_modifier
     components = ROOT.join("_sass/_components.scss").read
-    assert_include(components, ".featured-card--lilac")
+    assert_match(
+      /\.featured-card--lilac\s*\{[^}]*var\(--color-lilac[^}]*\}/m,
+      components
+    )
+    assert_not_match(
+      /\.featured-card(?!-)[^{]*\{[^}]*--color-lilac/m,
+      components
+    )
+  end
+
+  def test_footer_focus_indicator_uses_a_contrasting_token
+    components = ROOT.join("_sass/_components.scss").read
+    assert_match(
+      /\.site-footer\s+a:focus-visible\s*\{[^}]*outline-color:\s*var\(--color-white\);[^}]*\}/m,
+      components
+    )
   end
 end
