@@ -27,6 +27,8 @@ permalink: /llm/
 
 {{ role.location }} · {{ role.period }}
 
+{{ role.summary }}
+
 {% for item in role.evidence %}- {{ item.text }}
 {% endfor %}
 {% if role.secondary_evidence != empty %}Secondary verified detail:
@@ -61,7 +63,7 @@ permalink: /llm/
 
 ## Additional projects
 
-{% for project in projects.archive %}{% assign verified_links = project.links | where: "verified", true %}- **{{ project.title }} ({{ project.provenance }}):** {{ project.summary }} {% for link in verified_links %}{% assign href = link.url %}{% unless href contains '://' %}{% assign href = href | relative_url %}{% endunless %}[{{ link.label }}]({{ href }}){% unless forloop.last %}; {% endunless %}{% endfor %}
+{% for project in projects.archive %}{% assign verified_links = project.links | where: "verified", true %}- **{{ project.title }} ({{ project.provenance }}):** {{ project.summary }} **Technologies:** {{ project.technologies | join: ", " }} {% for link in verified_links %}{% assign href = link.url %}{% unless href contains '://' %}{% assign href = href | relative_url %}{% endunless %}[{{ link.label }}]({{ href }}){% unless forloop.last %}; {% endunless %}{% endfor %}
 {% endfor %}
 
 ## Skills
@@ -86,4 +88,4 @@ permalink: /llm/
 
 ## Personal background
 
-Originally from {{ profile.background.origin }}, Chun-Yuan's path followed {{ profile.background.transition | downcase }}. Outside technical work, his interests include {{ profile.interests | join: ", " }}.
+Originally from {{ profile.background.origin }}, {{ profile.identity.name }}'s path followed {{ profile.background.transition | downcase }}. Outside technical work, his interests include {{ profile.interests | join: ", " }}.

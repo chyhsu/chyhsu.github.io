@@ -58,8 +58,19 @@ class SecondaryPagesTest < Test::Unit::TestCase
     assert_include(text, "Claude Agent SDK")
     assert_include(text, "US Taiwan Watch")
     assert_include(text, "QNAP Internship Certificate")
-    portfolio_file("projects").fetch("archive").each do |project|
-      assert_include(text, project.fetch("title"))
+    profile = portfolio_file("profile")
+    missing_claims = []
+    identity_possessive = "#{profile.fetch("identity").fetch("name")}’s path"
+    missing_claims << identity_possessive unless text.include?(identity_possessive)
+    portfolio_file("experience").each do |role|
+      summary = role.fetch("summary")
+      missing_claims << "#{role.fetch("id")} summary" unless text.include?(summary)
     end
+    portfolio_file("projects").fetch("archive").each do |project|
+      project_row = doc.css(".page-content li").find { |node| node.text.include?(project.fetch("title")) }
+      technologies = project.fetch("technologies").join(", ")
+      missing_claims << "#{project.fetch("id")} technologies" unless project_row&.text&.include?(technologies)
+    end
+    assert_empty(missing_claims, "LLM profile omissions: #{missing_claims.join(", ")}")
   end
 end
