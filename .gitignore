@@ -55,3 +55,6 @@ temp/
 .cache/
 
 .history/*
+
+# Superpowers brainstorming artifacts
+.superpowers/
