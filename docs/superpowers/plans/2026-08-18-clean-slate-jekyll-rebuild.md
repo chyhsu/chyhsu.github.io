@@ -2111,8 +2111,10 @@ Insert this method into `ToolchainContractTest`:
     assert_include(css, ".project-index-row")
     assert_include(css, ".project-index-row--research .project-provenance")
     assert_match(/\.site-brand\{[^}]*min-height:2\.75rem/, css)
+    assert_match(/\.site-nav a,.footer-links a\{[^}]*min-height:2\.75rem;min-width:2\.75rem/, css)
     assert_match(/\.site-footer__contact\{[^}]*min-height:2\.75rem/, css)
     assert_match(/\.section-heading--split>a\{[^}]*min-height:2\.75rem/, css)
+    assert_match(/\.hero__portrait-frame\{[^}]*margin:0/, css)
     assert_match(/@media\s*\(max-width:\s*56rem\)/, css)
     assert_not_match(/fonts\.googleapis|@font-face/, css)
     assert_equal(
@@ -2201,7 +2203,7 @@ pre code { padding: 0; background: transparent; color: inherit; }
 .section { padding-block: var(--space-7); border-top: 1px solid var(--color-line); }
 .section-heading { max-width: 48rem; margin-bottom: var(--space-6); }
 .section-heading--split { max-width: none; display: flex; align-items: end; justify-content: space-between; gap: var(--space-4); }
-.section-heading--split > a { min-height: 2.75rem; display: inline-flex; align-items: center; }
+.section-heading--split > a { min-height: 2.75rem; min-width: 2.75rem; display: inline-flex; align-items: center; }
 .eyebrow {
   margin-bottom: var(--space-2);
   color: var(--color-rust);
@@ -2213,6 +2215,7 @@ pre code { padding: 0; background: transparent; color: inherit; }
 .button {
   display: inline-flex;
   min-height: 2.75rem;
+  min-width: 2.75rem;
   align-items: center;
   justify-content: center;
   padding: 0.65rem 1rem;
@@ -2253,16 +2256,16 @@ Create `_sass/components/_chrome.scss`:
 ```scss
 .site-header { border-bottom: 1px solid var(--color-line); }
 .site-header__inner { min-height: 4.5rem; display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); }
-.site-brand { min-height: 2.75rem; display: inline-flex; align-items: center; color: var(--color-ink); font-weight: 800; letter-spacing: 0.05em; text-decoration: none; text-transform: uppercase; }
+.site-brand { min-height: 2.75rem; min-width: 2.75rem; display: inline-flex; align-items: center; color: var(--color-ink); font-weight: 800; letter-spacing: 0.05em; text-decoration: none; text-transform: uppercase; }
 .site-brand__divider { margin-inline: 0.45em; color: var(--color-rust); }
 .site-nav, .footer-links { display: flex; flex-wrap: wrap; gap: var(--space-2); }
-.site-nav a, .footer-links a { display: inline-flex; min-height: 2.75rem; align-items: center; padding-inline: 0.55rem; color: inherit; font-size: 0.9rem; text-decoration: none; }
+.site-nav a, .footer-links a { display: inline-flex; min-height: 2.75rem; min-width: 2.75rem; align-items: center; padding-inline: 0.55rem; color: inherit; font-size: 0.9rem; text-decoration: none; }
 .site-nav a[aria-current="page"] { text-decoration: underline; text-decoration-color: var(--color-rust); text-decoration-thickness: 0.15rem; }
 .site-footer { padding-block: var(--space-6); background: var(--color-ink); color: var(--color-surface); }
 .site-footer__inner { display: flex; align-items: end; justify-content: space-between; gap: var(--space-5); }
 .site-footer__eyebrow { color: #dda18f; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; }
 .site-footer__title { max-width: 38rem; margin-bottom: var(--space-2); color: var(--color-surface); font-family: var(--font-display); font-size: clamp(1.7rem, 4vw, 2.8rem); }
-.site-footer__contact { min-height: 2.75rem; display: inline-flex; align-items: center; }
+.site-footer__contact { min-height: 2.75rem; min-width: 2.75rem; display: inline-flex; align-items: center; }
 .site-footer a { color: var(--color-surface); }
 .site-footer a:focus-visible { outline-color: var(--color-surface); }
 @media (max-width: 42rem) {
@@ -2284,8 +2287,8 @@ Create `_sass/components/_hero.scss`:
 .hero__actions, .hero__links { display: flex; flex-wrap: wrap; gap: var(--space-2); }
 .hero__actions { margin-top: var(--space-5); }
 .hero__links { margin-top: var(--space-4); gap: var(--space-4); }
-.hero__links a { min-height: 2.75rem; display: inline-flex; align-items: center; }
-.hero__portrait-frame { justify-self: end; width: 11rem; padding: 0.45rem; border: 1px solid var(--color-line); background: var(--color-surface); transform: rotate(1.5deg); }
+.hero__links a { min-height: 2.75rem; min-width: 2.75rem; display: inline-flex; align-items: center; }
+.hero__portrait-frame { justify-self: end; width: 11rem; margin: 0; padding: 0.45rem; border: 1px solid var(--color-line); background: var(--color-surface); transform: rotate(1.5deg); }
 .hero__portrait { width: 100%; aspect-ratio: 1; object-fit: cover; object-position: 50% 35%; }
 @media (max-width: 56rem) {
   .hero { min-height: auto; grid-template-columns: minmax(0, 1fr) 8rem; gap: var(--space-5); }
@@ -2312,7 +2315,7 @@ Create `_sass/components/_experience.scss`:
 .experience-row__primary { padding-left: 1.15rem; }
 .experience-row li + li { margin-top: var(--space-2); }
 .experience-row details { margin-top: var(--space-3); color: var(--color-muted); }
-.experience-row summary { min-height: 2.75rem; display: inline-flex; align-items: center; color: var(--color-rust-dark); cursor: pointer; font-weight: 750; }
+.experience-row summary { min-height: 2.75rem; min-width: 2.75rem; display: inline-flex; align-items: center; color: var(--color-rust-dark); cursor: pointer; font-weight: 750; }
 @media (max-width: 56rem) {
   .experience-rail::before { left: 0.35rem; }
   .experience-row { grid-template-columns: 1fr; gap: var(--space-2); padding-left: var(--space-5); }
@@ -2345,9 +2348,9 @@ Create `_sass/components/_projects.scss`:
 .technology-line { color: var(--color-rust-dark); }
 .technology-line span { margin-right: var(--space-2); }
 .project-links { display: flex; flex-wrap: wrap; gap: var(--space-4); }
-.project-links a { min-height: 2.75rem; display: inline-flex; align-items: center; font-weight: 750; }
+.project-links a { min-height: 2.75rem; min-width: 2.75rem; display: inline-flex; align-items: center; font-weight: 750; }
 .more-work__list, .project-index-list { margin: 0; padding: 0; border-top: 1px solid var(--color-line); list-style: none; }
-.more-work__link { min-height: 3.5rem; display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); border-bottom: 1px solid var(--color-line); color: var(--color-ink); font-weight: 750; text-decoration: none; }
+.more-work__link { min-height: 3.5rem; min-width: 2.75rem; display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); border-bottom: 1px solid var(--color-line); color: var(--color-ink); font-weight: 750; text-decoration: none; }
 .project-group { margin-top: var(--space-7); }
 .project-group > h2 { font-size: 1.5rem; }
 .project-index-row { display: grid; grid-template-columns: 17rem minmax(0, 1fr); gap: var(--space-5); padding-block: var(--space-4); border-bottom: 1px solid var(--color-line); }
@@ -2374,8 +2377,8 @@ Create `_sass/components/_content.scss`:
 .post-row { display: grid; grid-template-columns: 8rem 18rem minmax(0, 1fr); gap: var(--space-4); padding-block: var(--space-4); border-bottom: 1px solid var(--color-line); }
 .post-row time { color: var(--color-muted); font-size: 0.86rem; }
 .post-row h2, .post-row h3 { margin-bottom: 0; font-family: var(--font-body); font-size: 1rem; }
-.post-row h2 a, .post-row h3 a { min-height: 2.75rem; display: inline-flex; align-items: center; color: var(--color-ink); text-decoration: none; }
-.profile-strip a { min-height: 2.75rem; display: inline-flex; align-items: center; }
+.post-row h2 a, .post-row h3 a { min-height: 2.75rem; min-width: 2.75rem; display: inline-flex; align-items: center; color: var(--color-ink); text-decoration: none; }
+.profile-strip a { min-height: 2.75rem; min-width: 2.75rem; display: inline-flex; align-items: center; }
 .contact-strip { padding-block: var(--space-6); background: var(--color-surface); border-top: 1px solid var(--color-line); }
 .contact-strip__inner { display: flex; align-items: center; justify-content: space-between; gap: var(--space-5); }
 .contact-strip h2 { margin-bottom: 0; }
@@ -3120,6 +3123,7 @@ for (const [routeName, route] of routes) {
 
     if (viewportName === "mobile") {
       const targetSelector = [
+        ".skip-link",
         ".site-brand",
         ".site-nav a",
         ".site-footer__contact",
@@ -3134,9 +3138,12 @@ for (const [routeName, route] of routes) {
         ".experience-row summary",
         ".contact-strip .button"
       ].join(", ");
-      const shortTargets = await page.locator(targetSelector).evaluateAll((links) =>
-        links.filter((link) => link.getBoundingClientRect().height < 44).map((link) => link.textContent.trim())
-      );
+      const shortTargets = await page.locator(targetSelector).evaluateAll((links) => links.flatMap((link) => {
+        const box = link.getBoundingClientRect();
+        return box.width < 44 || box.height < 44
+          ? [`${link.textContent.trim()} (${box.width.toFixed(1)}×${box.height.toFixed(1)})`]
+          : [];
+      }));
       if (shortTargets.length) failures.push(`${routeName}/mobile: short targets ${shortTargets.join(", ")}`);
     }
 
@@ -3149,25 +3156,29 @@ for (const [routeName, route] of routes) {
   }
 }
 
-const zoomPage = await browser.newPage({ viewport: { width: 320, height: 900 } });
-await zoomPage.goto(`${baseUrl}/`, { waitUntil: "networkidle" });
-await zoomPage.addStyleTag({ content: "html { font-size: 200% !important; }" });
-const zoomGeometry = await zoomPage.evaluate(() => {
-  const copy = document.querySelector(".hero__copy")?.getBoundingClientRect();
-  const portrait = document.querySelector(".hero__portrait-frame")?.getBoundingClientRect();
-  const overlap = copy && portrait && !(
-    copy.right <= portrait.left || portrait.right <= copy.left ||
-    copy.bottom <= portrait.top || portrait.bottom <= copy.top
-  );
-  return {
-    overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
-    overlap: Boolean(overlap)
-  };
-});
-if (zoomGeometry.overflow > 0) failures.push(`home/200-percent: ${zoomGeometry.overflow}px horizontal overflow`);
-if (zoomGeometry.overlap) failures.push("home/200-percent: portrait overlaps hero copy");
-await zoomPage.screenshot({ path: `${outputDir}/home-200-percent.png`, fullPage: true });
-await zoomPage.close();
+for (const [routeName, route] of routes) {
+  const resizePage = await browser.newPage({ viewport: { width: 320, height: 900 } });
+  await resizePage.goto(`${baseUrl}${route}`, { waitUntil: "networkidle" });
+  await resizePage.addStyleTag({ content: "html { font-size: 200% !important; }" });
+  const resizeGeometry = await resizePage.evaluate(() => {
+    const copy = document.querySelector(".hero__copy")?.getBoundingClientRect();
+    const portrait = document.querySelector(".hero__portrait-frame")?.getBoundingClientRect();
+    const overlap = copy && portrait && !(
+      copy.right <= portrait.left || portrait.right <= copy.left ||
+      copy.bottom <= portrait.top || portrait.bottom <= copy.top
+    );
+    return {
+      overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+      overlap: Boolean(overlap)
+    };
+  });
+  if (resizeGeometry.overflow > 0) {
+    failures.push(`${routeName}/200-percent: ${resizeGeometry.overflow}px horizontal overflow`);
+  }
+  if (resizeGeometry.overlap) failures.push(`${routeName}/200-percent: portrait overlaps hero copy`);
+  await resizePage.screenshot({ path: `${outputDir}/${routeName}-200-percent.png`, fullPage: true });
+  await resizePage.close();
+}
 await browser.close();
 
 if (failures.length) {
@@ -3222,7 +3233,28 @@ Keep `My contribution` narrower than `Project result`. Never update `test/fixtur
 
 ## Release
 
-Run `./script/ci`, serve `_site`, run the browser and external-link checks in `docs/release-checklist.md`, merge to `main`, watch the Pages workflow, then run:
+Build the exact artifact and install the pinned browser tooling:
+
+```bash
+./script/ci
+npm ci
+npx playwright install chromium
+```
+
+Serve that already-tested `_site` in one terminal:
+
+```bash
+ruby -run -e httpd _site -p 4173
+```
+
+In a second terminal, run the browser and external-link gates before merging:
+
+```bash
+npm run release:browser -- http://127.0.0.1:4173 /tmp/chyhsu-release
+./script/check-external-links
+```
+
+After the reviewed branch is merged and its exact Pages workflow succeeds, run:
 
 ```bash
 ./script/verify-live https://chyhsu.com
@@ -3237,10 +3269,12 @@ Create `docs/release-checklist.md`:
 - [ ] `./script/ci` passes from a clean worktree.
 - [ ] `git diff --exit-code -- _posts assets/pdf assets/images CNAME` prints nothing.
 - [ ] `./script/check-external-links` reports every rendered external URL and exits 0 after mandatory failures are fixed and failed optional project links are fixed or changed to `verified: false` followed by a rebuild.
-- [ ] Browser checks pass at 1440×900, 768×900, and 320×700.
 - [ ] `npm ci` and `npx playwright install chromium` succeed from a fresh checkout.
+- [ ] `ruby -run -e httpd _site -p 4173` serves the already-tested artifact.
+- [ ] `npm run release:browser -- http://127.0.0.1:4173 /tmp/chyhsu-release` passes at 1440×900, 768×900, and 320×700.
 - [ ] The 320px homepage is below 6,092px and has no horizontal overflow.
-- [ ] The 200% text-resize screenshot reflows without clipped or overlaid content.
+- [ ] Every 44px navigation/action target passes both width and height checks, including the skip link.
+- [ ] The 200% text-resize screenshots for all six routes reflow without clipped or overlaid content.
 - [ ] Keyboard traversal reaches skip link, navigation, native details, project links, posts, and email with visible focus.
 - [ ] Serious and critical axe violations are zero on Home, Projects, About, Blog, LLM, and one dated post.
 - [ ] Lilac and Brain Age wording still distinguishes `My contribution` from `Project result`.
@@ -3314,11 +3348,11 @@ npm run release:browser -- http://127.0.0.1:4173 /tmp/chyhsu-release
 find /tmp/chyhsu-release -maxdepth 1 -type f -name '*.png' -print | sort
 ```
 
-Expected: the browser script exits 0, prints the screenshot directory, reports no overflow/short-target/H1/axe failure, and produces desktop/tablet/mobile images for six routes plus `home-200-percent.png` with explicit no-overflow/no-overlap assertions after 200% text scaling.
+Expected: the browser script exits 0, prints the screenshot directory, reports no overflow/short-target/H1/axe failure, and produces desktop/tablet/mobile images plus a 200%-text-resize image for each of the six routes, with explicit no-overflow assertions everywhere and a no-overlap assertion for the homepage portrait.
 
 - [ ] **Step 3: Inspect screenshots and keyboard behavior**
 
-Open every image printed in Step 2. Confirm: the portrait never overlays copy; TSMC precedes QNAP; Lilac, Brain Age, and VizThinker remain ordered; research lilac is a rule/label rather than a filled card; tablet dossiers are one column; the 320px page is below 6,092px; the 200% text-resize image has no clipped text.
+Open every image printed in Step 2. Confirm: the portrait never overlays copy; TSMC precedes QNAP; Lilac, Brain Age, and VizThinker remain ordered; research lilac is a rule/label rather than a filled card; tablet dossiers are one column; the 320px page is below 6,092px; every 200% text-resize image has no clipped text.
 
 In the local browser, press `Tab` from the address bar and verify this sequence is reachable with visible focus: Skip to content → brand → Experience → Projects → About → Blog → CV → About Me → Download CV → profile links → native experience details → project/report links → More Work links → posts → email → footer links. Activate the skip link and both native `<details>` controls using only the keyboard.
 
@@ -3329,9 +3363,10 @@ Expected: no required information depends on hover or script, focus never disapp
 ```bash
 set -euo pipefail
 ./script/check-external-links
-git diff main...HEAD --check
-git diff --stat main...HEAD
-git log --oneline main..HEAD
+git fetch origin main
+git diff origin/main...HEAD --check
+git diff --stat origin/main...HEAD
+git log --oneline origin/main..HEAD
 ```
 
 Expected: reachable external URLs print `OK` and the checker exits 0. Mandatory failures are fixed; failed optional project links are fixed or changed to `verified: false` and the site is rebuilt before rerunning the checker. Diff check is clean; Tasks 1–7 appear as focused commits. Request independent code, attribution, and workflow review now; apply each accepted fix in its owning task's file, run its focused test plus `./script/ci`, and commit with `fix: address clean-slate review`.
@@ -3341,14 +3376,36 @@ Expected: reachable external URLs print `OK` and the checker exits 0. Mandatory 
 Use the worktree branch name established before Task 1, `feature/clean-slate-jekyll-rebuild`:
 
 ```bash
-git push -u origin feature/clean-slate-jekyll-rebuild
-gh pr create --base main --head feature/clean-slate-jekyll-rebuild \
-  --title "Rebuild portfolio as an evidence-first systems dossier" \
-  --body "Locked Jekyll build, corrected attribution, compact homepage, complete Projects index, and durable release gates."
-pr_number="$(gh pr view feature/clean-slate-jekyll-rebuild --json number --jq '.number')"
-gh pr checks "$pr_number" --watch
-gh pr merge "$pr_number" --merge --delete-branch
-gh pr view "$pr_number" --json mergeCommit --jq '.mergeCommit.oid' > /tmp/chyhsu-release-merge-sha
+set -euo pipefail
+branch=feature/clean-slate-jekyll-rebuild
+pr_number="$(gh pr list --head "$branch" --state all --limit 1 --json number --jq '.[0].number // empty')"
+if [[ -z "$pr_number" ]]; then
+  git push -u origin "$branch"
+  gh pr create --base main --head feature/clean-slate-jekyll-rebuild \
+    --title "Rebuild portfolio as an evidence-first systems dossier" \
+    --body "Locked Jekyll build, corrected attribution, compact homepage, complete Projects index, and durable release gates."
+  pr_number="$(gh pr view "$branch" --json number --jq '.number')"
+fi
+pr_state="$(gh pr view "$pr_number" --json state --jq '.state')"
+case "$pr_state" in
+  OPEN)
+    git push -u origin "$branch"
+    gh pr checks "$pr_number" --watch
+    gh pr merge "$pr_number" --merge
+    ;;
+  MERGED)
+    echo "PR #$pr_number is already merged; reusing its merge commit."
+    ;;
+  *)
+    echo "PR #$pr_number is $pr_state and cannot be released." >&2
+    exit 1
+    ;;
+esac
+merge_sha="$(gh pr view "$pr_number" --json mergeCommit --jq '.mergeCommit.oid // empty')"
+test -n "$merge_sha"
+git fetch origin main
+git merge-base --is-ancestor HEAD "$merge_sha"
+printf '%s\n' "$merge_sha" > /tmp/chyhsu-release-merge-sha
 ```
 
 Expected: required PR checks pass before merge; the merge updates `main`, which triggers `Build, test, and deploy Jekyll`.
@@ -3356,6 +3413,7 @@ Expected: required PR checks pass before merge; the merge updates `main`, which 
 - [ ] **Step 6: Watch Pages and verify the live artifact immediately**
 
 ```bash
+set -euo pipefail
 merge_sha="$(tr -d '\n' < /tmp/chyhsu-release-merge-sha)"
 run_id=""
 for attempt in {1..40}; do
@@ -3382,3 +3440,45 @@ git ls-files -- _site
 ```
 
 Expected: the worktree is clean and neither screenshots nor `_site` are tracked. The release is complete only after the live verifier passes.
+
+- [ ] **Step 8: Synchronize the official checkout and remove the generated feature worktree**
+
+First inspect and mechanically validate ignored paths in the feature worktree. The allowlist contains only generated dependency, build, and task-report directories; any tracked modification or unknown untracked/ignored path fails closed:
+
+```bash
+git status --short --ignored
+while IFS= read -r entry; do
+  case "$entry" in
+    "!! .bundle/"|"!! .jekyll-cache/"|"!! .superpowers/"|"!! _site/"|"!! node_modules/"|"!! vendor/") ;;
+    "") ;;
+    *)
+      echo "Refusing cleanup because the feature worktree contains: $entry" >&2
+      exit 1
+      ;;
+  esac
+done < <(git status --porcelain=v1 --ignored)
+git clean -ndX -- .bundle/ .jekyll-cache/ .superpowers/ _site/ node_modules/ vendor/
+git clean -fdX -- .bundle/ .jekyll-cache/ .superpowers/ _site/ node_modules/ vendor/
+test -z "$(git status --porcelain=v1 --ignored)"
+```
+
+Then leave the feature worktree and run the cleanup from the official checkout:
+
+```bash
+set -euo pipefail
+repo_root=/home/jason/Documents/chyhsu.github.io
+feature_worktree="$repo_root/.worktrees/clean-slate-jekyll-rebuild"
+merge_sha="$(tr -d '\n' < /tmp/chyhsu-release-merge-sha)"
+test -z "$(git -C "$repo_root" status --short)"
+test "$(git -C "$repo_root" branch --show-current)" = "main"
+git -C "$repo_root" pull --ff-only origin main
+test "$(git -C "$repo_root" rev-parse HEAD)" = "$merge_sha"
+git -C "$repo_root" worktree remove "$feature_worktree"
+git -C "$repo_root" branch -d feature/clean-slate-jekyll-rebuild
+if git ls-remote --exit-code --heads origin feature/clean-slate-jekyll-rebuild >/dev/null 2>&1; then
+  git -C "$repo_root" push origin --delete feature/clean-slate-jekyll-rebuild
+fi
+git -C "$repo_root" status --short
+```
+
+Expected: the official checkout is clean at the exact deployed merge commit, the merged local/remote feature branch is removed, and only the already-reported `/tmp/chyhsu-release` evidence remains outside Git.
