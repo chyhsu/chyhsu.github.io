@@ -72,7 +72,8 @@ Each featured project uses these explicit fields:
 - `my_contribution`: what Chun-Yuan can personally claim.
 - `project_results`: team or project outcomes, clearly labeled.
 - `technologies`: only supported tools.
-- `links`: report, repository, or live product.
+- `links`: report, repository, or live product, each with `label`, `url`, and
+  an explicit `verified` boolean. Only verified optional links render.
 
 Specific treatment:
 
@@ -274,19 +275,20 @@ The repository has one authoritative dependency graph and one authoritative buil
 - Remove the unused Minima theme.
 - Declare Jekyll, the Sass converter, feed, sitemap, SEO, and test dependencies explicitly.
 - Commit `Gemfile.lock`.
-- Use the same supported Ruby version locally and in CI.
+- Use the same supported Ruby 3.3.12 version locally and in CI.
 
 ### CI/deploy flow
 
-The GitHub Actions workflow must:
+The GitHub Actions workflow must run build/test checks for pull requests and
+must configure, upload, and deploy Pages only for deployment events on `main`:
 
 1. Check out the exact commit.
 2. Install the locked bundle with `ruby/setup-ruby` and Bundler cache.
 3. Run one production Jekyll build through `script/ci`.
 4. Run all tests against that already-built `_site` artifact.
 5. Verify that `_site/assets/main.css` is compiled CSS, is larger than a minimum sanity threshold, and contains no raw `@use`/`@import` Sass directives.
-6. Upload that exact tested `_site` directory.
-7. Deploy it with `actions/deploy-pages`.
+6. Upload that exact tested `_site` directory only for deployment events.
+7. Deploy it with `actions/deploy-pages` only after a successful `main` build.
 
 Do not use `actions/jekyll-build-pages`; it bypasses the repository's locked dependency set. Remove the source `.nojekyll` file because the workflow uploads an already-built Pages artifact.
 
@@ -342,4 +344,3 @@ Tests assert durable behavior rather than exact Sass filenames, exact whitespace
 - Layout is coherent at desktop, tablet, 320 pixels, and 200% zoom.
 - Keyboard and automated accessibility checks pass.
 - The repository documents one build, test, content-update, and deployment path.
-

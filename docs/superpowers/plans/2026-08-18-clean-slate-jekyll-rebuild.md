@@ -6,7 +6,7 @@
 
 **Architecture:** Keep Jekyll and every established public route, but replace the presentation layer with a semantic shell, small responsibility-owned Liquid includes, five canonical YAML files under `_data/portfolio/`, and component-owned Sass. A single locked Ruby/Bundler environment creates `_site`; schema, content, render, link, history, and compiled-CSS tests inspect that artifact before the workflow uploads the same directory.
 
-**Tech Stack:** Ruby 3.2.3, Bundler 2.7.1, Jekyll 4.3.4, Liquid, YAML, Dart Sass through `jekyll-sass-converter` 3.1.0, Test::Unit, Nokogiri, GitHub Pages Actions, Playwright, and axe-core.
+**Tech Stack:** Ruby 3.3.12, Bundler 2.7.1, Jekyll 4.3.4, Liquid, YAML, Dart Sass through `jekyll-sass-converter` 3.1.0, Test::Unit, Nokogiri, GitHub Pages Actions, Playwright, and axe-core.
 
 ## Global Constraints
 
@@ -27,13 +27,13 @@
 - `script/ci` is the only CI build entrypoint. `script/test` tests an existing `_site` and never invokes Jekyll. GitHub Actions must upload the exact `_site` produced and passed by `script/ci`.
 - A deployable `_site/assets/main.css` must exceed 8,000 bytes, contain the expected compiled token output, and contain no raw `@use`, `@forward`, or `@import` directives. Never upload or deploy after this gate fails.
 - Remove source `.nojekyll`; remove `actions/jekyll-build-pages`; commit `.ruby-version` and `Gemfile.lock`; never commit `_site`, screenshot artifacts, caches, or vendored gems.
-- Optional external project links remain data-driven; a failed optional link does not hide its project, but release review must report the failed URL before deployment.
+- Optional external project links remain data-driven and carry an explicit `verified` boolean. Templates render only verified links; a failed release check must report the URL and either be fixed or set `verified: false`, while the project itself remains visible.
 - Use `apply_patch` for hand-authored source changes, preserve unrelated user changes, and end every implementation task with the named focused tests, `./script/ci`, `git diff --check`, and the task's commit.
 
 ## Exact File Map
 
 ```text
-.ruby-version                              # one local/CI Ruby version: 3.2.3
+.ruby-version                              # one supported local/CI Ruby version: 3.3.12
 Gemfile                                    # explicit Jekyll, Sass, plugin, and test dependencies
 Gemfile.lock                               # committed Bundler 2.7.1 dependency graph
 .gitignore                                 # keeps generated files out; allows lock/version files
@@ -133,8 +133,7 @@ Do not modify these preserved sources or binaries:
 ```text
 _posts/*.md
 assets/pdf/*.pdf
-assets/images/20200711_190244-web.jpg
-assets/images/2473.jpg
+assets/images/*
 CNAME
 ```
 
@@ -159,7 +158,7 @@ CNAME
 - Create: `test/toolchain_contract_test.rb`
 
 **Interfaces:**
-- Consumes: Ruby `3.2.3`, Bundler `2.7.1`, and the repository root resolved from each script's location.
+- Consumes: Ruby `3.3.12`, Bundler `2.7.1`, and the repository root resolved from each script's location.
 - Produces: `script/build -> _site/`, `script/test(_site) -> exit 0|1`, `script/ci -> tested _site/`, and the invariant that upload occurs only after `script/ci` succeeds.
 
 - [ ] **Step 1: Write the failing toolchain/workflow contract**
@@ -226,7 +225,7 @@ class ToolchainContractTest < Test::Unit::TestCase
   end
 
   def test_ruby_and_bundle_are_locked_and_trackable
-    assert_equal("3.2.3\n", ROOT.join(".ruby-version").read)
+    assert_equal("3.3.12\n", ROOT.join(".ruby-version").read)
     ignore = ROOT.join(".gitignore").read
     assert_not_match(/^Gemfile\.lock$/i, ignore)
     assert_not_match(/^\.ruby-version$/i, ignore)
@@ -257,6 +256,8 @@ class ToolchainContractTest < Test::Unit::TestCase
     assert_operator(ci, :<, upload)
     assert_operator(upload, :<, deploy)
     assert_match(/actions\/upload-pages-artifact@v3[\s\S]*?path: _site/, workflow)
+    assert_match(/pull_request:\s*\n\s*branches: \[main\]/, workflow)
+    assert_operator(workflow.scan("github.event_name != 'pull_request'").length, :>=, 2)
   end
 
   def test_production_stylesheet_is_compiled_css
@@ -285,7 +286,7 @@ Expected: FAIL because `.ruby-version` is absent, `Gemfile.lock` is ignored, Min
 Create `.ruby-version`:
 
 ```text
-3.2.3
+3.3.12
 ```
 
 Replace `Gemfile` with:
@@ -318,7 +319,7 @@ Gemfile.lock
 .ruby-version
 ```
 
-With Ruby 3.2.3 active, regenerate the lock deterministically:
+With Ruby 3.3.12 active, regenerate the lock deterministically:
 
 ```bash
 gem install bundler --version 2.7.1 --no-document
@@ -455,6 +456,8 @@ name: Build, test, and deploy Jekyll
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -480,17 +483,20 @@ jobs:
           bundler-cache: true
 
       - name: Configure GitHub Pages
+        if: github.event_name != 'pull_request'
         uses: actions/configure-pages@v5
 
       - name: Build and test production artifact
         run: ./script/ci
 
       - name: Upload tested artifact
+        if: github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v3
         with:
           path: _site
 
   deploy:
+    if: github.event_name != 'pull_request'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -538,6 +544,7 @@ git commit -m "build: lock production Jekyll artifact"
 - Create: `_data/portfolio/skills.yml`
 - Delete: `_data/portfolio.yml`
 - Modify: `_includes/site-footer.html` (migration-safe consumer; deleted in Task 3)
+- Modify: `_includes/site-header.html` (migration-safe consumer; deleted in Task 3)
 - Modify: `_includes/sections/hero.html` (migration-safe consumer; deleted in Task 4)
 - Modify: `_includes/sections/experience.html` (migration-safe consumer; deleted in Task 4)
 - Modify: `_includes/sections/featured-work.html` (migration-safe consumer; deleted in Task 4)
@@ -577,8 +584,10 @@ class PortfolioSchemaTest < Test::Unit::TestCase
 
   def test_profile_education_and_skill_nested_types
     profile = portfolio_file("profile")
-    assert_equal(%w[contact earlier_roles identity interests records], profile.keys.sort)
+    assert_equal(%w[background contact earlier_roles identity interests records], profile.keys.sort)
     assert_equal(%w[alt src], profile.dig("identity", "portrait").keys.sort)
+    assert_equal(%w[name native_name portrait positioning seo_description summary], profile.fetch("identity").keys.sort)
+    assert_equal(%w[origin transition], profile.fetch("background").keys.sort)
     assert_equal(%w[cv email github linkedin], profile.fetch("contact").keys.sort)
     assert(profile.fetch("earlier_roles").all? { |role| role.is_a?(Hash) })
     assert(profile.fetch("interests").all? { |interest| interest.is_a?(String) })
@@ -633,7 +642,8 @@ class PortfolioSchemaTest < Test::Unit::TestCase
       assert_kind_of(Array, project.fetch("technologies"))
     end
     all_projects.flat_map { |project| project.fetch("links") }.each do |link|
-      assert_equal(%w[label url], link.keys.sort)
+      assert_equal(%w[label url verified], link.keys.sort)
+      assert_boolean(link.fetch("verified"))
       assert_match(%r{\A(?:https://|/)}, link.fetch("url"))
       URI.parse(link.fetch("url"))
     end
@@ -804,9 +814,15 @@ identity:
     Master of Science in Data Science student at the University of Michigan
     building AI agents, backend infrastructure, and applied machine learning
     systems across production and research environments.
+  seo_description: >-
+    Chun-Yuan Hsu is an AI and backend engineer working across agents,
+    infrastructure, and applied machine learning.
   portrait:
     src: /assets/images/2473.jpg
     alt: Portrait of Chun-Yuan Hsu
+background:
+  origin: Tainan, Taiwan
+  transition: Civil engineering to computer science
 contact:
   email: chyhsu@umich.edu
   github: https://github.com/chyhsu
@@ -1013,6 +1029,7 @@ featured:
     links:
       - label: Read project report
         url: /assets/pdf/cse599_report.pdf
+        verified: true
 
   - id: brain_age_ad
     title: Toward Interpretable Brain Age Prediction and AD Classification
@@ -1038,6 +1055,7 @@ featured:
     links:
       - label: Read project report
         url: /assets/pdf/final_report.pdf
+        verified: true
 
   - id: vizthinker
     title: VizThinker
@@ -1051,7 +1069,7 @@ featured:
         exploration using Node.js, React, and Python.
       - Deployed the application on Google Cloud Platform.
     project_results:
-      - The graph interface is available as a live product with its source published.
+      - The project produced a graph interface for branching through conversation history.
     technologies:
       - Node.js
       - React
@@ -1060,8 +1078,10 @@ featured:
     links:
       - label: View live project
         url: https://viz-thinker.com
+        verified: true
       - label: View source
         url: https://github.com/chyhsu/vizthinker
+        verified: true
 
 archive:
   - id: jira_issue_search
@@ -1075,6 +1095,7 @@ archive:
     links:
       - label: View source
         url: https://github.com/chyhsu/jira-issue-search
+        verified: true
 
   - id: issue_search_mcp
     title: Issue Search MCP
@@ -1087,6 +1108,7 @@ archive:
     links:
       - label: View source
         url: https://github.com/chyhsu/issue-search-mcp
+        verified: true
 
   - id: file_translator
     title: File Translator
@@ -1099,6 +1121,7 @@ archive:
     links:
       - label: View source
         url: https://github.com/chyhsu/file_translator
+        verified: true
 
   - id: aztec_image_comparison
     title: AZtec Image Comparison
@@ -1111,6 +1134,7 @@ archive:
     links:
       - label: View source
         url: https://github.com/chyhsu/AZtec-image-comparison
+        verified: true
 
   - id: mips_cpu
     title: MIPS CPU Architecture
@@ -1123,6 +1147,7 @@ archive:
     links:
       - label: View source
         url: https://github.com/chyhsu/computer-architecture
+        verified: true
 
   - id: os_nachos
     title: OS Nachos
@@ -1135,6 +1160,7 @@ archive:
     links:
       - label: View source
         url: https://github.com/chyhsu/OS_Nachos
+        verified: true
 
   - id: advanced_compiler
     title: Advanced Compiler
@@ -1147,6 +1173,7 @@ archive:
     links:
       - label: View source
         url: https://github.com/chyhsu/advanced_compiler
+        verified: true
 
   - id: quantum_event
     title: Quantum Event Identification and Simulation of Quantum Event-Learning Procedures
@@ -1159,8 +1186,10 @@ archive:
     links:
       - label: Read report
         url: /assets/pdf/arXiv_quantum_random_measurement_simulation_result.pdf
+        verified: true
       - label: View source
         url: https://github.com/chyhsu/random_measurement
+        verified: true
 ```
 
 - [ ] **Step 5: Switch current consumers before deleting the monolith**
@@ -1254,7 +1283,8 @@ Replace `_includes/sections/featured-work.html` with:
         <p><strong>Project result</strong></p>
         <ul class="metric-list">{% for item in project.project_results %}<li>{{ item }}</li>{% endfor %}</ul>
         <div class="card-links">
-          {% for link in project.links %}
+          {% assign verified_links = project.links | where: "verified", true %}
+          {% for link in verified_links %}
             {% assign href = link.url %}
             {% unless href contains '://' %}{% assign href = href | relative_url %}{% endunless %}
             <a href="{{ href }}">{{ link.label }}</a>
@@ -1305,6 +1335,24 @@ Replace `_includes/sections/toolkit.html` with:
     </div>
   </div>
 </section>
+```
+
+Replace `_includes/site-header.html` with this migration-safe consumer:
+
+```liquid
+<header class="site-header">
+  <div class="site-shell site-header__inner">
+    <a class="site-brand" href="{{ '/' | relative_url }}" aria-label="Chun-Yuan Hsu, home">
+      <span aria-hidden="true">CHY</span><span class="site-brand__divider" aria-hidden="true">/</span>Portfolio
+    </a>
+    <nav class="site-nav" aria-label="Primary navigation">
+      <a href="{{ '/#work' | relative_url }}">Work</a>
+      <a href="{{ '/about/' | relative_url }}">About</a>
+      <a href="{{ '/blog/' | relative_url }}">Blog</a>
+      <a href="{{ site.data.portfolio.profile.contact.cv | relative_url }}">CV</a>
+    </nav>
+  </div>
+</header>
 ```
 
 Replace `_includes/site-footer.html` with:
@@ -1399,7 +1447,8 @@ Expected: schema and content tests pass; the site builds without missing Liquid 
 - [ ] **Step 7: Commit the canonical data boundary**
 
 ```bash
-git add _data/portfolio _includes/sections _includes/site-footer.html llm.md \
+git add _data/portfolio _includes/sections _includes/site-header.html \
+  _includes/site-footer.html llm.md \
   test/helper.rb test/portfolio_schema_test.rb test/content_contract_test.rb
 git add -u _data/portfolio.yml test/portfolio_data_test.rb test/source_structure_test.rb
 git commit -m "content: split and attribute portfolio evidence"
@@ -1536,7 +1585,8 @@ layout: default
   <header class="page-header">
     <p class="eyebrow">{{ page.eyebrow | default: site.title }}</p>
     <h1>{{ page.title | escape }}</h1>
-    {% if page.description %}<p class="page-intro">{{ page.description }}</p>{% endif %}
+    {% assign page_description = page.description | default: page.intro %}
+    {% if page_description %}<p class="page-intro">{{ page_description }}</p>{% endif %}
   </header>
   <div class="page-content">
     {{ content }}
@@ -1602,9 +1652,10 @@ Delete `_includes/head.html`, `_includes/site-header.html`, and `_includes/site-
 Create `_includes/components/project-links.html`:
 
 ```liquid
-{% if include.links and include.links != empty %}
+{% assign verified_links = include.links | where: "verified", true %}
+{% if verified_links != empty %}
   <div class="project-links" aria-label="Links for {{ include.title }}">
-    {% for link in include.links %}
+    {% for link in verified_links %}
       {% assign href = link.url %}
       {% assign external = false %}
       {% if href contains '://' %}
@@ -1879,7 +1930,7 @@ Create `_includes/home/selected-work.html`:
 <section class="section site-shell" id="selected-work" aria-labelledby="selected-work-title">
   <header class="section-heading">
     <p class="eyebrow">02 / Selected work</p>
-    <h2 id="selected-work-title">What I built, and what the project proved.</h2>
+    <h2 id="selected-work-title">What I contributed, and what the project demonstrated.</h2>
   </header>
   <div class="selected-work">
     {% for project in site.data.portfolio.projects.featured %}
@@ -2000,7 +2051,8 @@ Delete every file under `_includes/sections/` listed in this task. Do not retain
 ```bash
 ./script/ci
 bundle exec ruby -Itest test/site_render_test.rb
-rg -n 'includes/sections|experience-card|featured-card|archive-card' --glob '!docs/**' . && exit 1 || true
+rg -n 'includes/sections|experience-card|featured-card|archive-card' \
+  _includes _layouts index.md projects.md && exit 1 || true
 ```
 
 Expected: all tests pass; the search prints nothing; homepage has one H1, two role rows, three dossiers, eight compact project links, two post rows, and one direct email endpoint.
@@ -2476,12 +2528,14 @@ permalink: /about/
 wide: true
 ---
 {% assign profile = site.data.portfolio.profile %}
+{% assign experience = site.data.portfolio.experience %}
+{% assign education = site.data.portfolio.education %}
 
 <div class="about-layout">
   <div class="prose">
     <h2>From structures to systems</h2>
-    <p>I grew up in Tainan, Taiwan, and began university studying civil engineering at National Cheng Kung University. While learning how physical structures are designed, I became increasingly interested in the logic of building software from a blank screen. That interest led me to computer science at National Tsing Hua University and research in quantum computing.</p>
-    <p>Today, I am studying Data Science at the University of Michigan. My work sits where AI, backend systems, and cloud infrastructure meet: from retrieval and developer tools at QNAP to AI-agent incident investigation at TSMC, and from cross-cloud infrastructure research to interpretable neuroimaging.</p>
+    <p>I grew up in {{ profile.background.origin }} and began university studying civil engineering at {{ education[2].institution }}. While learning how physical structures are designed, I became increasingly interested in the logic of building software from a blank screen. That interest led me to computer science at {{ education[1].institution }} and research in quantum computing.</p>
+    <p>Today, I am studying {{ education[0].degree }} at {{ education[0].institution }}. My work sits where AI, backend systems, and cloud infrastructure meet: from retrieval and developer tools at {{ experience[1].organization }} to AI-agent incident investigation at {{ experience[0].organization }}, and from cross-cloud infrastructure research to interpretable neuroimaging.</p>
     <p>I still think like someone who changed fields. I enjoy learning a system from first principles, tracing how its pieces interact, and turning that understanding into something practical and dependable.</p>
 
     <img src="{{ '/assets/images/20200711_190244-web.jpg' | relative_url }}"
@@ -2506,8 +2560,8 @@ wide: true
 
   <aside class="facts-rail" aria-labelledby="facts-title">
     <h2 id="facts-title">At a glance</h2>
-    <p><strong>Current study</strong><br>{{ site.data.portfolio.education.first.degree }}<br>{{ site.data.portfolio.education.first.institution }}</p>
-    <p><strong>Current work</strong><br>TSMC · AI-agent incident investigation</p>
+    <p><strong>Current study</strong><br>{{ education.first.degree }}<br>{{ education.first.institution }}</p>
+    <p><strong>Current work</strong><br>{{ experience.first.organization }} · {{ experience.first.summary }}</p>
     <h3>Outside the terminal</h3>
     <ul>{% for interest in profile.interests %}<li>{{ interest }}</li>{% endfor %}</ul>
   </aside>
@@ -2629,13 +2683,14 @@ permalink: /llm/
 **Technologies:** {{ project.technologies | join: ", " }}
 
 **Evidence links:**
-{% for link in project.links %}{% assign href = link.url %}{% unless href contains '://' %}{% assign href = href | relative_url %}{% endunless %}- [{{ link.label }}]({{ href }})
+{% assign verified_links = project.links | where: "verified", true %}
+{% for link in verified_links %}{% assign href = link.url %}{% unless href contains '://' %}{% assign href = href | relative_url %}{% endunless %}- [{{ link.label }}]({{ href }})
 {% endfor %}
 {% endfor %}
 
 ## Additional projects
 
-{% for project in projects.archive %}- **{{ project.title }} ({{ project.provenance }}):** {{ project.summary }} {% for link in project.links %}{% assign href = link.url %}{% unless href contains '://' %}{% assign href = href | relative_url %}{% endunless %}[{{ link.label }}]({{ href }}){% unless forloop.last %}; {% endunless %}{% endfor %}
+{% for project in projects.archive %}{% assign verified_links = project.links | where: "verified", true %}- **{{ project.title }} ({{ project.provenance }}):** {{ project.summary }} {% for link in verified_links %}{% assign href = link.url %}{% unless href contains '://' %}{% assign href = href | relative_url %}{% endunless %}[{{ link.label }}]({{ href }}){% unless forloop.last %}; {% endunless %}{% endfor %}
 {% endfor %}
 
 ## Skills
@@ -2660,7 +2715,7 @@ permalink: /llm/
 
 ## Personal background
 
-Originally from Tainan, Taiwan, Chun-Yuan moved from civil engineering into computer science. Outside technical work, his interests include sports, fitness, darts, and Linux ricing.
+Originally from {{ profile.background.origin }}, Chun-Yuan's path followed {{ profile.background.transition | downcase }}. Outside technical work, his interests include {{ profile.interests | join: ", " }}.
 ```
 
 - [ ] **Step 7: Run secondary-page, link, and full production checks**
@@ -2746,7 +2801,7 @@ class HistoryIntegrityTest < Test::Unit::TestCase
     assert_equal(EXPECTED_POST_ROUTES.sort, actual)
   end
 
-  def test_all_public_documents_exist_in_the_built_artifact
+  def test_all_public_artifacts_exist_in_the_built_artifact
     manifest = yaml_file("test/fixtures/content_checksums.yml")
     manifest.fetch("artifacts").each_key do |relative_path|
       next unless relative_path.start_with?("assets/")
@@ -2760,6 +2815,8 @@ class HistoryIntegrityTest < Test::Unit::TestCase
     profile = portfolio_file("profile")
     assert_equal(profile.dig("identity", "name"), config.fetch("author"))
     assert_equal(profile.dig("contact", "email"), config.fetch("email"))
+    assert_equal("#{profile.dig('identity', 'name')} | Portfolio", config.fetch("title"))
+    assert_equal(profile.dig("identity", "seo_description"), config.fetch("description"))
     assert_equal("https://chyhsu.com", config.fetch("url"))
     assert_equal("chyhsu.com\n", ROOT.join("CNAME").read)
   end
@@ -2820,6 +2877,16 @@ artifacts:
   assets/pdf/final_report.pdf: 7bd377204db332023d23a55976b2610b2b2b6931bc7b6f4cd87cc9b742b0b5bb
   assets/images/2473.jpg: 10af359167c78c47f6a63937a6180c790f4ef300083bdf5d460105e9780646db
   assets/images/20200711_190244-web.jpg: e1d61b5d064071b43b34624f96a6f87ac54703c4fe5b523e152d1ee10734e0c5
+  assets/images/8cFGSnjk.jpg: c9737574f446f8b2df15a6ab3d1f45870bee06bb4417306b0090ce3202ca78a4
+  assets/images/IMG_5033.JPG: 16f4e2347a9924fcc6d324ec09b96e6107c0df788b25cb02f5f5a6ea89d2b735
+  assets/images/IMG_5239.png: 7811e3f0e28b5f9825868d5f7a32d4f02b2ff86388d32aefd472956091b03cb9
+  assets/images/IMG_5240.png: 5d1f80c79aaf00c2a113cd8f50d8e1c3d7f08cda5c09860a383f754c4081d532
+  assets/images/Icon.jpg: 1ed8b4580e0aa7b6761c0105b192a37f9b851653c4158c464eda2ffb8b071183
+  assets/images/building-rag-apps-using-mongodb.png: e365254ff9066e453e94af14bc91ae734d89d86dc073975a20ddef7d4990075b
+  assets/images/from-relational-model-sql-to-mongodb-s-document-mod.png: ffb9806bb26238b47d02b75c9d9f619d37f8598556e8fec04586f000eb78af7e
+  assets/images/kHz6cSRG.jpg: 090011da8296bd533de609084f532b1892eccdd8eb152ec0f0b4736f6617bbb7
+  assets/images/mongodb-schema-design-patterns-and-antipatterns-ski.png: 224bedc6c92aa2e05857f7857ba2aab9ceb045d562e29bcfe99821a8193f2a7a
+  assets/images/y1gu5HBT.jpg: 18534980d71a922ede287a08a48cba8b48312461fd9a40b25af05bc6e6fbc013
   CNAME: 803eaa65d5f89c4981f2850c95bd19c831ce70c62550abba5ab5d3d3e82a2e31
 ```
 
@@ -2853,17 +2920,21 @@ bundle exec ruby -rnokogiri -ruri -e '
 
 failures=0
 while IFS= read -r url; do
-  if curl --location --silent --show-error --fail --retry 2 --max-time 25 \
-      --user-agent "chyhsu.com release verifier" --output /dev/null "$url"; then
-    echo "OK $url"
-  else
-    echo "FAIL $url" >&2
-    failures=$((failures + 1))
-  fi
+  status="$(curl --location --silent --show-error --retry 2 --max-time 25 \
+    --user-agent "chyhsu.com release verifier" --output /dev/null \
+    --write-out '%{http_code}' "$url" || true)"
+  case "$status" in
+    2??|3??) echo "OK $url (HTTP $status)" ;;
+    401|403|429|999) echo "OK $url (HTTP $status, access-controlled)" ;;
+    *)
+      echo "FAIL $url (HTTP $status)" >&2
+      failures=$((failures + 1))
+      ;;
+  esac
 done < "$url_file"
 
 if (( failures > 0 )); then
-  echo "$failures external link(s) require release review" >&2
+  echo "$failures external link(s) require a fix or verified: false before release" >&2
   exit 1
 fi
 ```
@@ -2967,6 +3038,7 @@ const routes = [
   ["projects", "/projects/"],
   ["about", "/about/"],
   ["blog", "/blog/"],
+  ["llm", "/llm/"],
   ["post", "/2026/05/25/Machine-Learning-Project.html"]
 ];
 const viewports = [
@@ -3011,10 +3083,23 @@ for (const [routeName, route] of routes) {
   }
 }
 
-const zoomPage = await browser.newPage({ viewport: { width: 640, height: 900 } });
-const client = await zoomPage.context().newCDPSession(zoomPage);
+const zoomPage = await browser.newPage({ viewport: { width: 320, height: 900 } });
 await zoomPage.goto(`${baseUrl}/`, { waitUntil: "networkidle" });
-await client.send("Emulation.setPageScaleFactor", { pageScaleFactor: 2 });
+await zoomPage.addStyleTag({ content: "html { font-size: 200% !important; }" });
+const zoomGeometry = await zoomPage.evaluate(() => {
+  const copy = document.querySelector(".hero__copy")?.getBoundingClientRect();
+  const portrait = document.querySelector(".hero__portrait-frame")?.getBoundingClientRect();
+  const overlap = copy && portrait && !(
+    copy.right <= portrait.left || portrait.right <= copy.left ||
+    copy.bottom <= portrait.top || portrait.bottom <= copy.top
+  );
+  return {
+    overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+    overlap: Boolean(overlap)
+  };
+});
+if (zoomGeometry.overflow > 0) failures.push(`home/200-percent: ${zoomGeometry.overflow}px horizontal overflow`);
+if (zoomGeometry.overlap) failures.push("home/200-percent: portrait overlaps hero copy");
 await zoomPage.screenshot({ path: `${outputDir}/home-200-percent.png`, fullPage: true });
 await zoomPage.close();
 await browser.close();
@@ -3046,7 +3131,9 @@ Chun-Yuan Hsu's Jekyll portfolio. The repository builds and tests the same stati
 
 ## Setup and commands
 
-Use Ruby 3.2.3. `./script/bootstrap` installs the locked Bundler 2.7.1 bundle.
+Use Ruby 3.3.12. `./script/bootstrap` installs the locked Bundler 2.7.1 bundle.
+For release-browser checks, run `npm ci` and `npx playwright install chromium`
+from the repository root; both package versions are pinned by `package-lock.json`.
 
 - `./script/build` removes `_site` and creates one production build.
 - `./script/test` tests the existing `_site`; it never rebuilds.
@@ -3081,9 +3168,10 @@ Create `docs/release-checklist.md`:
 # Portfolio Release Checklist
 
 - [ ] `./script/ci` passes from a clean worktree.
-- [ ] `git diff --exit-code -- _posts assets/pdf CNAME` prints nothing.
+- [ ] `git diff --exit-code -- _posts assets/pdf assets/images CNAME` prints nothing.
 - [ ] `./script/check-external-links` reports every optional external URL; failures are reviewed before release.
 - [ ] Browser checks pass at 1440×900, 768×900, and 320×700.
+- [ ] `npm ci` and `npx playwright install chromium` succeed from a fresh checkout.
 - [ ] The 320px homepage is below 6,092px and has no horizontal overflow.
 - [ ] The 200% screenshot reflows without clipped or overlaid content.
 - [ ] Keyboard traversal reaches skip link, navigation, native details, project links, posts, and email with visible focus.
@@ -3100,7 +3188,7 @@ Create `docs/release-checklist.md`:
 ./script/ci
 bundle exec ruby -Itest test/history_integrity_test.rb
 bundle exec ruby -Itest test/internal_link_test.rb
-git diff --exit-code -- _posts assets/pdf CNAME
+git diff --exit-code -- _posts assets/pdf assets/images CNAME
 ```
 
 Expected: all tests pass; ten exact post routes and all checksum entries match; all internal hrefs, fragments, images, `srcset` candidates, and public artifacts resolve; preserved sources show no diff.
@@ -3133,7 +3221,7 @@ git commit -m "test: add durable portfolio release gates"
 ```bash
 git status --short
 ./script/ci
-git diff --exit-code -- _posts assets/pdf CNAME
+git diff --exit-code -- _posts assets/pdf assets/images CNAME
 git ls-files _site Gemfile.lock .ruby-version
 ```
 
@@ -3143,6 +3231,8 @@ Expected: status is clean; CI passes; preserved content has no diff; `git ls-fil
 
 ```bash
 server_log="$(mktemp)"
+npm ci
+npx playwright install chromium
 ruby -run -e httpd _site -p 4173 >"$server_log" 2>&1 &
 server_pid=$!
 trap 'kill "$server_pid" 2>/dev/null || true; rm -f "$server_log"' EXIT
@@ -3155,7 +3245,7 @@ npm run release:browser -- http://127.0.0.1:4173 /tmp/chyhsu-release
 find /tmp/chyhsu-release -maxdepth 1 -type f -name '*.png' -print | sort
 ```
 
-Expected: the browser script exits 0, prints the screenshot directory, reports no overflow/short-target/H1/axe failure, and produces desktop/tablet/mobile images for five routes plus `home-200-percent.png`.
+Expected: the browser script exits 0, prints the screenshot directory, reports no overflow/short-target/H1/axe failure, and produces desktop/tablet/mobile images for six routes plus `home-200-percent.png` with explicit no-overflow/no-overlap assertions after 200% text scaling.
 
 - [ ] **Step 3: Inspect screenshots and keyboard behavior**
 
@@ -3185,8 +3275,10 @@ git push -u origin feature/clean-slate-jekyll-rebuild
 gh pr create --base main --head feature/clean-slate-jekyll-rebuild \
   --title "Rebuild portfolio as an evidence-first systems dossier" \
   --body "Locked Jekyll build, corrected attribution, compact homepage, complete Projects index, and durable release gates."
-gh pr checks --watch
-gh pr merge --merge --delete-branch
+pr_number="$(gh pr view feature/clean-slate-jekyll-rebuild --json number --jq '.number')"
+gh pr checks "$pr_number" --watch
+gh pr merge "$pr_number" --merge --delete-branch
+gh pr view "$pr_number" --json mergeCommit --jq '.mergeCommit.oid' > /tmp/chyhsu-release-merge-sha
 ```
 
 Expected: required PR checks pass before merge; the merge updates `main`, which triggers `Build, test, and deploy Jekyll`.
@@ -3194,7 +3286,18 @@ Expected: required PR checks pass before merge; the merge updates `main`, which 
 - [ ] **Step 6: Watch Pages and verify the live artifact immediately**
 
 ```bash
-run_id="$(gh run list --workflow jekyll-gh-pages.yml --branch main --limit 1 --json databaseId --jq '.[0].databaseId')"
+merge_sha="$(tr -d '\n' < /tmp/chyhsu-release-merge-sha)"
+run_id=""
+for attempt in {1..40}; do
+  run_id="$(gh run list --workflow jekyll-gh-pages.yml --branch main --event push \
+    --commit "$merge_sha" --limit 1 --json databaseId --jq '.[0].databaseId // empty')"
+  [[ -n "$run_id" ]] && break
+  sleep 3
+done
+if [[ -z "$run_id" ]]; then
+  echo "No Pages run found for merge commit $merge_sha" >&2
+  exit 1
+fi
 gh run watch "$run_id" --exit-status
 ./script/verify-live https://chyhsu.com
 ```
@@ -3205,7 +3308,7 @@ Expected: the Pages workflow succeeds and the live verifier reports all required
 
 ```bash
 git status --short
-git ls-files /tmp/chyhsu-release _site
+git ls-files -- _site
 ```
 
 Expected: the worktree is clean and neither screenshots nor `_site` are tracked. The release is complete only after the live verifier passes.
