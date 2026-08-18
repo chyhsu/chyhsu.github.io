@@ -2,6 +2,7 @@
 .experience-rail::before { content: ""; position: absolute; inset-block: 0; left: 12.45rem; width: 1px; background: var(--color-line); }
 .experience-row { display: grid; grid-template-columns: 11rem minmax(0, 1fr); gap: var(--space-6); padding-block: var(--space-5); border-bottom: 1px solid var(--color-line); }
 .experience-row:first-child { padding-top: 0; }
+.experience-row__meta, .experience-row__body { min-width: 0; }
 .experience-row__meta { color: var(--color-muted); font-size: 0.86rem; }
 .experience-row__period { color: var(--color-rust-dark); font-weight: 800; }
 .experience-row__body { position: relative; max-width: 48rem; }
@@ -10,7 +11,7 @@
 .experience-row__primary { padding-left: 1.15rem; }
 .experience-row li + li { margin-top: var(--space-2); }
 .experience-row details { margin-top: var(--space-3); color: var(--color-muted); }
-.experience-row summary { min-height: 2.75rem; min-width: 2.75rem; display: inline-flex; align-items: center; color: var(--color-rust-dark); cursor: pointer; font-weight: 750; }
+.experience-row summary { min-height: 2.75rem; min-width: 2.75rem; display: inline-flex; max-width: 100%; align-items: center; color: var(--color-rust-dark); cursor: pointer; font-weight: 750; overflow-wrap: anywhere; white-space: normal; }
 @media (max-width: 56rem) {
   .experience-rail::before { left: 0.35rem; }
   .experience-row { grid-template-columns: 1fr; gap: var(--space-2); padding-left: var(--space-5); }

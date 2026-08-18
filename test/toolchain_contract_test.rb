@@ -103,6 +103,18 @@ class ToolchainContractTest < Test::Unit::TestCase
     )
   end
 
+  def test_compiled_css_owns_tabs_and_text_resize_reflow
+    css = SITE_DIR.join("assets/main.css").read
+    assert_match(/\.tab-list\{[^}]*display:none/, css)
+    assert_match(/\.tabs-ready>\.tab-list\{[^}]*display:flex/, css)
+    assert_match(/\.tab-button\{[^}]*min-height:2\.75rem;min-width:2\.75rem/, css)
+    assert_match(/\.site-brand\{[^}]*max-width:100%[^}]*flex-wrap:wrap/, css)
+    assert_match(/\.experience-row__meta,\.experience-row__body\{[^}]*min-width:0/, css)
+    assert_match(/\.evidence-row__header,\.evidence-row__facts\{[^}]*min-width:0/, css)
+    assert_match(/\.profile-strip__inner>\*\{[^}]*min-width:0/, css)
+    assert_match(/\.profile-strip__skills\{[^}]*columns:auto/, css)
+  end
+
   def test_documented_release_commands_exist_and_are_executable
     %w[bootstrap build test ci check-external-links verify-live].each do |name|
       path = ROOT.join("script", name)
