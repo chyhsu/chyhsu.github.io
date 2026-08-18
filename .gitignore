@@ -56,3 +56,6 @@ temp/
 
 # Superpowers brainstorming artifacts
 .superpowers/
+
+# Local frontend content guide
+/maitain.md
