@@ -7,7 +7,7 @@
 .hero__actions { margin-top: var(--space-5); }
 .hero__links { margin-top: var(--space-4); gap: var(--space-4); }
 .hero__links a { min-height: 2.75rem; min-width: 2.75rem; display: inline-flex; align-items: center; }
-.hero__portrait-frame { justify-self: end; width: 11rem; padding: 0.45rem; border: 1px solid var(--color-line); background: var(--color-surface); transform: rotate(1.5deg); }
+.hero__portrait-frame { justify-self: end; width: 11rem; margin: 0; padding: 0.45rem; border: 1px solid var(--color-line); background: var(--color-surface); transform: rotate(1.5deg); }
 .hero__portrait { width: 100%; aspect-ratio: 1; object-fit: cover; object-position: 50% 35%; }
 @media (max-width: 56rem) {
   .hero { min-height: auto; grid-template-columns: minmax(0, 1fr) 8rem; gap: var(--space-5); }

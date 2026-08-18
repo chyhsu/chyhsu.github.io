@@ -69,6 +69,7 @@ class ToolchainContractTest < Test::Unit::TestCase
     assert_match(/\.site-nav a,.footer-links a\{[^}]*min-height:2\.75rem;min-width:2\.75rem/, css)
     assert_match(/\.site-footer__contact\{[^}]*min-height:2\.75rem/, css)
     assert_match(/\.section-heading--split>a\{[^}]*min-height:2\.75rem/, css)
+    assert_match(/\.hero__portrait-frame\{[^}]*margin:0/, css)
     assert_match(/@media\s*\(max-width:\s*56rem\)/, css)
     assert_not_match(/fonts\.googleapis|@font-face/, css)
     assert_equal(
