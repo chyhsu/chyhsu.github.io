@@ -3202,13 +3202,13 @@ Create `docs/release-checklist.md`:
 
 - [ ] `./script/ci` passes from a clean worktree.
 - [ ] `git diff --exit-code -- _posts assets/pdf assets/images CNAME` prints nothing.
-- [ ] `./script/check-external-links` reports every optional external URL; failures are reviewed before release.
+- [ ] `./script/check-external-links` reports every rendered external URL and exits 0 after mandatory failures are fixed and failed optional project links are fixed or changed to `verified: false` followed by a rebuild.
 - [ ] Browser checks pass at 1440×900, 768×900, and 320×700.
 - [ ] `npm ci` and `npx playwright install chromium` succeed from a fresh checkout.
 - [ ] The 320px homepage is below 6,092px and has no horizontal overflow.
 - [ ] The 200% text-resize screenshot reflows without clipped or overlaid content.
 - [ ] Keyboard traversal reaches skip link, navigation, native details, project links, posts, and email with visible focus.
-- [ ] Serious and critical axe violations are zero on Home, Projects, About, Blog, and one dated post.
+- [ ] Serious and critical axe violations are zero on Home, Projects, About, Blog, LLM, and one dated post.
 - [ ] Lilac and Brain Age wording still distinguishes `My contribution` from `Project result`.
 - [ ] TSMC/QNAP, featured work, archive work, education, and skills remain in approved order.
 - [ ] The Pages workflow uploads `_site` only after `script/ci` succeeds.
@@ -3293,13 +3293,14 @@ Expected: no required information depends on hover or script, focus never disapp
 - [ ] **Step 4: Run external-link and independent diff reviews**
 
 ```bash
+set -euo pipefail
 ./script/check-external-links
 git diff main...HEAD --check
 git diff --stat main...HEAD
 git log --oneline main..HEAD
 ```
 
-Expected: reachable external URLs print `OK`; any failed optional URL is reported with its exact address and is resolved or explicitly reviewed before continuing; diff check is clean; Tasks 1–7 appear as focused commits. Request independent code, attribution, and workflow review now; apply each accepted fix in its owning task's file, run its focused test plus `./script/ci`, and commit with `fix: address clean-slate review`.
+Expected: reachable external URLs print `OK` and the checker exits 0. Mandatory failures are fixed; failed optional project links are fixed or changed to `verified: false` and the site is rebuilt before rerunning the checker. Diff check is clean; Tasks 1–7 appear as focused commits. Request independent code, attribution, and workflow review now; apply each accepted fix in its owning task's file, run its focused test plus `./script/ci`, and commit with `fix: address clean-slate review`.
 
 - [ ] **Step 5: Push the reviewed feature branch and merge only after checks pass**
 
