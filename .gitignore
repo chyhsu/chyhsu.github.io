@@ -48,6 +48,9 @@ npm-debug.log*
 tmp/
 temp/
 
+# Local feature worktrees
+.worktrees/
+
 # Cache files
 .cache/
 
