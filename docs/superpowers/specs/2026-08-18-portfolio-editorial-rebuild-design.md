@@ -2,7 +2,7 @@
 
 **Date:** 2026-08-18
 
-**Status:** Approved design; pending written-spec review
+**Status:** Approved for implementation
 
 **Target repository:** `/home/jason/Documents/chyhsu.github.io`
 
