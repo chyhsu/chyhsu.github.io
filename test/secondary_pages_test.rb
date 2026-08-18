@@ -37,4 +37,14 @@ class SecondaryPagesTest < Test::Unit::TestCase
     assert_match(/<article class="[^"]*\bpost-article\b[^"]*">/, html)
     assert_include(html, '<time datetime="2026-05-25')
   end
+
+  def test_llm_profile_renders_authoritative_shared_facts
+    html = rendered("llm/index.html")
+    assert_include(html, "Digital Workflow Development Department Intern")
+    assert_include(html, "May 2026 – Present")
+    assert_include(html, "0.873 diagnostic accuracy")
+    assert_include(html, "0.966 R²")
+    assert_include(html, "Jira Issue Search")
+    assert_not_include(html, "Begins Sep 2025")
+  end
 end

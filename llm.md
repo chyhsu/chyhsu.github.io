@@ -1,29 +1,55 @@
 ---
 layout: page
-title: LLM
+title: LLM-readable profile
+eyebrow: Structured profile
+intro: A plain-language rendering of the same verified data used on the homepage.
 permalink: /llm/
 ---
+{% assign profile = site.data.portfolio %}
 
-Chun-Yuan Hsu is a technology professional with a background in civil engineering, computer science, and data science.
+## Summary
 
-Education History:
-- Master of Data Science, University of Michigan, Ann Arbor (Begins Sep 2025)
-- Master of Science in Computer Science, National Tsing Hua University (2022–2025). Thesis: "Quantum Event Identification and Learning Procedures."
-- Bachelor of Science in Civil Engineering, National Cheng Kung University (2018–2022).
+{{ profile.identity.name }} is an engineer and researcher with a background in civil engineering, computer science, and data science. {{ profile.identity.summary }}
 
-Professional Experience:
-- Internship at QNAP (Jan–Jul 2025): Developed a Jira semantic search service with text embeddings and LLMs; migrated services from Python to Go and deployed them on Kubernetes; resolved bugs related to DDNS, memory leaks, and NATS messaging.
-- Volunteer at US Taiwan Watch (2024): Contributed to back-end web development.
-- Teaching Assistant for Linear Algebra (2023–2024): Supported international students.
+## Experience
 
-Technical Skills:
-- Languages: Python, C++, Go, SQL, Bash
-- Tools & Technologies: Docker, Kubernetes, GitLab CI, NATS, Relational & Non-Relational Databases, Message Queues.
+{% for role in profile.experience %}
+### {{ role.organization }} — {{ role.title }}
 
-Projects & Research:
-- Created a Jira Issue Search service, a file translator using LLM APIs, and an image comparison tool for crystallographic analysis.
-- Academic projects include building a MIPS CPU with Verilog, implementing OS concepts in Nachos, and developing compiler optimizations with LLVM.
-- Research on "Quantum Event Identification and Learning Procedures."
+{{ role.location }} · {{ role.period }}
 
-Personal Background:
-Originally from Tainan, Taiwan, CYH transitioned from civil engineering to computer science after discovering a passion for programming. His interests include sports (baseball, basketball, football), fitness, darts, and UI customization (ricing).
+{% for highlight in role.highlights %}- {{ highlight }}
+{% endfor %}
+{% endfor %}
+
+## Featured projects
+
+{% for project in profile.featured_projects %}
+### {{ project.title }}
+
+{{ project.summary }}
+
+{% for highlight in project.highlights %}- {{ highlight }}
+{% endfor %}
+{% if project.metrics %}{% for metric in project.metrics %}- Reported result: {{ metric }}
+{% endfor %}{% endif %}
+{% endfor %}
+
+## Additional projects
+
+{% for project in profile.project_archive %}- **{{ project.title }}:** {{ project.description }}
+{% endfor %}
+
+## Skills
+
+{% for group in profile.skill_groups %}- **{{ group.name }}:** {{ group.items | join: ", " }}
+{% endfor %}
+
+## Education
+
+{% for item in profile.education %}- **{{ item.degree }}**, {{ item.institution }}, {{ item.location }} — {{ item.period }}
+{% endfor %}
+
+## Personal background
+
+Originally from Tainan, Taiwan, Chun-Yuan moved from civil engineering into computer science after discovering a stronger interest in programming. Outside technical work, his interests include sports, fitness, darts, and Linux ricing.

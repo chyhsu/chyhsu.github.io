@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+repo_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$repo_dir"
+
+bundle exec jekyll build
+ruby -Itest test/portfolio_data_test.rb
+ruby -Itest test/source_structure_test.rb
+ruby -Itest test/site_render_test.rb
+ruby -Itest test/secondary_pages_test.rb
+ruby -Itest test/internal_link_test.rb
+git diff --check
