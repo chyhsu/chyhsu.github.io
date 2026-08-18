@@ -2086,6 +2086,7 @@ git commit -m "feat: replace homepage with evidence dossier"
 - Create: `_sass/components/_experience.scss`
 - Create: `_sass/components/_projects.scss`
 - Create: `_sass/components/_content.scss`
+- Modify: `projects.md`
 - Modify: `assets/main.scss`
 - Delete: `_sass/_base.scss`
 - Delete: `_sass/_components.scss`
@@ -2108,8 +2109,16 @@ Insert this method into `ToolchainContractTest`:
     assert_include(css, ".evidence-row")
     assert_include(css, ".experience-rail")
     assert_include(css, ".project-index-row")
+    assert_include(css, ".project-index-row--research .project-provenance")
+    assert_match(/\.site-brand\{[^}]*min-height:2\.75rem/, css)
+    assert_match(/\.site-footer__contact\{[^}]*min-height:2\.75rem/, css)
+    assert_match(/\.section-heading--split>a\{[^}]*min-height:2\.75rem/, css)
     assert_match(/@media\s*\(max-width:\s*56rem\)/, css)
     assert_not_match(/fonts\.googleapis|@font-face/, css)
+    assert_equal(
+      1,
+      document("projects/index.html").css(".project-index-row--research .project-provenance").length
+    )
   end
 ```
 
@@ -2120,7 +2129,7 @@ Insert this method into `ToolchainContractTest`:
 bundle exec ruby -Itest test/toolchain_contract_test.rb
 ```
 
-Expected: FAIL because the old stylesheet has no `--color-research`, `.evidence-row`, `.experience-rail`, or `.project-index-row` output.
+Expected: FAIL because the old stylesheet has no new component output, scoped research provenance, or complete 44px navigation/action rules.
 
 - [ ] **Step 3: Define the tokens and shared document primitives**
 
@@ -2192,6 +2201,7 @@ pre code { padding: 0; background: transparent; color: inherit; }
 .section { padding-block: var(--space-7); border-top: 1px solid var(--color-line); }
 .section-heading { max-width: 48rem; margin-bottom: var(--space-6); }
 .section-heading--split { max-width: none; display: flex; align-items: end; justify-content: space-between; gap: var(--space-4); }
+.section-heading--split > a { min-height: 2.75rem; display: inline-flex; align-items: center; }
 .eyebrow {
   margin-bottom: var(--space-2);
   color: var(--color-rust);
@@ -2243,7 +2253,7 @@ Create `_sass/components/_chrome.scss`:
 ```scss
 .site-header { border-bottom: 1px solid var(--color-line); }
 .site-header__inner { min-height: 4.5rem; display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); }
-.site-brand { color: var(--color-ink); font-weight: 800; letter-spacing: 0.05em; text-decoration: none; text-transform: uppercase; }
+.site-brand { min-height: 2.75rem; display: inline-flex; align-items: center; color: var(--color-ink); font-weight: 800; letter-spacing: 0.05em; text-decoration: none; text-transform: uppercase; }
 .site-brand__divider { margin-inline: 0.45em; color: var(--color-rust); }
 .site-nav, .footer-links { display: flex; flex-wrap: wrap; gap: var(--space-2); }
 .site-nav a, .footer-links a { display: inline-flex; min-height: 2.75rem; align-items: center; padding-inline: 0.55rem; color: inherit; font-size: 0.9rem; text-decoration: none; }
@@ -2252,6 +2262,7 @@ Create `_sass/components/_chrome.scss`:
 .site-footer__inner { display: flex; align-items: end; justify-content: space-between; gap: var(--space-5); }
 .site-footer__eyebrow { color: #dda18f; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; }
 .site-footer__title { max-width: 38rem; margin-bottom: var(--space-2); color: var(--color-surface); font-family: var(--font-display); font-size: clamp(1.7rem, 4vw, 2.8rem); }
+.site-footer__contact { min-height: 2.75rem; display: inline-flex; align-items: center; }
 .site-footer a { color: var(--color-surface); }
 .site-footer a:focus-visible { outline-color: var(--color-surface); }
 @media (max-width: 42rem) {
@@ -2311,6 +2322,12 @@ Create `_sass/components/_experience.scss`:
 
 - [ ] **Step 5: Add project and content styles, including their own breakpoints**
 
+In `projects.md`, replace the archive article opening tag with a semantic group modifier so the research accent has an explicit, data-owned scope:
+
+```liquid
+          <article class="project-index-row project-index-row--{{ project.group }}" id="{{ project.id }}">
+```
+
 Create `_sass/components/_projects.scss`:
 
 ```scss
@@ -2334,7 +2351,8 @@ Create `_sass/components/_projects.scss`:
 .project-group { margin-top: var(--space-7); }
 .project-group > h2 { font-size: 1.5rem; }
 .project-index-row { display: grid; grid-template-columns: 17rem minmax(0, 1fr); gap: var(--space-5); padding-block: var(--space-4); border-bottom: 1px solid var(--color-line); }
-.project-provenance { margin-bottom: var(--space-1); color: var(--color-research); font-size: 0.74rem; font-weight: 800; text-transform: uppercase; }
+.project-provenance { margin-bottom: var(--space-1); color: var(--color-rust-dark); font-size: 0.74rem; font-weight: 800; text-transform: uppercase; }
+.project-index-row--research .project-provenance { color: var(--color-research); }
 @media (max-width: 56rem) {
   .evidence-row, .project-index-row { grid-template-columns: 1fr; gap: var(--space-3); }
   .evidence-row__facts > div { grid-template-columns: 1fr; gap: var(--space-1); }
@@ -2356,7 +2374,8 @@ Create `_sass/components/_content.scss`:
 .post-row { display: grid; grid-template-columns: 8rem 18rem minmax(0, 1fr); gap: var(--space-4); padding-block: var(--space-4); border-bottom: 1px solid var(--color-line); }
 .post-row time { color: var(--color-muted); font-size: 0.86rem; }
 .post-row h2, .post-row h3 { margin-bottom: 0; font-family: var(--font-body); font-size: 1rem; }
-.post-row h2 a, .post-row h3 a { color: var(--color-ink); text-decoration: none; }
+.post-row h2 a, .post-row h3 a { min-height: 2.75rem; display: inline-flex; align-items: center; color: var(--color-ink); text-decoration: none; }
+.profile-strip a { min-height: 2.75rem; display: inline-flex; align-items: center; }
 .contact-strip { padding-block: var(--space-6); background: var(--color-surface); border-top: 1px solid var(--color-line); }
 .contact-strip__inner { display: flex; align-items: center; justify-content: space-between; gap: var(--space-5); }
 .contact-strip h2 { margin-bottom: 0; }
@@ -2422,7 +2441,7 @@ Expected: all tests pass; compiled CSS exceeds 8,000 bytes, includes the new com
 - [ ] **Step 8: Commit the visual system**
 
 ```bash
-git add _sass assets/main.scss test/toolchain_contract_test.rb
+git add _sass assets/main.scss projects.md test/toolchain_contract_test.rb
 git add -u _sass/_base.scss _sass/_components.scss _sass/_layout.scss _sass/_pages.scss
 git commit -m "style: add component-owned dossier system"
 ```
@@ -3100,7 +3119,22 @@ for (const [routeName, route] of routes) {
     }
 
     if (viewportName === "mobile") {
-      const shortTargets = await page.locator(".site-nav a, .hero__actions a").evaluateAll((links) =>
+      const targetSelector = [
+        ".site-brand",
+        ".site-nav a",
+        ".site-footer__contact",
+        ".footer-links a",
+        ".hero__actions a",
+        ".hero__links a",
+        ".section-heading--split > a",
+        ".profile-strip a",
+        ".post-row a",
+        ".project-links a",
+        ".more-work__link",
+        ".experience-row summary",
+        ".contact-strip .button"
+      ].join(", ");
+      const shortTargets = await page.locator(targetSelector).evaluateAll((links) =>
         links.filter((link) => link.getBoundingClientRect().height < 44).map((link) => link.textContent.trim())
       );
       if (shortTargets.length) failures.push(`${routeName}/mobile: short targets ${shortTargets.join(", ")}`);
