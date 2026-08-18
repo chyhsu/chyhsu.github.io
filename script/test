@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+repo_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$repo_dir"
+
+if [[ ! -f _site/index.html ]]; then
+  echo "_site/index.html is missing; run ./script/build first" >&2
+  exit 1
+fi
+
+bundle exec ruby -Itest -e 'Dir["test/**/*_test.rb"].sort.each { |path| require File.expand_path(path) }'

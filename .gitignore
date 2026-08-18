@@ -7,11 +7,9 @@ _site/
 # Bundle files
 vendor/bundle/
 .bundle/
-Gemfile.lock
 
 # Ruby files
 *.gem
-.ruby-version
 .ruby-gemset
 
 # OS generated files

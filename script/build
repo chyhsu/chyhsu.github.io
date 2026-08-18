@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+repo_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+site_dir="$repo_dir/_site"
+cd "$repo_dir"
+
+rm -rf "$site_dir"
+JEKYLL_ENV=production bundle exec jekyll build \
+  --source "$repo_dir" \
+  --destination "$site_dir" \
+  --trace

@@ -2,21 +2,27 @@ title: Chun-Yuan Hsu | Portfolio
 author: Chun-Yuan Hsu
 email: chyhsu@umich.edu
 description: >-
-  Chun-Yuan Hsu builds AI agents, backend infrastructure, and applied machine
-  learning systems across production and research environments.
+  Chun-Yuan Hsu is an AI and backend engineer working across agents,
+  infrastructure, and applied machine learning.
 lang: en
-baseurl: ""
 url: https://chyhsu.com
-github_username: chyhsu
+baseurl: ""
+permalink: /:year/:month/:day/:title:output_ext
 
-theme: minima
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
   - jekyll-sitemap
 
+sass:
+  style: compressed
+
 exclude:
   - docs/
+  - node_modules/
+  - package.json
+  - package-lock.json
+  - README.md
   - script/
   - test/
   - vendor/

@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+repo_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$repo_dir"
+
+required_ruby="$(tr -d '\n' < .ruby-version)"
+actual_ruby="$(ruby -e 'print RUBY_VERSION')"
+if [[ "$actual_ruby" != "$required_ruby" ]]; then
+  echo "Ruby $required_ruby is required; found $actual_ruby" >&2
+  exit 1
+fi
+
+if ! command -v bundle >/dev/null || [[ "$(bundle --version)" != "Bundler version 2.7.1" ]]; then
+  gem install bundler --version 2.7.1 --no-document
+fi
+
+bundle _2.7.1_ config set --local path vendor/bundle
+bundle _2.7.1_ install

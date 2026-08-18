@@ -1,0 +1,54 @@
+# frozen_string_literal: true
+
+require_relative "helper"
+
+class ToolchainContractTest < Test::Unit::TestCase
+  include PortfolioTestSupport
+
+  def setup
+    assert_built_site!
+  end
+
+  def test_ruby_and_bundle_are_locked_and_trackable
+    assert_equal("3.2.3\n", ROOT.join(".ruby-version").read)
+    ignore = ROOT.join(".gitignore").read
+    assert_not_match(/^Gemfile\.lock$/i, ignore)
+    assert_not_match(/^\.ruby-version$/i, ignore)
+    lock = ROOT.join("Gemfile.lock").read
+    assert_include(lock, "jekyll (4.3.4)")
+    assert_include(lock, "jekyll-sass-converter (3.1.0)")
+    assert_match(/BUNDLED WITH\s+2\.7\.1\s*\z/m, lock)
+  end
+
+  def test_theme_and_implicit_pages_builder_are_absent
+    gemfile = ROOT.join("Gemfile").read
+    config = ROOT.join("_config.yml").read
+    workflow = ROOT.join(".github/workflows/jekyll-gh-pages.yml").read
+    assert_not_match(/\bminima\b/, gemfile)
+    assert_not_match(/^theme:/, config)
+    assert_not_include(workflow, "actions/jekyll-build-pages")
+    assert_path_not_exist(ROOT.join(".nojekyll"))
+  end
+
+  def test_workflow_builds_tests_and_uploads_one_artifact_in_order
+    workflow = ROOT.join(".github/workflows/jekyll-gh-pages.yml").read
+    ci = workflow.index("run: ./script/ci")
+    upload = workflow.index("uses: actions/upload-pages-artifact@v3")
+    deploy = workflow.index("uses: actions/deploy-pages@v4")
+    assert_not_nil(ci)
+    assert_not_nil(upload)
+    assert_not_nil(deploy)
+    assert_operator(ci, :<, upload)
+    assert_operator(upload, :<, deploy)
+    assert_match(/actions\/upload-pages-artifact@v3[\s\S]*?path: _site/, workflow)
+  end
+
+  def test_production_stylesheet_is_compiled_css
+    css_path = SITE_DIR.join("assets/main.css")
+    assert_path_exist(css_path)
+    css = css_path.read
+    assert_operator(css.bytesize, :>, 8_000)
+    assert_include(css, "--color-paper:")
+    assert_not_match(/@(use|forward|import)\b/, css)
+  end
+end
