@@ -7,7 +7,7 @@ Create a concise, repository-accurate guide that explains how this Jekyll fronte
 ## Artifacts
 
 - Create `maitain.md` at the repository root, using the filename requested by the user.
-- Add `/maitain.md` to `.gitignore` so the guide remains local and is not published with the portfolio.
+- Add `/maitain.md` to `.gitignore` so the guide remains local and untracked. It is an ordinary README-like maintenance note, not a Jekyll page or post; therefore it is absent from the GitHub Actions checkout and production deployment. A local Jekyll build may copy it into disposable `_site/maitain.md`, which is expected and is not publication.
 - Do not change portfolio content, templates, styling, JavaScript, data schemas, or deployment behavior.
 
 ## Guide Structure
@@ -35,6 +35,7 @@ The guide will follow the rendered page from the outer shell into each visible s
 
 ## Guide Style
 
+- Keep `maitain.md` as plain README-style Markdown with no Jekyll front matter.
 - Start with a one-screen quick map.
 - Use tables for section-to-file mappings.
 - Use small YAML examples that match the current schema but contain neutral placeholders rather than invented claims.
@@ -50,10 +51,11 @@ Implementation is accepted when:
 - Every referenced source file and executable command exists.
 - Every homepage section and secondary page is mapped to its real source.
 - YAML examples use the current field names and parse successfully.
+- `maitain.md` begins with its Markdown H1 and has no YAML front matter.
 - `git diff --check` passes and the current site test suite remains green after the `.gitignore` change.
 
 ## Non-goals
 
 - A general Git, GitHub Pages, or Jekyll tutorial.
 - A release-operations handbook unrelated to editing frontend content.
-- Publishing the guide on the website.
+- Treating the local note as a Jekyll page/post or publishing it on the website.

@@ -4,7 +4,7 @@
 
 **Goal:** Create an ignored root-level `maitain.md` that explains the portfolio frontend structure and maps every rendered section to the exact content source a maintainer should edit.
 
-**Architecture:** The guide mirrors the Jekyll render path: canonical YAML and posts feed Liquid pages/includes, shared layouts add chrome, Sass owns presentation, and the homepage-only JavaScript progressively enhances three tab groups. Only `.gitignore` is tracked; the guide itself remains local.
+**Architecture:** The guide mirrors the Jekyll render path: canonical YAML and posts feed Liquid pages/includes, shared layouts add chrome, Sass owns presentation, and the homepage-only JavaScript progressively enhances three tab groups. `maitain.md` is plain README-style Markdown with no Jekyll front matter, not a Jekyll page/post. Only `.gitignore` is tracked; the guide remains ignored/untracked and is therefore absent from the GitHub Actions checkout and production deployment. A local Jekyll build may copy it to disposable `_site/maitain.md`; that is expected and is not publication.
 
 **Tech Stack:** Markdown, Jekyll 4.3.4, Liquid, YAML, Sass, vanilla JavaScript, Ruby 3.3.12 test tooling.
 
@@ -12,7 +12,7 @@
 
 - The local filename is exactly `maitain.md` at the repository root.
 - `.gitignore` contains exactly one root-anchored `/maitain.md` entry.
-- The guide is local-only and must not be added to Git or rendered by Jekyll.
+- The guide is a plain local README-like note with no Jekyll front matter; it must not be added to Git. Because it is ignored/untracked, it is absent from the GitHub Actions checkout and production deployment. A local Jekyll build may copy it to disposable `_site/maitain.md`; that is expected and is not publication.
 - Every path, field, behavior, and command in the guide must match the current repository.
 - Examples use neutral sample copy and introduce no portfolio claim.
 - No portfolio data, templates, Sass, JavaScript, schemas, tests, posts, PDFs, images, or deployment behavior may change.
@@ -51,12 +51,12 @@ Append this focused block to `.gitignore`:
 
 - [ ] **Step 3: Create the guide**
 
-Create `maitain.md` with this exact content:
+Create `maitain.md` as plain README-style Markdown with no YAML front matter, with this exact content:
 
 ````markdown
 # Frontend Structure and Content Editing Guide
 
-This is a local guide for maintaining `chyhsu.com`. Git intentionally ignores this file.
+This is a plain local maintenance note, like a README, for maintaining `chyhsu.com`. It is not a Jekyll page or post. Git intentionally ignores this file, so it is absent from the GitHub Pages build and production deployment. A local Jekyll build may copy it to disposable `_site/maitain.md`; that is expected and is not publication.
 
 The most important rule is:
 
@@ -536,6 +536,15 @@ if git ls-files --error-unmatch maitain.md >/dev/null 2>&1; then exit 1; fi
 ```
 
 Expected: `git check-ignore` identifies `.gitignore`; the exact rule count is one; `maitain.md` is not tracked.
+
+Also run:
+
+```bash
+test "$(sed -n '1p' maitain.md)" = "# Frontend Structure and Content Editing Guide"
+if sed -n '1,2p' maitain.md | rg -q '^---$'; then exit 1; fi
+```
+
+Expected: the guide begins with its Markdown H1 and does not begin with YAML front matter.
 
 - [ ] **Step 5: Verify every named repository path exists**
 
