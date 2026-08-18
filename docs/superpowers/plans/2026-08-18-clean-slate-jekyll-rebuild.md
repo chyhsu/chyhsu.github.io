@@ -23,11 +23,12 @@
 - Store structured facts only under `_data/portfolio/{profile,experience,projects,education,skills}.yml`; `_config.yml` is limited to build, domain, plugin, and SEO metadata.
 - Use no site JavaScript, remote font, CMS, database, analytics, contact form, theme toggle, background layer, Minima theme, or card-wall layout.
 - Use a warm paper/ink/rust system with muted lilac only for research provenance; cap the hero H1 near 64px and section H2 near 40px.
-- At 320 CSS pixels and 200% zoom: no horizontal scrolling, no overlaid portrait, logical headings, visible focus, and at least 44px navigation/action targets.
+- At 320 CSS pixels and with text resized to 200%: no horizontal scrolling, no overlaid portrait, logical headings, visible focus, and at least 44px navigation/action targets.
 - `script/ci` is the only CI build entrypoint. `script/test` tests an existing `_site` and never invokes Jekyll. GitHub Actions must upload the exact `_site` produced and passed by `script/ci`.
 - A deployable `_site/assets/main.css` must exceed 8,000 bytes, contain the expected compiled token output, and contain no raw `@use`, `@forward`, or `@import` directives. Never upload or deploy after this gate fails.
 - Remove source `.nojekyll`; remove `actions/jekyll-build-pages`; commit `.ruby-version` and `Gemfile.lock`; never commit `_site`, screenshot artifacts, caches, or vendored gems.
 - Optional external project links remain data-driven and carry an explicit `verified` boolean. Templates render only verified links; a failed release check must report the URL and either be fixed or set `verified: false`, while the project itself remains visible.
+- Profile contacts and public records are mandatory evidence links rather than optional project links; a failure must be fixed before release. LinkedIn HTTP 999 is tolerated only for `www.linkedin.com` as its known anti-bot response.
 - Use `apply_patch` for hand-authored source changes, preserve unrelated user changes, and end every implementation task with the named focused tests, `./script/ci`, `git diff --check`, and the task's commit.
 
 ## Exact File Map
@@ -100,6 +101,8 @@ test/fixtures/content_checksums.yml        # approved SHA-256 baseline
 
 package.json                               # pinned browser/accessibility release tools
 package-lock.json                          # committed npm release-tool lock
+.node-version                              # one local release-check Node version: 22.17.1
+.npmrc                                     # enforces the pinned Node/npm engines
 README.md                                  # one build/test/content/deploy path
 docs/release-checklist.md                  # manual and live release gates
 ```
@@ -230,6 +233,9 @@ class ToolchainContractTest < Test::Unit::TestCase
     assert_not_match(/^Gemfile\.lock$/i, ignore)
     assert_not_match(/^\.ruby-version$/i, ignore)
     lock = ROOT.join("Gemfile.lock").read
+    gemfile = ROOT.join("Gemfile").read
+    assert_include(gemfile, 'gem "csv", "3.3.6"')
+    assert_include(gemfile, 'gem "base64", "0.2.0"')
     assert_include(lock, "jekyll (4.3.4)")
     assert_include(lock, "jekyll-sass-converter (3.1.0)")
     assert_match(/BUNDLED WITH\s+2\.7\.1\s*\z/m, lock)
@@ -257,7 +263,8 @@ class ToolchainContractTest < Test::Unit::TestCase
     assert_operator(upload, :<, deploy)
     assert_match(/actions\/upload-pages-artifact@v3[\s\S]*?path: _site/, workflow)
     assert_match(/pull_request:\s*\n\s*branches: \[main\]/, workflow)
-    assert_operator(workflow.scan("github.event_name != 'pull_request'").length, :>=, 2)
+    deployment_guard = "github.ref == 'refs/heads/main' && github.event_name != 'pull_request'"
+    assert_equal(3, workflow.scan(deployment_guard).length)
   end
 
   def test_production_stylesheet_is_compiled_css
@@ -299,6 +306,8 @@ ruby File.read(File.expand_path(".ruby-version", __dir__)).strip
 gem "jekyll", "4.3.4"
 gem "jekyll-sass-converter", "3.1.0"
 gem "sass-embedded", "~> 1.89"
+gem "csv", "3.3.6"
+gem "base64", "0.2.0"
 
 group :jekyll_plugins do
   gem "jekyll-feed", "0.17.0"
@@ -483,20 +492,20 @@ jobs:
           bundler-cache: true
 
       - name: Configure GitHub Pages
-        if: github.event_name != 'pull_request'
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         uses: actions/configure-pages@v5
 
       - name: Build and test production artifact
         run: ./script/ci
 
       - name: Upload tested artifact
-        if: github.event_name != 'pull_request'
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v3
         with:
           path: _site
 
   deploy:
-    if: github.event_name != 'pull_request'
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -2747,6 +2756,8 @@ git commit -m "feat: rebuild profile and writing pages"
 - Create: `script/check-external-links`
 - Create: `script/verify-live`
 - Create: `script/release-browser-check.mjs`
+- Create: `.node-version`
+- Create: `.npmrc`
 - Create: `package.json`
 - Create: `package-lock.json`
 - Create: `README.md`
@@ -2833,6 +2844,11 @@ Insert this method into `ToolchainContractTest`:
       assert_predicate(path, :executable?)
     end
     assert_path_exist(ROOT.join("script/release-browser-check.mjs"))
+    assert_equal("22.17.1\n", ROOT.join(".node-version").read)
+    assert_include(ROOT.join(".npmrc").read, "engine-strict=true")
+    package_json = ROOT.join("package.json").read
+    assert_include(package_json, '"node": "22.17.1"')
+    assert_include(package_json, '"npm": "10.9.2"')
     readme = ROOT.join("README.md").read
     %w[./script/bootstrap ./script/build ./script/test ./script/ci ./script/verify-live].each do |command|
       assert_include(readme, command)
@@ -2920,21 +2936,21 @@ bundle exec ruby -rnokogiri -ruri -e '
 
 failures=0
 while IFS= read -r url; do
-  status="$(curl --location --silent --show-error --retry 2 --max-time 25 \
+  response_code="$(curl --location --silent --show-error --retry 2 --max-time 25 \
     --user-agent "chyhsu.com release verifier" --output /dev/null \
     --write-out '%{http_code}' "$url" || true)"
-  case "$status" in
-    2??|3??) echo "OK $url (HTTP $status)" ;;
-    401|403|429|999) echo "OK $url (HTTP $status, access-controlled)" ;;
-    *)
-      echo "FAIL $url (HTTP $status)" >&2
-      failures=$((failures + 1))
-      ;;
-  esac
+  if [[ "$response_code" =~ ^[23][0-9]{2}$ ]]; then
+    echo "OK $url (HTTP $response_code)"
+  elif [[ "$response_code" == "999" && "$url" == https://www.linkedin.com/* ]]; then
+    echo "OK $url (HTTP 999, LinkedIn anti-bot response)"
+  else
+    echo "FAIL $url (HTTP $response_code)" >&2
+    failures=$((failures + 1))
+  fi
 done < "$url_file"
 
 if (( failures > 0 )); then
-  echo "$failures external link(s) require a fix or verified: false before release" >&2
+  echo "$failures external link(s) require a fix; optional project links may instead use verified: false" >&2
   exit 1
 fi
 ```
@@ -3007,12 +3023,28 @@ chmod +x script/check-external-links script/verify-live
 
 - [ ] **Step 5: Add pinned browser and accessibility release checks**
 
+Create `.node-version`:
+
+```text
+22.17.1
+```
+
+Create `.npmrc`:
+
+```text
+engine-strict=true
+```
+
 Create `package.json`:
 
 ```json
 {
   "name": "chyhsu-portfolio-release-checks",
   "private": true,
+  "engines": {
+    "node": "22.17.1",
+    "npm": "10.9.2"
+  },
   "scripts": {
     "release:browser": "node script/release-browser-check.mjs"
   },
@@ -3132,7 +3164,8 @@ Chun-Yuan Hsu's Jekyll portfolio. The repository builds and tests the same stati
 ## Setup and commands
 
 Use Ruby 3.3.12. `./script/bootstrap` installs the locked Bundler 2.7.1 bundle.
-For release-browser checks, run `npm ci` and `npx playwright install chromium`
+Use Node 22.17.1 with npm 10.9.2 for release tooling. For release-browser
+checks, run `npm ci` and `npx playwright install chromium`
 from the repository root; both package versions are pinned by `package-lock.json`.
 
 - `./script/build` removes `_site` and creates one production build.
@@ -3173,7 +3206,7 @@ Create `docs/release-checklist.md`:
 - [ ] Browser checks pass at 1440×900, 768×900, and 320×700.
 - [ ] `npm ci` and `npx playwright install chromium` succeed from a fresh checkout.
 - [ ] The 320px homepage is below 6,092px and has no horizontal overflow.
-- [ ] The 200% screenshot reflows without clipped or overlaid content.
+- [ ] The 200% text-resize screenshot reflows without clipped or overlaid content.
 - [ ] Keyboard traversal reaches skip link, navigation, native details, project links, posts, and email with visible focus.
 - [ ] Serious and critical axe violations are zero on Home, Projects, About, Blog, and one dated post.
 - [ ] Lilac and Brain Age wording still distinguishes `My contribution` from `Project result`.
@@ -3198,7 +3231,7 @@ Expected: all tests pass; ten exact post routes and all checksum entries match; 
 ```bash
 git add test/fixtures/content_checksums.yml test/history_integrity_test.rb \
   test/toolchain_contract_test.rb script/check-external-links script/verify-live \
-  script/release-browser-check.mjs package.json package-lock.json README.md \
+  script/release-browser-check.mjs .node-version .npmrc package.json package-lock.json README.md \
   docs/release-checklist.md
 git commit -m "test: add durable portfolio release gates"
 ```
@@ -3231,6 +3264,8 @@ Expected: status is clean; CI passes; preserved content has no diff; `git ls-fil
 
 ```bash
 server_log="$(mktemp)"
+test "$(node --version)" = "v$(tr -d '\n' < .node-version)"
+test "$(npm --version)" = "10.9.2"
 npm ci
 npx playwright install chromium
 ruby -run -e httpd _site -p 4173 >"$server_log" 2>&1 &
@@ -3249,7 +3284,7 @@ Expected: the browser script exits 0, prints the screenshot directory, reports n
 
 - [ ] **Step 3: Inspect screenshots and keyboard behavior**
 
-Open every image printed in Step 2. Confirm: the portrait never overlays copy; TSMC precedes QNAP; Lilac, Brain Age, and VizThinker remain ordered; research lilac is a rule/label rather than a filled card; tablet dossiers are one column; the 320px page is below 6,092px; the 200% image has no clipped text.
+Open every image printed in Step 2. Confirm: the portrait never overlays copy; TSMC precedes QNAP; Lilac, Brain Age, and VizThinker remain ordered; research lilac is a rule/label rather than a filled card; tablet dossiers are one column; the 320px page is below 6,092px; the 200% text-resize image has no clipped text.
 
 In the local browser, press `Tab` from the address bar and verify this sequence is reachable with visible focus: Skip to content → brand → Experience → Projects → About → Blog → CV → About Me → Download CV → profile links → native experience details → project/report links → More Work links → posts → email → footer links. Activate the skip link and both native `<details>` controls using only the keyboard.
 

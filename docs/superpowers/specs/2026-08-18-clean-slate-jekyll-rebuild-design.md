@@ -75,6 +75,11 @@ Each featured project uses these explicit fields:
 - `links`: report, repository, or live product, each with `label`, `url`, and
   an explicit `verified` boolean. Only verified optional links render.
 
+Profile contacts and public records are mandatory evidence links. They do not
+use the optional-project `verified` state; failures block release. A LinkedIn
+HTTP 999 response is accepted only for `www.linkedin.com` as a domain-specific
+anti-bot exception.
+
 Specific treatment:
 
 - **Lilac:** retain first position and cross-cloud/IaC framing, but distinguish the broader Lilac system from the documented individual implementation. Do not imply personally completed AWS identification or personally established comparative superiority unless updated first-party evidence is added.
@@ -276,6 +281,7 @@ The repository has one authoritative dependency graph and one authoritative buil
 - Declare Jekyll, the Sass converter, feed, sitemap, SEO, and test dependencies explicitly.
 - Commit `Gemfile.lock`.
 - Use the same supported Ruby 3.3.12 version locally and in CI.
+- Pin Node 22.17.1 and npm 10.9.2 for reproducible browser release checks.
 
 ### CI/deploy flow
 
@@ -309,7 +315,7 @@ Do not use `actions/jekyll-build-pages`; it bypasses the repository's locked dep
 5. **Production CSS tests:** compiled file exists, exceeds sanity size, contains known token output, and contains no raw Sass module directives.
 6. **Workflow contract:** CI uses the locked bundle and uploads only after `script/ci` succeeds.
 7. **Historical integrity:** post checksums and public artifact paths remain unchanged.
-8. **Release checks:** desktop/tablet/320 screenshots, axe, keyboard navigation, 200% reflow, external links, and live deployment verification.
+8. **Release checks:** desktop/tablet/320 screenshots, axe, keyboard navigation, 200% text-resize reflow, external links, and live deployment verification.
 
 Tests assert durable behavior rather than exact Sass filenames, exact whitespace, or one-off selector syntax.
 
@@ -341,6 +347,6 @@ Tests assert durable behavior rather than exact Sass filenames, exact whitespace
 - CV facts and metrics remain exact; unsupported attribution is removed.
 - Historical posts and required artifact URLs are preserved.
 - Jekyll, domain, feed, sitemap, About, Blog, LLM, and dated post routes remain functional.
-- Layout is coherent at desktop, tablet, 320 pixels, and 200% zoom.
+- Layout is coherent at desktop, tablet, 320 pixels, and after text is resized to 200%.
 - Keyboard and automated accessibility checks pass.
 - The repository documents one build, test, content-update, and deployment path.
