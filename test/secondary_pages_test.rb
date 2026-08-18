@@ -49,7 +49,7 @@ class SecondaryPagesTest < Test::Unit::TestCase
     text = doc.text
     assert_include(text, "chyhsu@umich.edu")
     assert_include(text, "Digital Workflow Development Department Intern")
-    assert_include(text, "May 2026 – Present")
+    assert_include(text, "May 2026 – Aug 2026")
     assert_include(text, "My contribution")
     assert_include(text, "Project result")
     assert_include(text, "0.873 diagnostic accuracy")

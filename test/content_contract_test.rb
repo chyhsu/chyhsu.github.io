@@ -21,7 +21,7 @@ class ContentContractTest < Test::Unit::TestCase
       ],
       roles.map { |role| role.values_at("organization", "title", "location") }
     )
-    assert_equal("May 2026 – Present", roles[0].fetch("period"))
+    assert_equal("May 2026 – Aug 2026", roles[0].fetch("period"))
     assert_equal("Jan 2025 – Jul 2025", roles[1].fetch("period"))
     assert_equal(3, roles[0].fetch("evidence").length)
     assert_equal(4, roles[1].fetch("evidence").length)
