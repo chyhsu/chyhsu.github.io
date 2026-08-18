@@ -57,4 +57,23 @@ class ToolchainContractTest < Test::Unit::TestCase
     assert_include(css, "--color-paper:")
     assert_not_match(/@(use|forward|import)\b/, css)
   end
+
+  def test_compiled_css_contains_the_new_system_contract
+    css = SITE_DIR.join("assets/main.css").read
+    assert_include(css, "--color-research:")
+    assert_include(css, ".evidence-row")
+    assert_include(css, ".experience-rail")
+    assert_include(css, ".project-index-row")
+    assert_include(css, ".project-index-row--research .project-provenance")
+    assert_match(/\.site-brand\{[^}]*min-height:2\.75rem/, css)
+    assert_match(/\.site-nav a,.footer-links a\{[^}]*min-height:2\.75rem;min-width:2\.75rem/, css)
+    assert_match(/\.site-footer__contact\{[^}]*min-height:2\.75rem/, css)
+    assert_match(/\.section-heading--split>a\{[^}]*min-height:2\.75rem/, css)
+    assert_match(/@media\s*\(max-width:\s*56rem\)/, css)
+    assert_not_match(/fonts\.googleapis|@font-face/, css)
+    assert_equal(
+      1,
+      document("projects/index.html").css(".project-index-row--research .project-provenance").length
+    )
+  end
 end

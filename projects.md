@@ -24,7 +24,7 @@ body_class: projects-page
       {% assign group_projects = projects.archive | where: "group", group.id %}
       <div class="project-index-list">
         {% for project in group_projects %}
-          <article class="project-index-row" id="{{ project.id }}">
+          <article class="project-index-row project-index-row--{{ project.group }}" id="{{ project.id }}">
             <div class="project-index-row__heading">
               <p class="project-provenance">{{ project.provenance }}</p>
               <h3>{{ project.title }}</h3>

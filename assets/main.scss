@@ -1,7 +1,9 @@
 ---
 ---
 @use "tokens";
-@use "base";
-@use "layout";
-@use "components";
-@use "pages";
+@use "global";
+@use "components/chrome";
+@use "components/hero";
+@use "components/experience";
+@use "components/projects";
+@use "components/content";
