@@ -5,7 +5,7 @@
 .experience-row__meta, .experience-row__body { min-width: 0; }
 .experience-row__meta { color: var(--color-muted); font-size: 0.86rem; }
 .experience-row__period { color: var(--color-rust-dark); font-weight: 800; }
-.experience-row__body { position: relative; max-width: 48rem; }
+.experience-row__body { position: relative; max-width: 48rem; overflow-wrap: anywhere; }
 .experience-row__body::before { content: ""; position: absolute; left: calc(-1 * var(--space-6) - 0.35rem); top: 0.35rem; width: 0.7rem; height: 0.7rem; border-radius: 50%; background: var(--color-rust); }
 .experience-row__organization { margin-bottom: var(--space-1); color: var(--color-rust); font-size: 0.78rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; }
 .experience-row__primary { padding-left: 1.15rem; }

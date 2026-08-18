@@ -27,6 +27,8 @@
   .evidence-row__facts > div { grid-template-columns: 1fr; gap: var(--space-1); }
 }
 @media (max-width: 36rem) {
+  .evidence-row { padding-block: var(--space-5); }
+  .more-work__link { min-height: 2.75rem; }
   .result-list { grid-template-columns: 1fr; }
   .evidence-row--research { padding-left: var(--space-3); }
 }

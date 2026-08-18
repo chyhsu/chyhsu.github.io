@@ -36,6 +36,7 @@
   .post-row > p { grid-column: 2; }
 }
 @media (max-width: 36rem) {
+  .profile-strip, .contact-strip { padding-block: var(--space-5); }
   .profile-strip__skills { columns: 1; }
   .post-row { grid-template-columns: 1fr; gap: var(--space-1); }
   .post-row > p { grid-column: auto; }

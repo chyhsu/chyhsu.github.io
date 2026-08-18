@@ -115,6 +115,26 @@ class ToolchainContractTest < Test::Unit::TestCase
     assert_match(/\.profile-strip__skills\{[^}]*columns:auto/, css)
   end
 
+  def test_extreme_text_wraps_and_mobile_spacing_stays_compact
+    css = SITE_DIR.join("assets/main.css").read
+    assert_match(/h1,h2,h3\{[^}]*overflow-wrap:anywhere/, css)
+    assert_match(/\.site-footer__eyebrow,\.site-footer__title\{[^}]*overflow-wrap:anywhere/, css)
+    assert_match(/\.experience-row__body\{[^}]*overflow-wrap:anywhere/, css)
+
+    global = ROOT.join("_sass/_global.scss").read
+    chrome = ROOT.join("_sass/components/_chrome.scss").read
+    hero = ROOT.join("_sass/components/_hero.scss").read
+    projects = ROOT.join("_sass/components/_projects.scss").read
+    content = ROOT.join("_sass/components/_content.scss").read
+    assert_include(global, ".section { padding-block: var(--space-5); }")
+    assert_include(global, ".section-heading { margin-bottom: var(--space-5); }")
+    assert_include(chrome, ".site-footer { padding-block: var(--space-5); }")
+    assert_include(hero, "padding-block: var(--space-5)")
+    assert_include(projects, ".evidence-row { padding-block: var(--space-5); }")
+    assert_include(projects, ".more-work__link { min-height: 2.75rem; }")
+    assert_include(content, ".profile-strip, .contact-strip { padding-block: var(--space-5); }")
+  end
+
   def test_documented_release_commands_exist_and_are_executable
     %w[bootstrap build test ci check-external-links verify-live].each do |name|
       path = ROOT.join("script", name)

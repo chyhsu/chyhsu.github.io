@@ -9,6 +9,7 @@
 .site-footer__inner { display: flex; align-items: end; justify-content: space-between; gap: var(--space-5); }
 .site-footer__eyebrow { color: #dda18f; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; }
 .site-footer__title { max-width: 38rem; margin-bottom: var(--space-2); color: var(--color-surface); font-family: var(--font-display); font-size: clamp(1.7rem, 4vw, 2.8rem); }
+.site-footer__eyebrow, .site-footer__title { overflow-wrap: anywhere; }
 .site-footer__contact { min-height: 2.75rem; min-width: 2.75rem; display: inline-flex; align-items: center; }
 .site-footer a { color: var(--color-surface); }
 .site-footer a:focus-visible { outline-color: var(--color-surface); }
@@ -17,4 +18,7 @@
   .site-header__inner { padding-block: var(--space-2); }
   .site-nav { width: 100%; gap: 0; justify-content: space-between; }
   .site-nav a { padding-inline: 0.3rem; }
+}
+@media (max-width: 36rem) {
+  .site-footer { padding-block: var(--space-5); }
 }

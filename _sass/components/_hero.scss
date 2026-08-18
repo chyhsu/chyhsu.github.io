@@ -15,6 +15,6 @@
   .hero__portrait-frame { width: 8rem; }
 }
 @media (max-width: 36rem) {
-  .hero { grid-template-columns: 1fr; padding-block: var(--space-6); }
+  .hero { grid-template-columns: 1fr; padding-block: var(--space-5); }
   .hero__portrait-frame { grid-row: 1; justify-self: start; width: 6rem; margin-bottom: 0; }
 }
