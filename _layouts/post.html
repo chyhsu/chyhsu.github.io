@@ -1,15 +1,17 @@
 ---
 layout: default
 ---
-<article class="post">
-
+<article class="post-article site-shell">
   <header class="post-header">
-    <h1 class="post-title">{{ page.title | escape }}</h1>
-    <p class="post-meta">{{ page.date | date: "%b %-d, %Y" }}{% if page.author %} • {{ page.author }}{% endif %}{% if page.categories.size > 0 %} • {% for cat in page.categories %}<a href="{{ site.baseurl }}/categories/#{{ cat | slugify }}">{{ cat }}</a>{% unless forloop.last %}, {% endunless %}{% endfor %}{% endif %}</p>
+    <p class="eyebrow">Field note</p>
+    <h1>{{ page.title | escape }}</h1>
+    <p class="post-meta">
+      <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%B %-d, %Y" }}</time>
+      {% if page.author %}<span> · {{ page.author }}</span>{% endif %}
+    </p>
   </header>
-
-  <div class="post-content">
-    {{ content }}
+  <div class="post-content prose">
+    {% assign article_content = content | replace: '<h1', '<h2' | replace: '</h1>', '</h2>' %}
+    {{ article_content }}
   </div>
-
 </article>
