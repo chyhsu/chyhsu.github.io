@@ -38,6 +38,11 @@ async function hasExclusiveTabState(group, button, panelId, expectedCount) {
 async function auditTabs(page) {
   const errors = [];
   const groups = page.locator("[data-tabs]");
+  const expectedGroupIds = ["experience-tabs", "selected-work-tabs", "skills-tabs"];
+  const groupIds = await groups.evaluateAll((items) => items.map((group) => group.id));
+  if (groupIds.join(",") !== expectedGroupIds.join(",")) {
+    errors.push(`tab groups ${groupIds.join(",") || "none"} do not match ${expectedGroupIds.join(",")}`);
+  }
   for (let groupIndex = 0; groupIndex < await groups.count(); groupIndex += 1) {
     const group = groups.nth(groupIndex);
     const buttons = group.locator('[role="tab"]');

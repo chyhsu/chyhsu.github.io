@@ -45,6 +45,7 @@ class ReleaseToolingTest < Test::Unit::TestCase
   def test_browser_gate_exercises_button_tabs
     browser_check = ROOT.join("script/release-browser-check.mjs").read
     assert_include(browser_check, 'page.locator("[data-tabs]")')
+    assert_include(browser_check, '["experience-tabs", "selected-work-tabs", "skills-tabs"]')
     assert_include(browser_check, 'press("ArrowLeft")')
     assert_include(browser_check, 'press("ArrowRight")')
     assert_include(browser_check, 'press("End")')
