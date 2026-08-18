@@ -6,45 +6,60 @@ class SecondaryPagesTest < Test::Unit::TestCase
   include PortfolioTestSupport
 
   def setup
-    build_site!
+    assert_built_site!
   end
 
-  def test_about_is_present_day_and_preserves_personal_history
-    html = rendered("about/index.html")
-    assert_include(html, "Tainan")
-    assert_include(html, "civil engineering")
-    assert_include(html, "University of Michigan")
-    assert_include(html, "TSMC")
-    assert_include(html, "US Taiwan Watch")
-    assert_include(html, "Linear Algebra")
-    assert_include(html, "Linux ricing")
-    assert_not_include(html, "pack my bags")
-    assert_not_include(html, "incoming MDS")
+  def test_about_preserves_personal_history_and_shared_facts
+    doc = document("about/index.html")
+    text = doc.text
+    %w[Tainan TSMC QNAP baseball gym darts].each { |fact| assert_include(text, fact) }
+    assert_include(text, "civil engineering")
+    assert_include(text, "University of Michigan")
+    assert_include(text, "US Taiwan Watch")
+    assert_include(text, "Linear Algebra")
+    assert_include(text, "Linux ricing")
+    assert_equal(7, doc.css(".records-list a").length)
+    image = doc.at_css("img.about-photo")
+    assert_equal("/assets/images/20200711_190244-web.jpg", image["src"])
+    assert_equal("lazy", image["loading"])
+    assert_equal("async", image["decoding"])
   end
 
-  def test_blog_archive_has_semantic_articles
-    html = rendered("blog/index.html")
-    assert_include(html, '<div class="posts-container">')
-    assert_operator(html.scan('<article class="post-card">').length, :>=, 10)
-    assert_include(html, "Machine Learning Project")
+  def test_blog_groups_all_historical_posts_by_year
+    doc = document("blog/index.html")
+    assert_equal(["2026", "2025"], doc.css(".blog-year > h2").map { |node| node.text.strip })
+    assert_equal(10, doc.css(".blog-year .post-row").length)
+    assert_include(doc.text, "Machine Learning Project")
+    assert_include(doc.text, "Welcome to My Blog!")
   end
 
-  def test_post_has_one_h1_and_a_dated_article
-    post_path = Dir[SITE_DIR.join("2026/05/25/*Machine-Learning-Project.html")].first
-    assert_not_nil(post_path, "Machine Learning Project output was not generated")
-    html = File.read(post_path)
-    assert_equal(1, html.scan(/<h1\b/).length)
-    assert_match(/<article class="[^"]*\bpost-article\b[^"]*">/, html)
-    assert_include(html, '<time datetime="2026-05-25')
+  def test_every_post_renders_one_h1_and_a_timestamped_article
+    post_paths = Dir[SITE_DIR.join("20??/**/*.html")].sort
+    assert_equal(10, post_paths.length)
+    post_paths.each do |path|
+      doc = Nokogiri::HTML5(File.read(path))
+      assert_equal(1, doc.css("h1").length, path)
+      assert_equal(1, doc.css("article.post-article").length, path)
+      assert_equal(1, doc.css("article.post-article time[datetime]").length, path)
+    end
   end
 
-  def test_llm_profile_renders_authoritative_shared_facts
-    html = rendered("llm/index.html")
-    assert_include(html, "Digital Workflow Development Department Intern")
-    assert_include(html, "May 2026 – Present")
-    assert_include(html, "0.873 diagnostic accuracy")
-    assert_include(html, "0.966 R²")
-    assert_include(html, "Jira Issue Search")
-    assert_not_include(html, "Begins Sep 2025")
+  def test_llm_profile_renders_all_shared_factual_sections
+    doc = document("llm/index.html")
+    text = doc.text
+    assert_include(text, "chyhsu@umich.edu")
+    assert_include(text, "Digital Workflow Development Department Intern")
+    assert_include(text, "May 2026 – Present")
+    assert_include(text, "My contribution")
+    assert_include(text, "Project result")
+    assert_include(text, "0.873 diagnostic accuracy")
+    assert_include(text, "0.966 R²")
+    assert_include(text, "NTHU thesis and research project")
+    assert_include(text, "Claude Agent SDK")
+    assert_include(text, "US Taiwan Watch")
+    assert_include(text, "QNAP Internship Certificate")
+    portfolio_file("projects").fetch("archive").each do |project|
+      assert_include(text, project.fetch("title"))
+    end
   end
 end
