@@ -197,7 +197,7 @@ Rendered by `_includes/home/experience.html` from `_data/portfolio/experience.ym
 - `period` and `location` appear in the left metadata column.
 - `title` and `summary` introduce the role.
 - Evidence with `homepage: true` is immediately visible.
-- Evidence with `homepage: false` appears inside **Additional verified detail**.
+- Evidence with `homepage: false` appears inside **More detail**.
 - `secondary_evidence` also appears inside that disclosure.
 - `technologies` is used by the LLM-readable page even though it is not shown in the homepage row.
 

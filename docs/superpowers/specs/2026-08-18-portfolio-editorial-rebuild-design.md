@@ -12,7 +12,7 @@
 
 Rebuild the existing Jekyll portfolio as a warm, editorial, recruiter-first site while preserving its static deployment model and existing URLs. The homepage will lead with the TSMC and QNAP internships, then present Lilac, the brain-age/Alzheimer's Disease project, and VizThinker as featured work. Projects that do not appear in the CV will remain accessible in a compact homepage archive.
 
-The redesign must be easy to maintain. Resume-like facts will live in one structured data file, page sections will be small reusable includes, and styles will be divided by responsibility. The supplied CV is authoritative when it overlaps with existing site content. Public GitHub repositories may provide additional verified detail, but no unsupported claim will be added.
+The redesign must be easy to maintain. Resume-like facts will live in one structured data file, page sections will be small reusable includes, and styles will be divided by responsibility. The supplied CV is authoritative when it overlaps with existing site content. Public GitHub repositories may provide More detail, but no unsupported claim will be added.
 
 ## Goals
 

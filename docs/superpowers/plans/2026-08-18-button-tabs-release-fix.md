@@ -251,7 +251,7 @@ Inside `_includes/home/experience.html`, keep the existing section heading and r
             {% assign hidden_evidence = role.evidence | where: "homepage", false %}
             {% if hidden_evidence != empty or role.secondary_evidence != empty %}
               <details>
-                <summary>Additional verified detail</summary>
+                <summary>More detail</summary>
                 <ul>
                   {% for item in hidden_evidence %}<li>{{ item.text }}</li>{% endfor %}
                   {% for item in role.secondary_evidence %}<li>{{ item }}</li>{% endfor %}
